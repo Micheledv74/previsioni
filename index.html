@@ -48,7 +48,7 @@
           <div style="margin-left:20px;">
             <div class="tempmax">${d.temp_max}°C <span class="tempmin">${d.temp_min}°C</span></div>
             <div class="details">Precipitazioni: ${d.precipitation} mm<br>
-            Aggiornamento: 09/10/2025, 08:31:02</div>
+            Aggiornamento: 09/10/2025, 08:32:58</div>
           </div>
         </div>
       </div>`;
@@ -92,15 +92,3 @@
   </script>
 </body>
 </html>
-new Chart(ctx, {
-  type: 'line',
-  data: {...},
-  options: {
-    plugins: { legend: { display:true } },
-    scales: {...},
-    elements: {
-      line: { borderWidth: 4 },   // Linea più spessa e visibile!
-      point: { radius: 3 }
-    }
-  }
-});
