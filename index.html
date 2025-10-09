@@ -56,7 +56,7 @@ function renderCard() {
       <div style="margin-left:20px;">
         <div class="tempmax">${d.temp_max}°C <span class="tempmin">${d.temp_min}°C</span></div>
         <div class="details">Precipitazioni: ${d.precipitation} mm<br>
-        Aggiornamento: 09/10/2025, 22:41:15</div>
+        Aggiornamento: 09/10/2025, 22:44:05</div>
       </div>
     </div>
   </div>`;
@@ -96,7 +96,7 @@ function renderCharts() {
 
   // Vento
   document.getElementById('windchartcontainer').innerHTML =
-    `<div class="card"><canvas id="windchart" width="775" height="160"></canvas></div>`;
+    `<div class="card"><canvas id="windchart" width="775" height="240"></canvas></div>`;
   const ctx2 = document.getElementById('windchart').getContext('2d');
   if (windChart) windChart.destroy();
   windChart = new Chart(ctx2, {
@@ -124,7 +124,7 @@ function renderCharts() {
 
   // Pioggia
   document.getElementById('rainchartcontainer').innerHTML =
-    `<div class="card"><canvas id="rainchart" width="775" height="120"></canvas></div>`;
+    `<div class="card"><canvas id="rainchart" width="775" height="160"></canvas></div>`;
   const ctx3 = document.getElementById('rainchart').getContext('2d');
   if (rainChart) rainChart.destroy();
   rainChart = new Chart(ctx3, {
