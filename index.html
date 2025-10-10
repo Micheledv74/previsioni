@@ -3,164 +3,115 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Previsioni Procida - Meteo Giornaliero</title>
+  <title>Previsioni Meteo Avanzate</title>
   <style>
-    body { font-family: Arial, max-width: 920px; margin: auto; background: linear-gradient(#182948,#374058); color: #fff; padding: 30px;}
-    .tabs { display: flex; gap: 8px; margin-bottom: 24px; }
-    .tab { background: rgba(255,255,255,0.12); border: 1px solid #333b4a; padding: 16px 28px; border-radius: 8px; cursor: pointer;}
-    .tab.active { background: #0580ff; color: #fff; border-bottom: 3px solid #fff;}
-    .card { background: rgba(255,255,255,0.08); border-radius:16px; padding:24px; margin-bottom:18px; }
-    .bigicon { font-size:68px; }
-    .tempmax { font-size:32px; font-weight:bold; }
-    .tempmin { font-size:20px; color:#9bdfff; }
-    .details { font-size:17px; color:#b2b9cd;}
-    .underline { border-bottom: 1.5px solid #224;}
-    canvas { background: rgba(255,255,255,0.12); border-radius:8px; }
+    body { font-family: Arial, sans-serif; max-width: 700px; margin: auto; padding: 20px; background-color: #f0f4f7; }
+    h1, h2 { color: #055a8c; }
+    .alert { color: #d93025; font-weight: bold; }
+    .chart-container { margin-top: 20px; }
+    canvas { background: white; border: 1px solid #ccc; border-radius: 4px; }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
+  <h1>Previsioni Meteo - Località Selezionata</h1>
+  <p>Temperatura media: 20.0 °C</p>
+  <p>Temperatura minima: 16.9 °C</p>
+  <p>Temperatura massima: 23.5 °C</p>
+  <p>Precipitazioni totali: 9.30 mm</p>
+  <p>Velocità massima vento: 25.0 km/h</p>
+  <p class="alert">Consiglio: Porta l’ombrello</p>
+  <p><small>Analisi avanzata della giornata con dati orari e alert meteo specifici.</small></p>
+  <p><small>Aggiornamento: 10/10/2025, 23:22:50</small></p>
 
-<div id="tabbar" class="tabs"></div>
-<div id="daycard"></div>
+  <div class="chart-container">
+    <h2>Temperatura Oraria (°C)</h2>
+    <canvas id="tempChart" width="600" height="300"></canvas>
+  </div>
 
-<!-- DIV per grafici, già posizionati -->
-<div id="chartcontainer"></div>
-<div id="windchartcontainer"></div>
-<div id="rainchartcontainer"></div>
+  <div class="chart-container">
+    <h2>Velocità Vento Oraria (km/h)</h2>
+    <canvas id="windChart" width="600" height="300"></canvas>
+  </div>
 
-<script>
-// Dati dal backend fusion n8n
-const days = [{"day_label":"10/10","temp_max":"21.2","temp_min":"19.0","precipitation":"0.00","icon":"🌤️","hourly_labels":["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"],"hourly_temps":[20.3,20.1,19.8,19.7,19.5,19.2,19.1,19.1,19,19,19.3,19.6,20,20.3,20.7,21,21.2,21,21.1,21,20.7,20.9,21,21],"hourly_winds":[5.2,6.4,6.3,6.5,6.2,6.7,6.2,5.8,6.6,6.7,5,3.4,2.2,2.6,2.6,3.3,4.7,5.5,4,7.5,8.7,7.2,7.6,8],"hourly_precips":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"day_label":"11/10","temp_max":"23.4","temp_min":"20.2","precipitation":"0.00","icon":"☀️","hourly_labels":["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"],"hourly_temps":[20.7,20.6,20.6,20.5,20.4,20.3,20.3,20.3,20.2,20.3,20.7,21.2,22,22.8,23.1,23.3,23.4,22.7,22.3,22.1,21.9,21.2,20.6,20.3],"hourly_winds":[7.2,6.6,6.6,6.6,7.3,7.3,7.5,8.8,8.7,8.7,9.7,10.9,9.8,9.6,7.6,5.1,1.5,7.6,7.3,7.5,8.1,9.4,10.8,12.9],"hourly_precips":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"day_label":"12/10","temp_max":"21.2","temp_min":"18.9","precipitation":"0.00","icon":"⛅","hourly_labels":["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"],"hourly_temps":[20.1,20,19.9,19.6,19.4,19.2,19.1,18.9,18.9,19.1,19.4,19.9,20.4,20.8,21,21.1,21.1,21.2,21,20.6,20.5,20.6,20.8,20.8],"hourly_winds":[13.7,14.3,14.5,13.3,12.7,12,10.7,10.7,10.2,9.9,9.7,9.2,8,5.4,3.7,4.9,6.3,7.3,9,9.2,8,8.4,8.3,8.1],"hourly_precips":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"day_label":"13/10","temp_max":"21.0","temp_min":"19.2","precipitation":"0.00","icon":"🌤️","hourly_labels":["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"],"hourly_temps":[20.5,20.2,19.9,19.6,19.5,19.5,19.4,19.3,19.2,19.3,19.5,19.8,20,20.2,20.5,20.7,20.9,21,20.9,20.7,20.5,20.4,20.4,20.3],"hourly_winds":[5.8,3.8,4.7,4.7,3.6,3.1,3.7,4,4.1,4.8,5.5,5.1,3.3,1.6,3.1,5.2,7.1,8.2,8.3,7.6,7.1,5.9,4.9,5.2],"hourly_precips":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"day_label":"14/10","temp_max":"20.6","temp_min":"19.1","precipitation":"0.00","icon":"☀️","hourly_labels":["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"],"hourly_temps":[20.2,20,19.8,19.6,19.5,19.3,19.2,19.1,19.1,19.3,19.5,19.7,19.9,20.1,20.3,20.4,20.6,20.6,20.5,20.4,20.2,20.1,20,19.9],"hourly_winds":[5,4.4,4.6,4.5,4.5,4.5,5.2,5.9,6.2,6.2,6.1,5.4,4.3,4,4.7,5.7,6.8,7.1,6.3,5.9,6.4,5.6,5.8,6.6],"hourly_precips":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"day_label":"15/10","temp_max":"22.4","temp_min":"18.4","precipitation":"0.00","icon":"☀️","hourly_labels":["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"],"hourly_temps":[19.8,19.8,19.8,19.6,19.2,19,18.8,18.7,18.8,19,19.3,19.8,20.5,21.4,22.1,22.3,22.4,22.1,21.5,20.7,19.9,19.3,18.8,18.4],"hourly_winds":[7.4,7.6,7.7,10.1,11.1,12.1,12.7,13.1,14,15.1,16.6,17.6,17.3,16.9,17.4,20.3,23.9,26.8,27.4,26.7,25.8,25,24.2,23.3],"hourly_precips":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"day_label":"16/10","temp_max":"20.5","temp_min":"16.6","precipitation":"0.00","icon":"⛅","hourly_labels":["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"],"hourly_temps":[18.1,17.9,17.6,17.4,17.2,17,16.8,16.6,16.6,16.9,17.3,17.8,18.4,19.1,19.7,20.1,20.4,20.5,20.3,19.9,19.4,19,18.5,18.1],"hourly_winds":[22.6,21.9,21.3,19.8,18.6,17.7,18.4,19.9,21.2,22.3,22.9,22.8,20.6,17.5,15,13.4,11.9,11.3,12,14.4,16.5,17.6,17.6,17.4],"hourly_precips":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]}];
-let current = 0;
+  <script>
+    const timeLabels = ["10/10 02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00","00:00","01:00","11/10 02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00","00:00","01:00","12/10 02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00","00:00","01:00","13/10 02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00","00:00","01:00","14/10 02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00","00:00","01:00","15/10 02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00","00:00","01:00","16/10 02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00","00:00","01:00"];
+    const temps = [20.3,20.1,19.8,19.7,19.5,19.2,19.1,19.1,18.7,18.8,18.9,19.6,20,20.5,20.8,21,21.2,21.8,21.9,21.8,21.1,21.3,21.2,21.1,21.1,21.1,21,20.8,20.5,20.3,20.2,20.2,20.3,20.6,20.9,21.5,22.2,22.9,23.3,23.5,23.2,22.2,22.1,22,21.8,21.7,21.7,21.2,20.7,20.3,20.2,20,19.8,19.5,19.3,19.2,19.2,19.4,19.6,20.1,20.5,20.8,21.1,21.3,21.3,21.4,21.1,20.8,20.7,20.6,20.7,20.6,20.4,20.2,20,19.7,19.5,19.4,19.3,19.2,19.2,19.2,19.3,19.6,19.9,20.2,20.4,20.6,20.9,20.9,20.7,20.4,20.4,20.2,20.1,20,19.9,19.7,19.6,19.5,19.4,19.3,19.2,19.1,19,19.1,19.3,19.5,19.7,19.9,20.1,20.2,20.3,20.4,20.4,20.5,20.5,20.4,20.3,20.2,20.1,19.9,19.7,19.5,19.3,19.1,18.8,18.6,18.5,18.6,19,19.4,20.1,20.9,21.4,22.5,22.8,22.8,22.4,21.8,21.1,20.5,19.8,19.2,18.9,18.8,18.6,18.5,18.3,18.1,17.8,17.4,17.1,17,17.1,17.2,17.2,17.3,17.3,17.2,17,16.9,17.1,17.5,17.8,18.2,18.6,18.8];
+    const winds = [5.2,6.4,6.3,6.5,6.2,6.7,6.2,5.8,5.4,6,5.4,4.3,3,2.7,2.6,3.1,3.6,3.6,4.7,6,9.2,8.9,8.2,7.6,5,5,5.6,5.6,5.8,6.5,6.8,6.9,7.2,7.6,8.1,9.6,10.3,9.1,8.3,2.8,4.7,7.4,8.4,7.8,7.3,7.2,6.9,7.7,9.7,10.9,12.6,13.1,13.3,12.7,11.7,11.2,10.5,9.2,8.2,7.2,5.8,3.7,2.9,3.7,6.4,8,7.9,7.2,7.7,7.6,5.6,4,3.1,2.8,3.5,3.3,3.3,3.7,3.5,3.6,4.3,4.1,4.7,4,2.3,2.5,3.4,4.9,5.9,7.9,6.5,6.3,6.2,4.7,3.6,4.3,5,4.9,5.1,4.7,4.3,4,4.3,4.7,5.2,5.8,6.5,6.5,5.8,4.5,4.4,4.7,5.2,5.2,3.1,2,4.3,6.3,8.2,9.5,9.9,9.4,9.8,10.9,11.9,13.2,13.8,14.4,14.5,14.8,15.1,14.8,13.3,11.7,10.8,14.8,12.8,11.9,11.9,13.5,15.7,17.7,19.7,21.1,21.6,21.7,21.3,20.6,20.1,19.7,20.1,21.4,22.4,23.2,23.7,24.2,24.5,24.8,25,24.6,24.6,24,23.2,22.4,21.5,20.4,19.4,18.7];
 
-function renderTabs() {
-  const tabbar = document.getElementById('tabbar');
-  tabbar.innerHTML = '';
-  days.forEach((d, idx) => {
-    const el = document.createElement('div');
-    el.className = idx === current ? 'tab active' : 'tab';
-    el.innerHTML = `<div class="bigicon">${d.icon}</div>
-      <div>${d.day_label}</div>
-      <div><span class="tempmax">${d.temp_max}°</span> <span class="tempmin">${d.temp_min}°</span></div>`;
-    el.onclick = () => { current = idx; renderAll(); };
-    tabbar.appendChild(el);
-  });
-}
-
-function renderCard() {
-  const d = days[current];
-  document.getElementById('daycard').innerHTML = `<div class="card underline">
-    <div style="display:flex;align-items:center;">
-      <div class="bigicon">${d.icon}</div>
-      <div style="margin-left:20px;">
-        <div class="tempmax">${d.temp_max}°C <span class="tempmin">${d.temp_min}°C</span></div>
-        <div class="details">Precipitazioni: ${d.precipitation} mm<br>
-        Aggiornamento: 10/10/2025, 09:05:18</div>
-      </div>
-    </div>
-  </div>`;
-}
-
-let tempChart = null, windChart = null, rainChart = null;
-function renderCharts() {
-  const d = days[current];
-
-  // Temperatura
-  document.getElementById('chartcontainer').innerHTML =
-    `<div class="card"><canvas id="chart" width="775" height="240"></canvas></div>`;
-  const ctx1 = document.getElementById('chart').getContext('2d');
-  if (tempChart) tempChart.destroy();
-  tempChart = new Chart(ctx1, {
-    type: 'line',
-    data: {
-      labels: d.hourly_labels,
-      datasets: [{
-        label: 'Temperatura (°C)',
-        data: d.hourly_temps,
-        borderColor: 'rgba(255,214,91,1)',
-        backgroundColor: 'rgba(255,214,91,0.15)',
-        fill: true,
-        tension: 0.3,
-        pointRadius: 2
-      }]
-    },
-    options: {
-      plugins: { legend: { display:true, labels: { color:'#fff', font: {weight:'bold', size:16} } }},
-      scales: {
-        y: { beginAtZero: false, title: { display: true, text: '°C', color: '#fff' }, ticks: { color:'#fff', font: {weight:'bold'} }},
-        x: { title: { display: true, text: 'Ora locale', color:'#fff' }, ticks: { color: '#fff', font: {weight:'bold', size:16}, maxRotation:0, minRotation:0 } }
+    new Chart(document.getElementById('tempChart').getContext('2d'), {
+      type: 'line',
+      data: {
+        labels: timeLabels,
+        datasets: [{
+          label: 'Temperatura (°C)',
+          data: temps,
+          borderColor: 'rgba(255, 99, 132, 1)',
+          backgroundColor: 'rgba(255, 99, 132, 0.2)',
+          fill: true,
+          tension: 0.3,
+          pointRadius: 2
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: false,
+            title: {
+              display: true,
+              text: '°C'
+            }
+          },
+          x: {
+            title: {
+              display: true,
+              text: 'Ora locale'
+            }
+          }
+        },
+        plugins: {
+          legend: { display: true, position: 'top' }
+        }
       }
-    }
-  });
+    });
 
-  // Vento
-  document.getElementById('windchartcontainer').innerHTML =
-    `<div class="card"><canvas id="windchart" width="775" height="240"></canvas></div>`;
-  const ctx2 = document.getElementById('windchart').getContext('2d');
-  if (windChart) windChart.destroy();
-  windChart = new Chart(ctx2, {
-    type: 'line',
-    data: {
-      labels: d.hourly_labels,
-      datasets: [{
-        label: 'Vento (km/h)',
-        data: d.hourly_winds,
-        borderColor: 'rgba(148,210,255,1)',
-        backgroundColor: 'rgba(148,210,255,0.18)',
-        fill: true,
-        tension: 0.3,
-        pointRadius: 2
-      }]
-    },
-    options: {
-      plugins: { legend: { display:true, labels: { color:'#fff', font: {weight:'bold', size:16} } }},
-      scales: {
-        y: { beginAtZero: true, title: { display: true, text: 'km/h', color: '#fff' }, ticks: { color:'#fff', font: {weight:'bold'} }},
-        x: { title: { display: true, text: 'Ora locale', color: '#fff' }, ticks: { color: '#fff', font: {weight:'bold', size:16}, maxRotation:0, minRotation:0 } }
+    new Chart(document.getElementById('windChart').getContext('2d'), {
+      type: 'line',
+      data: {
+        labels: timeLabels,
+        datasets: [{
+          label: 'Vento (km/h)',
+          data: winds,
+          borderColor: 'rgba(54, 162, 235, 1)',
+          backgroundColor: 'rgba(54, 162, 235, 0.2)',
+          fill: true,
+          tension: 0.3,
+          pointRadius: 2
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: 'km/h'
+            }
+          },
+          x: {
+            title: {
+              display: true,
+              text: 'Ora locale'
+            }
+          }
+        },
+        plugins: {
+          legend: { display: true, position: 'top' }
+        }
       }
-    }
-  });
-
-  // Pioggia
-  document.getElementById('rainchartcontainer').innerHTML =
-    `<div class="card"><canvas id="rainchart" width="775" height="160"></canvas></div>`;
-  const ctx3 = document.getElementById('rainchart').getContext('2d');
-  if (rainChart) rainChart.destroy();
-  rainChart = new Chart(ctx3, {
-    type: 'bar',
-    data: {
-      labels: d.hourly_labels,
-      datasets: [{
-        label: 'Precipitazioni (mm)',
-        data: d.hourly_precips,
-        backgroundColor: 'rgba(30,180,255,0.75)',
-        borderColor: 'rgba(13,80,180,1)',
-        borderWidth: 1,
-        minBarLength: 1
-      }]
-    },
-    options: {
-      plugins: { legend: { display:true, labels: { color:'#fff', font: {weight:'bold', size:16} } }},
-      scales: {
-        y: { beginAtZero: true, title: { display: true, text: 'mm', color: '#fff' }, ticks: { color:'#fff', font: {weight:'bold'} }},
-        x: { title: { display: true, text: 'Ora locale', color: '#fff' }, ticks: { color: '#fff', font: {weight:'bold', size:16}, maxRotation:0, minRotation:0 } }
-      }
-    }
-  });
-}
-
-function renderAll() {
-  if (!days || days.length === 0) {
-    document.body.innerHTML = "<h2 style='color:#fff'>Nessun dato meteo disponibile!</h2>";
-    return;
-  }
-  renderTabs();
-  renderCard();
-  renderCharts();
-}
-renderAll();
-</script>
-
+    });
+  </script>
 </body>
 </html>
