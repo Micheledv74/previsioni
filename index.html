@@ -17,201 +17,194 @@
     }
     .header {
       font-family: 'Montserrat', sans-serif;
-      font-size: 2.8rem;
+      font-size: 2.5rem;
       font-weight: 800;
       text-align: center;
       margin-bottom: 36px;
       color: #bce7ff;
       text-shadow: 2px 2px 8px #0a2b56;
-      letter-spacing: 3px;
+      letter-spacing: 2px;
       user-select: none;
     }
-    .tabs {
+    /* Top info card */
+    .today-main {
       display: flex;
-      gap: 14px;
-      margin-bottom: 34px;
+      flex-direction: row;
+      align-items: center;
+      background: rgba(10,36,65,0.25);
+      border-radius: 30px;
+      box-shadow: 0 6px 36px #2b488c24;
+      padding: 34px 36px 30px 28px;
+      margin-bottom: 32px;
+      gap: 22px;
       flex-wrap: wrap;
-      justify-content: center;
+      justify-content: flex-start;
     }
-    .tab {
-      background: rgba(255, 255, 255, 0.18);
-      border: 2.5px solid #61c8ff;
-      padding: 16px 28px;
-      border-radius: 14px;
-      cursor: pointer;
-      transition: background 0.3s, border-color 0.3s;
-      box-shadow: 0 2px 16px #61c8ff40;
-      min-width: 110px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      user-select: none;
-    }
-    .tab.active {
-      background: #0580ff;
-      color: #fff;
-      border-color: #00aeff;
-      box-shadow: 0 4px 28px #00c0ff88;
-      font-weight: 700;
-    }
-    .tab:hover {
-      background: #3399ff;
-      border-color: #3399ff;
-      box-shadow: 0 3px 26px #3399ff99;
-    }
-    .tab .bigicon {
-      font-size: 2.2rem;
-      margin-bottom: 4px;
-      filter: drop-shadow(0 2px 5px #0378cccc);
-      user-select: none;
-    }
-    .tab div {
-      font-weight: 600;
-      font-size: 1rem;
-    }
-    .tempmax {
-      font-size: 1.1rem;
-      font-weight: 800;
-      letter-spacing: -0.7px;
-      margin-right: 6px;
-      color: #fff57d;
-      user-select: text;
-    }
-    .tempmin {
-      font-size: 0.9rem;
-      color: #9bd9ff;
-      font-weight: 600;
-      user-select: text;
-    }
-    .card {
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 22px;
-      padding: 30px 26px 24px 26px;
-      margin-bottom: 28px;
-      box-shadow: 0 4px 20px #0a1b3a88;
-      display: flex;
-      gap: 28px;
-      align-items: center;
-      animation: fadeIn 0.5s ease forwards;
-      user-select: none;
-      overflow: hidden;
-      position: relative;
-    }
-    .card.underline {
-      border-bottom: 3px solid #33aaffaa;
-    }
-    .bigicon {
-      font-size: 96px;
-      filter: drop-shadow(0 3px 9px #0592e8dd);
-      user-select: none;
+    .main-icon {
+      font-size: 84px;
+      margin-right: 14px;
+      margin-left: 8px;
+      filter: drop-shadow(0 3px 9px #0690d9cc);
       flex-shrink: 0;
     }
-    .tempmax.card-temp {
-      font-size: 72px;
-      font-weight: 900;
-      letter-spacing: -1.5px;
-      color: #ffea5a;
-      text-shadow: 0 0 20px #ffc500aa;
-      user-select: text;
+    .main-data {
+      font-size: 2.1rem;
+      font-weight: 800;
+      margin-bottom: 2px;
+      color: #fff87c;
+      filter: drop-shadow(0 0 18px #ffe78b80);
+      display: flex;
+      align-items: flex-end;
+      gap: 12px;
     }
-    .tempmin.card-temp {
-      font-size: 36px;
-      color: #7fcfff;
-      font-weight: 700;
-      user-select: text;
+    .main-min {
+      font-size: 1.2rem;
+      color: #77d6ff;
+      margin-left: 7px;
+      font-weight: bold;
     }
-    .details {
-      font-size: 18px;
-      color: #c1e9ffcc;
-      line-height: 1.35;
-      user-select: text;
+    .main-prec, .main-update {
+      font-size: 1.1rem;
+      color: #eafffd;
+      margin-top: 2px;
+      letter-spacing: 0.02em;
     }
-    .chart-title {
-      font-size: 20px;
-      font-weight: 700;
-      margin-bottom: 6px;
-      letter-spacing: 0.15em;
-      color: #aaddff;
-      text-shadow: 0 0 8px #0c2e62;
-      user-select: none;
+    .main-update { color:#b3e3fc; font-size: 1rem; margin-top:10px;}
+    .main-summ {
+      font-size: 1.08rem;
+      color: #99f1ff;
+      margin-top: 11px;
+      font-style: italic;
     }
-    .chart-container {
-      width: 100%;
-      max-width: 900px;
-      margin: 0 auto 28px auto;
+    .side-data-list {
       display: flex;
       flex-direction: column;
-      align-items: stretch;
+      gap: 8px;
+      margin-left: 42px;
     }
-    .canvas-wrap {
-      width: 100%;
-      aspect-ratio: 16/6;
-      max-width: 100%;
-      display: block;
-      overflow: hidden;
-      border-radius: 16px;
-      position: relative;
-      background: none;
+    .side-item {
+      font-size: 1.16rem;
+      display: flex;
+      align-items: center;
+      gap: 0.55em;
+      color: #e1ecfc;
+      letter-spacing: 0.01em;
     }
-    canvas {
-      width: 100% !important;
-      height: 100% !important;
-      display: block;
-      background: rgba(255, 255, 255, 0.12);
-      border-radius: 14px;
-      box-shadow: 0 0 24px #2886d9bb;
-      transition: box-shadow 0.3s ease;
-      position: relative;
-    }
-    #daycard .bigicon {
-      margin-bottom: 12px;
-    }
+    .alert { color: #ffd452; font-weight: bold;}
+    .advice { color: #defbe6; font-style:italic; font-size:1.04rem;}
+    .rain-strength {font-size:1.7em; letter-spacing: -0.12em;}
     .footer {
-      margin-top: 24px;
+      margin-top: 20px;
       text-align: center;
-      color: #a9d2ffcc;
-      font-size: 18px;
-      font-weight: 600;
-      user-select: none;
-      text-shadow: 1px 1px 2px #00000065;
+      color: #cbefff;
+      font-size: 17px;
     }
-    @keyframes fadeIn {
-      from {opacity: 0; transform: translateY(25px);}
-      to {opacity: 1; transform: translateY(0);}
-    }
+    .tabs { display: flex; gap: 14px; margin-bottom: 26px; flex-wrap: wrap; justify-content: center;}
+    .tab { background: rgba(255,255,255,0.15); border: 2px solid #66bfff; padding: 14px 22px; border-radius: 12px; cursor: pointer; transition: background 0.2s;}
+    .tab.active { background: #0580ff; color: #fff; border-bottom: 4px solid #32d3ff; font-weight: bold;}
+    .tab .bigicon { font-size: 2em;}
+    .tab:hover { background: #3498db;}
+    .card { background: rgba(255,255,255,0.09); border-radius:18px; padding:26px 18px; margin-bottom:22px; box-shadow: 0 3px 14px rgba(27,74,128,0.07);}
+    .chart-title { font-size:18px; font-weight:bold; margin-bottom: 4px; color:#acf;}
+    .chart-container { width: 100%; max-width: 900px; margin: 0 auto 24px auto; display:flex; flex-direction:column;}
+    .canvas-wrap { width: 100%; aspect-ratio: 16/6; max-width: 100%; display: block; overflow: hidden; border-radius: 15px; position: relative;}
+    canvas { width: 100% !important; height: 100% !important; display: block; background: rgba(255,255,255,0.12); border-radius:14px; box-shadow: 0 0 24px #2886d9bb;}
+    .card-anim { animation: fadeIn 0.45s; }
+    @keyframes fadeIn { from{opacity:0;transform:translateY(20px);} to{opacity:1;transform:translateY(0);} }
     @media (max-width: 700px) {
       .chart-container { max-width: 99vw; padding: 0 1vw;}
-      .main-card, .card { font-size: 1em; }
-      .bigicon { font-size: 55px; }
-      .tempmax.card-temp { font-size: 48px; }
-      .tempmin.card-temp { font-size: 24px; }
-      .tab { padding: 10px 6px; font-size: 1em;}
+      .main-card, .card { font-size: 1em;}
+      .main-icon { font-size:46px;}
+      .main-data { font-size:1.23rem;}
+      .side-data-list {margin-left:10px;}
       .canvas-wrap { aspect-ratio: 1.3/1;}
     }
     @media (orientation: landscape) and (max-width: 820px) {
-      .chart-container { max-width: 97vw; min-width: 120px;}
-      .canvas-wrap { aspect-ratio: 2/1; }
+      .chart-container { max-width: 97vw; }
+      .canvas-wrap { aspect-ratio: 2.1/1;}
       canvas { min-height: 110px;}
     }
-    ::selection {
-      background: #81baffb3;
-    }
+    ::selection { background: #81baffb3;}
   </style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 <div class="header">PREVISIONI METEO - PROCIDA</div>
-<div id="tabbar" class="tabs" role="tablist" aria-label="Seleziona giorno previsioni"></div>
-<div id="daycard" role="main" aria-live="polite"></div>
+<div id="maininfo" class="today-main"></div>
+<div id="tabbar" class="tabs"></div>
+<div id="daycard"></div>
 <div class="chart-container" id="chartcontainer"></div>
 <div class="chart-container" id="windchartcontainer"></div>
 <div class="chart-container" id="rainchartcontainer"></div>
-<div class="footer" aria-label="Footer sito">Powered by Open-Meteo • UI by micheledv74</div>
+<div class="footer">Powered by Open-Meteo • UI by micheledv74</div>
 <script>
-const DATA = {"days":[{"day_label":"11/10","temp_max":"23.4","temp_min":"19.8","precipitation":"0.00","icon":"☀️","hourly_labels":["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"],"hourly_temps":[21,20.9,20.8,20.7,20.3,19.9,19.9,19.9,19.8,20,20.5,21.4,22.2,22.8,23.4,23,21.6,21.8,21.6,21.6,21.4,21.3,21.1,21.3],"hourly_winds":[5.6,4.7,5.4,5.2,5.1,4.7,5.4,5.8,6.5,6.2,6.6,7.7,8.2,7.3,5.2,7.5,12.2,11.2,11.8,11.6,10,8,5.5,5.7],"hourly_precips":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"day_label":"12/10","temp_max":"21.4","temp_min":"19.5","precipitation":"0.00","icon":"⛅","hourly_labels":["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"],"hourly_temps":[21,20.6,20.3,20.2,20,19.9,19.7,19.5,19.5,19.6,19.8,20.1,20.4,20.7,20.8,21.1,21.3,21.4,21.1,20.8,20.6,20.5,20.5,20.4],"hourly_winds":[8.3,8.9,9.4,10.2,11,11.3,11.3,10.2,9.2,8.1,7.1,5.5,3.7,4,4.9,4.8,4.8,6.9,7,6.2,6.2,5.9,4.5,2.9],"hourly_precips":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"day_label":"13/10","temp_max":"21.1","temp_min":"19.3","precipitation":"0.00","icon":"☀️","hourly_labels":["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"],"hourly_temps":[20.2,20,19.8,19.7,19.5,19.5,19.5,19.4,19.3,19.3,19.5,19.8,20.1,20.3,20.4,20.7,21.1,21,20.8,20.7,20.6,20.6,20.4,20.2],"hourly_winds":[2.1,2.2,2.9,2.5,2.5,2.2,2.5,2.5,3.3,3.6,3.2,2.1,0,1.1,2.4,5.2,8.3,9.4,9,7.1,7.4,6.5,4.3,2.9],"hourly_precips":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"day_label":"14/10","temp_max":"20.3","temp_min":"19.1","precipitation":"0.00","icon":"☀️","hourly_labels":["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"],"hourly_temps":[20,19.9,19.7,19.6,19.4,19.3,19.3,19.2,19.1,19.1,19.2,19.6,19.8,20.1,20.3,20.2,20.1,20,20,20,20,19.9,19.8,19.8],"hourly_winds":[3.2,3,3,4.7,3,3.3,3.7,4.1,4.7,5.8,5.8,5.5,6.4,6.5,7.3,8.6,9.4,9.8,6.3,1.8,2.2,3.5,5,5.8],"hourly_precips":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"day_label":"15/10","temp_max":"21.8","temp_min":"18.8","precipitation":"0.00","icon":"⛅","hourly_labels":["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"],"hourly_temps":[19.7,19.7,19.6,19.6,19.6,19.6,19.6,19.5,19.5,19.5,19.6,19.8,20.3,20.9,21.4,21.7,21.8,21.7,21.2,20.6,20,19.5,19.1,18.8],"hourly_winds":[6.4,6.5,7.2,7.8,8.7,9.8,11.9,14,16.1,17.6,18.6,18.7,16.5,13.8,13,13.7,15.7,17.7,19.5,21.4,23.1,23.4,22.7,22.2],"hourly_precips":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"day_label":"16/10","temp_max":"20.9","temp_min":"17.9","precipitation":"0.00","icon":"⛅","hourly_labels":["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"],"hourly_temps":[18.6,18.4,18.3,18.2,18.1,18,18,17.9,18,18.2,18.6,19.1,19.6,20.1,20.5,20.9,20.9,20.7,20.3,19.8,19.4,19.1,19,18.9],"hourly_winds":[22.3,22.1,22.4,22.9,23.8,24.3,23.8,23.1,22.6,22.8,23.3,23.2,22.4,21.8,21.6,30.1,30.6,30.6,29.6,28,26.3,24.6,23.1,21.3],"hourly_precips":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"day_label":"17/10","temp_max":"20.7","temp_min":"18.8","precipitation":"0.00","icon":"🌤️","hourly_labels":["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"],"hourly_temps":[18.9,18.9,19,19,19.1,19.1,19,18.8,18.8,18.8,19,19.3,19.7,20.3,20.6,20.7,20.6,20.5,20.4,20.2,20.1,20,19.9,19.8],"hourly_winds":[20,18.4,17.3,16.5,15.8,15.1,15,15.1,15.1,14.8,14.3,13,10.9,8.1,5.4,3,5.7,8.7,9,8,6.9,6.1,5.2,4.5],"hourly_precips":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]}],"updated_at":"11/10/2025, 18:50:52"};
+const DATA = {"days":[{"day_label":"11/10","temp_max":"23.4","temp_min":"19.8","precipitation":"0.00","icon":"☀️","hourly_labels":["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"],"hourly_temps":[21,20.9,20.8,20.7,20.3,19.9,19.9,19.9,19.8,20,20.5,21.4,22.2,22.8,23.4,23,21.6,21.8,21.6,21.6,21.4,21.3,21.1,21.3],"hourly_winds":[5.6,4.7,5.4,5.2,5.1,4.7,5.4,5.8,6.5,6.2,6.6,7.7,8.2,7.3,5.2,7.5,12.2,11.2,11.8,11.6,10,8,5.5,5.7],"hourly_precips":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"day_label":"12/10","temp_max":"21.4","temp_min":"19.5","precipitation":"0.00","icon":"⛅","hourly_labels":["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"],"hourly_temps":[21,20.6,20.3,20.2,20,19.9,19.7,19.5,19.5,19.6,19.8,20.1,20.4,20.7,20.8,21.1,21.3,21.4,21.1,20.8,20.6,20.5,20.5,20.4],"hourly_winds":[8.3,8.9,9.4,10.2,11,11.3,11.3,10.2,9.2,8.1,7.1,5.5,3.7,4,4.9,4.8,4.8,6.9,7,6.2,6.2,5.9,4.5,2.9],"hourly_precips":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"day_label":"13/10","temp_max":"21.1","temp_min":"19.3","precipitation":"0.00","icon":"☀️","hourly_labels":["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"],"hourly_temps":[20.2,20,19.8,19.7,19.5,19.5,19.5,19.4,19.3,19.3,19.5,19.8,20.1,20.3,20.4,20.7,21.1,21,20.8,20.7,20.6,20.6,20.4,20.2],"hourly_winds":[2.1,2.2,2.9,2.5,2.5,2.2,2.5,2.5,3.3,3.6,3.2,2.1,0,1.1,2.4,5.2,8.3,9.4,9,7.1,7.4,6.5,4.3,2.9],"hourly_precips":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"day_label":"14/10","temp_max":"20.3","temp_min":"19.1","precipitation":"0.00","icon":"☀️","hourly_labels":["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"],"hourly_temps":[20,19.9,19.7,19.6,19.4,19.3,19.3,19.2,19.1,19.1,19.2,19.6,19.8,20.1,20.3,20.2,20.1,20,20,20,20,19.9,19.8,19.8],"hourly_winds":[3.2,3,3,4.7,3,3.3,3.7,4.1,4.7,5.8,5.8,5.5,6.4,6.5,7.3,8.6,9.4,9.8,6.3,1.8,2.2,3.5,5,5.8],"hourly_precips":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"day_label":"15/10","temp_max":"21.8","temp_min":"18.8","precipitation":"0.00","icon":"⛅","hourly_labels":["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"],"hourly_temps":[19.7,19.7,19.6,19.6,19.6,19.6,19.6,19.5,19.5,19.5,19.6,19.8,20.3,20.9,21.4,21.7,21.8,21.7,21.2,20.6,20,19.5,19.1,18.8],"hourly_winds":[6.4,6.5,7.2,7.8,8.7,9.8,11.9,14,16.1,17.6,18.6,18.7,16.5,13.8,13,13.7,15.7,17.7,19.5,21.4,23.1,23.4,22.7,22.2],"hourly_precips":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"day_label":"16/10","temp_max":"20.9","temp_min":"17.9","precipitation":"0.00","icon":"⛅","hourly_labels":["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"],"hourly_temps":[18.6,18.4,18.3,18.2,18.1,18,18,17.9,18,18.2,18.6,19.1,19.6,20.1,20.5,20.9,20.9,20.7,20.3,19.8,19.4,19.1,19,18.9],"hourly_winds":[22.3,22.1,22.4,22.9,23.8,24.3,23.8,23.1,22.6,22.8,23.3,23.2,22.4,21.8,21.6,30.1,30.6,30.6,29.6,28,26.3,24.6,23.1,21.3],"hourly_precips":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"day_label":"17/10","temp_max":"20.7","temp_min":"18.8","precipitation":"0.00","icon":"🌤️","hourly_labels":["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"],"hourly_temps":[18.9,18.9,19,19,19.1,19.1,19,18.8,18.8,18.8,19,19.3,19.7,20.3,20.6,20.7,20.6,20.5,20.4,20.2,20.1,20,19.9,19.8],"hourly_winds":[20,18.4,17.3,16.5,15.8,15.1,15,15.1,15.1,14.8,14.3,13,10.9,8.1,5.4,3,5.7,8.7,9,8,6.9,6.1,5.2,4.5],"hourly_precips":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]}],"updated_at":"11/10/2025, 18:52:44"};
 const days = DATA.days;
 const updated_at = DATA.updated_at;
 let current = 0;
+
+function rainIntensityIcon(valmm) {
+  if (valmm < 0.1) return '';
+  if (valmm < 0.5) return '💧';
+  if (valmm < 1) return '💧💧';
+  if (valmm < 3) return '💧💧💧';
+  if (valmm < 10) return '💧💧💧💧';
+  return '💧💧💧💧💧';
+}
+
+function windDescriptor(speed) {
+  if (speed < 6) return "calmo";
+  if (speed < 13) return "brezza";
+  if (speed < 25) return "ventoso";
+  return "molto forte";
+}
+
+// Per sintesi sensazione del giorno + alert + consiglio
+function dailyAdvice(day) {
+  if (parseFloat(day.precipitation) > 5.0) return "🗞️ Potrebbe piovere forte, porta un ombrello e valuta attività al coperto.";
+  if (parseFloat(day.temp_max) >= 34) return "🗞️ Giornata molto calda: resta idratato e cerca zone ombreggiate.";
+  if (parseFloat(day.temp_max) - parseFloat(day.temp_min) > 15) return "🗞️ Attenzione: forti escursioni termiche oggi.";
+  if (parseFloat(day.precipitation) > 0.2) return "🗞️ Possibile pioggia, attività all'aperto da valutare.";
+  if (parseFloat(day.temp_min) < 5) return "🗞️ Giornata fredda, copriti bene!";
+  if (parseFloat(day.wind_max || 0) > 30) return "🗞️ Previsto vento molto forte, massima cautela!";
+  return "🗞️ Giornata generalmente serena, goditela!";
+}
+
+function renderMainToday() {
+  const today = days[0];
+  // Calcolo orario massima/minima
+  let tempData = today.hourly_temps || [];
+  let windData = today.hourly_winds || [];
+  let precipData = today.hourly_precips || [];
+  let timeData = today.hourly_labels || [];
+  const tmax = Math.max(...tempData);
+  const tmin = Math.min(...tempData);
+  const imax = tempData.indexOf(tmax);
+  const imin = tempData.indexOf(tmin);
+  const tmax_hh = imax !== -1 && timeData[imax] ? timeData[imax] : "--:--";
+  const tmin_hh = imin !== -1 && timeData[imin] ? timeData[imin] : "--:--";
+  const ptotal = precipData.reduce((a,b)=>a+b,0);
+  const rainIcon = rainIntensityIcon(ptotal);
+  const windmax = Math.max(...windData);
+  const windlast = windData[windData.length-1];
+  const advice = dailyAdvice({...today, wind_max: windmax});
+
+  document.getElementById('maininfo').innerHTML = `
+    <div class="main-icon">${today.icon}</div>
+    <div>
+      <div class="main-data">${tmax.toFixed(1)}°<span class="main-min">${tmin.toFixed(1)}°</span></div>
+      <div class="main-prec">🌧️ Precipitazioni: ${ptotal.toFixed(1)} mm ${rainIcon}</div>
+      <div class="main-update">Aggiornamento: ${updated_at}</div>
+      <div class="main-summ">${advice}</div>
+    </div>
+    <div class="side-data-list">
+      <div class="side-item">🔝max: ${tmax.toFixed(1)}°C <span style="font-size:1em;opacity:0.9;">alle ${tmax_hh}</span></div>
+      <div class="side-item">⬇︎ min: ${tmin.toFixed(1)}°C <span style="font-size:1em;opacity:0.8;">alle ${tmin_hh}</span></div>
+      <div class="side-item">💨 Vento max: ${windmax.toFixed(1)} km/h <span style="font-size:1em;color:#aaf;">(${windDescriptor(windmax)})</span></div>
+      <div class="side-item">💨 Vento ora: ${windlast.toFixed(1)} km/h</div>
+    </div>
+  `;
+}
 
 function renderTabs() {
   const tabbar = document.getElementById('tabbar');
@@ -247,16 +240,20 @@ function switchTab(idx) {
 
 function renderCard() {
   const d = days[current];
-  const card = `<section class="card underline card-anim" role="tabpanel" id="tabpanel-${current}" tabindex="0" aria-labelledby="tab-${current}">
-    <div style="display:flex;align-items:center;gap:28px;">
-      <div class="bigicon" aria-hidden="true">${d.icon}</div>
-      <div>
-        <h2 class="tempmax card-temp">${d.temp_max}°C <span class="tempmin card-temp">${d.temp_min}°C</span></h2>
-        <p class="details">Precipitazioni: ${d.precipitation} mm</p>
+  document.getElementById('daycard').innerHTML = `
+    <section class="card underline card-anim" role="tabpanel" id="tabpanel-${current}" tabindex="0" aria-labelledby="tab-${current}">
+      <div style="display:flex;align-items:center;gap:28px;">
+        <div class="bigicon" aria-hidden="true">${d.icon}</div>
+        <div>
+          <h2 class="tempmax card-temp">${d.temp_max}°C <span class="tempmin card-temp">${d.temp_min}°C</span></h2>
+          <p class="details">
+            🌧️ Pioggia: ${d.precipitation} mm ${rainIntensityIcon(d.precipitation)}<br>
+            💨 Vento max: ${(Math.max(...d.hourly_winds)).toFixed(1)} km/h<br>
+            <!-- Qui puoi aggiungere altri dati come pressione, umidità ecc. -->
+          </p>
+        </div>
       </div>
-    </div>
-  </section>`;
-  document.getElementById('daycard').innerHTML = card;
+    </section>`;
 }
 
 let tempChart = null, windChart = null, rainChart = null;
@@ -279,7 +276,7 @@ function renderCharts() {
         label: 'Temperatura (°C)',
         data: d.hourly_temps,
         borderColor: 'rgba(255,214,91,1)',
-        backgroundColor: 'rgba(255,214,91,0.15)',
+        backgroundColor: 'rgba(255,214,91,0.10)',
         fill: true,
         tension: 0.3,
         pointRadius: 2
@@ -367,10 +364,10 @@ function renderAll() {
     document.body.innerHTML = "<h2 style='color:#fff'>Nessun dato meteo disponibile!</h2>";
     return;
   }
+  renderMainToday();
   renderTabs();
   renderCard();
   renderCharts();
-  document.querySelector('.footer').textContent = `Powered by Open-Meteo • UI by micheledv74  • Ultimo agg.: ${updated_at}`;
 }
 renderAll();
 </script>
