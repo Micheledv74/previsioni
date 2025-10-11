@@ -6,7 +6,6 @@
   <title>Previsioni Procida - Meteo Giornaliero</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800&family=Roboto&display=swap');
-
     body {
       font-family: 'Roboto', Arial, sans-serif;
       max-width: 900px;
@@ -95,6 +94,8 @@
       align-items: center;
       animation: fadeIn 0.5s ease forwards;
       user-select: none;
+      overflow: hidden;
+      position: relative;
     }
     .card.underline {
       border-bottom: 3px solid #33aaffaa;
@@ -138,16 +139,29 @@
       width: 100%;
       max-width: 900px;
       margin: 0 auto 28px auto;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .canvas-wrap {
+      width: 100%;
+      aspect-ratio: 16/6;
+      max-width: 100%;
+      display: block;
+      overflow: hidden;
+      border-radius: 16px;
+      position: relative;
+      background: none;
     }
     canvas {
       width: 100% !important;
-      height: 260px !important;
-      max-width: 100%;
+      height: 100% !important;
       display: block;
       background: rgba(255, 255, 255, 0.12);
       border-radius: 14px;
       box-shadow: 0 0 24px #2886d9bb;
       transition: box-shadow 0.3s ease;
+      position: relative;
     }
     #daycard .bigicon {
       margin-bottom: 12px;
@@ -172,9 +186,11 @@
       .tempmax.card-temp { font-size: 48px; }
       .tempmin.card-temp { font-size: 24px; }
       .tab { padding: 10px 6px; font-size: 1em;}
+      .canvas-wrap { aspect-ratio: 1.3/1;}
     }
     @media (orientation: landscape) and (max-width: 820px) {
       .chart-container { max-width: 97vw; min-width: 120px;}
+      .canvas-wrap { aspect-ratio: 2/1; }
       canvas { min-height: 110px;}
     }
     ::selection {
@@ -192,7 +208,7 @@
 <div class="chart-container" id="rainchartcontainer"></div>
 <div class="footer" aria-label="Footer sito">Powered by Open-Meteo • UI by micheledv74</div>
 <script>
-const DATA = {"days":[{"day_label":"11/10","temp_max":"23.4","temp_min":"19.8","precipitation":"0.00","icon":"☀️","hourly_labels":["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"],"hourly_temps":[21,20.9,20.8,20.7,20.3,19.9,19.9,19.9,19.8,20,20.5,21.4,22.2,22.8,23.4,23,21.6,21.8,21.6,21.6,21.4,21.3,21.1,21.3],"hourly_winds":[5.6,4.7,5.4,5.2,5.1,4.7,5.4,5.8,6.5,6.2,6.6,7.7,8.2,7.3,5.2,7.5,12.2,11.2,11.8,11.6,10,8,5.5,5.7],"hourly_precips":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"day_label":"12/10","temp_max":"21.4","temp_min":"19.5","precipitation":"0.00","icon":"⛅","hourly_labels":["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"],"hourly_temps":[21,20.6,20.3,20.2,20,19.9,19.7,19.5,19.5,19.6,19.8,20.1,20.4,20.7,20.8,21.1,21.3,21.4,21.1,20.8,20.6,20.5,20.5,20.4],"hourly_winds":[8.3,8.9,9.4,10.2,11,11.3,11.3,10.2,9.2,8.1,7.1,5.5,3.7,4,4.9,4.8,4.8,6.9,7,6.2,6.2,5.9,4.5,2.9],"hourly_precips":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"day_label":"13/10","temp_max":"21.1","temp_min":"19.3","precipitation":"0.00","icon":"☀️","hourly_labels":["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"],"hourly_temps":[20.2,20,19.8,19.7,19.5,19.5,19.5,19.4,19.3,19.3,19.5,19.8,20.1,20.3,20.4,20.7,21.1,21,20.8,20.7,20.6,20.6,20.4,20.2],"hourly_winds":[2.1,2.2,2.9,2.5,2.5,2.2,2.5,2.5,3.3,3.6,3.2,2.1,0,1.1,2.4,5.2,8.3,9.4,9,7.1,7.4,6.5,4.3,2.9],"hourly_precips":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"day_label":"14/10","temp_max":"20.3","temp_min":"19.1","precipitation":"0.00","icon":"☀️","hourly_labels":["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"],"hourly_temps":[20,19.9,19.7,19.6,19.4,19.3,19.3,19.2,19.1,19.1,19.2,19.6,19.8,20.1,20.3,20.2,20.1,20,20,20,20,19.9,19.8,19.8],"hourly_winds":[3.2,3,3,4.7,3,3.3,3.7,4.1,4.7,5.8,5.8,5.5,6.4,6.5,7.3,8.6,9.4,9.8,6.3,1.8,2.2,3.5,5,5.8],"hourly_precips":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"day_label":"15/10","temp_max":"21.8","temp_min":"18.8","precipitation":"0.00","icon":"⛅","hourly_labels":["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"],"hourly_temps":[19.7,19.7,19.6,19.6,19.6,19.6,19.6,19.5,19.5,19.5,19.6,19.8,20.3,20.9,21.4,21.7,21.8,21.7,21.2,20.6,20,19.5,19.1,18.8],"hourly_winds":[6.4,6.5,7.2,7.8,8.7,9.8,11.9,14,16.1,17.6,18.6,18.7,16.5,13.8,13,13.7,15.7,17.7,19.5,21.4,23.1,23.4,22.7,22.2],"hourly_precips":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"day_label":"16/10","temp_max":"20.5","temp_min":"17.5","precipitation":"0.00","icon":"⛅","hourly_labels":["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"],"hourly_temps":[18.6,18.4,18.3,18.2,18.1,18,18,17.9,18,18.2,18.6,19.1,19.6,20.1,20.5,19,18.9,18.7,18.4,18,17.7,17.6,17.5,17.5],"hourly_winds":[22.3,22.1,22.4,22.9,23.8,24.3,23.8,23.1,22.6,22.8,23.3,23.2,22.4,21.8,21.6,24.5,23.1,21.3,19.9,18.7,17.7,16.1,14.5,13],"hourly_precips":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"day_label":"17/10","temp_max":"19.5","temp_min":"16.6","precipitation":"0.00","icon":"⛅","hourly_labels":["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"],"hourly_temps":[17.5,17.4,17.3,17.2,17.1,16.9,16.8,16.6,16.6,16.9,17.4,17.9,18.5,19.1,19.5,19.5,19.3,19.2,19.2,19.2,19.2,19.1,19,18.9],"hourly_winds":[11.8,10.8,10,9.7,9.2,8.9,8.8,8.9,8.8,9,9,8.8,8.3,9.5,11.4,12.3,12.3,12,10.9,9.4,7.9,7.2,6.7,6.4],"hourly_precips":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]}],"updated_at":"11/10/2025, 18:00:36"};
+const DATA = {"days":[{"day_label":"11/10","temp_max":"23.4","temp_min":"19.8","precipitation":"0.00","icon":"☀️","hourly_labels":["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"],"hourly_temps":[21,20.9,20.8,20.7,20.3,19.9,19.9,19.9,19.8,20,20.5,21.4,22.2,22.8,23.4,23,21.6,21.8,21.6,21.6,21.4,21.3,21.1,21.3],"hourly_winds":[5.6,4.7,5.4,5.2,5.1,4.7,5.4,5.8,6.5,6.2,6.6,7.7,8.2,7.3,5.2,7.5,12.2,11.2,11.8,11.6,10,8,5.5,5.7],"hourly_precips":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"day_label":"12/10","temp_max":"21.4","temp_min":"19.5","precipitation":"0.00","icon":"⛅","hourly_labels":["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"],"hourly_temps":[21,20.6,20.3,20.2,20,19.9,19.7,19.5,19.5,19.6,19.8,20.1,20.4,20.7,20.8,21.1,21.3,21.4,21.1,20.8,20.6,20.5,20.5,20.4],"hourly_winds":[8.3,8.9,9.4,10.2,11,11.3,11.3,10.2,9.2,8.1,7.1,5.5,3.7,4,4.9,4.8,4.8,6.9,7,6.2,6.2,5.9,4.5,2.9],"hourly_precips":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"day_label":"13/10","temp_max":"21.1","temp_min":"19.3","precipitation":"0.00","icon":"☀️","hourly_labels":["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"],"hourly_temps":[20.2,20,19.8,19.7,19.5,19.5,19.5,19.4,19.3,19.3,19.5,19.8,20.1,20.3,20.4,20.7,21.1,21,20.8,20.7,20.6,20.6,20.4,20.2],"hourly_winds":[2.1,2.2,2.9,2.5,2.5,2.2,2.5,2.5,3.3,3.6,3.2,2.1,0,1.1,2.4,5.2,8.3,9.4,9,7.1,7.4,6.5,4.3,2.9],"hourly_precips":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"day_label":"14/10","temp_max":"20.3","temp_min":"19.1","precipitation":"0.00","icon":"☀️","hourly_labels":["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"],"hourly_temps":[20,19.9,19.7,19.6,19.4,19.3,19.3,19.2,19.1,19.1,19.2,19.6,19.8,20.1,20.3,20.2,20.1,20,20,20,20,19.9,19.8,19.8],"hourly_winds":[3.2,3,3,4.7,3,3.3,3.7,4.1,4.7,5.8,5.8,5.5,6.4,6.5,7.3,8.6,9.4,9.8,6.3,1.8,2.2,3.5,5,5.8],"hourly_precips":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"day_label":"15/10","temp_max":"21.8","temp_min":"18.8","precipitation":"0.00","icon":"⛅","hourly_labels":["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"],"hourly_temps":[19.7,19.7,19.6,19.6,19.6,19.6,19.6,19.5,19.5,19.5,19.6,19.8,20.3,20.9,21.4,21.7,21.8,21.7,21.2,20.6,20,19.5,19.1,18.8],"hourly_winds":[6.4,6.5,7.2,7.8,8.7,9.8,11.9,14,16.1,17.6,18.6,18.7,16.5,13.8,13,13.7,15.7,17.7,19.5,21.4,23.1,23.4,22.7,22.2],"hourly_precips":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"day_label":"16/10","temp_max":"20.5","temp_min":"17.5","precipitation":"0.00","icon":"⛅","hourly_labels":["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"],"hourly_temps":[18.6,18.4,18.3,18.2,18.1,18,18,17.9,18,18.2,18.6,19.1,19.6,20.1,20.5,19,18.9,18.7,18.4,18,17.7,17.6,17.5,17.5],"hourly_winds":[22.3,22.1,22.4,22.9,23.8,24.3,23.8,23.1,22.6,22.8,23.3,23.2,22.4,21.8,21.6,24.5,23.1,21.3,19.9,18.7,17.7,16.1,14.5,13],"hourly_precips":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"day_label":"17/10","temp_max":"19.5","temp_min":"16.6","precipitation":"0.00","icon":"⛅","hourly_labels":["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"],"hourly_temps":[17.5,17.4,17.3,17.2,17.1,16.9,16.8,16.6,16.6,16.9,17.4,17.9,18.5,19.1,19.5,19.5,19.3,19.2,19.2,19.2,19.2,19.1,19,18.9],"hourly_winds":[11.8,10.8,10,9.7,9.2,8.9,8.8,8.9,8.8,9,9,8.8,8.3,9.5,11.4,12.3,12.3,12,10.9,9.4,7.9,7.2,6.7,6.4],"hourly_precips":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]}],"updated_at":"11/10/2025, 18:04:55"};
 const days = DATA.days;
 const updated_at = DATA.updated_at;
 let current = 0;
@@ -225,7 +241,6 @@ function renderTabs() {
 function switchTab(idx) {
   current = idx;
   renderAll();
-  // Focus tab
   const tab = document.getElementById(`tab-${idx}`);
   if(tab) tab.focus();
 }
@@ -248,7 +263,12 @@ let tempChart = null, windChart = null, rainChart = null;
 
 function renderCharts() {
   const d = days[current];
-  document.getElementById('chartcontainer').innerHTML = `<section class="card card-anim" role="region" aria-label="Grafico temperatura oraria"><div class="chart-title">Temperatura oraria (°C)</div><canvas id="chart" aria-describedby="chartdesc"></canvas><div id="chartdesc" hidden>Grafico temperatura in gradi Celsius per ogni ora del giorno.</div></section>`;
+  document.getElementById('chartcontainer').innerHTML =
+    `<section class="card card-anim" role="region" aria-label="Grafico temperatura oraria">
+      <div class="chart-title">Temperatura oraria (°C)</div>
+      <div class="canvas-wrap"><canvas id="chart"></canvas></div>
+      <div id="chartdesc" hidden>Grafico temperatura in gradi Celsius per ogni ora del giorno.</div>
+    </section>`;
   const ctx1 = document.getElementById('chart').getContext('2d');
   if (tempChart) tempChart.destroy();
   tempChart = new Chart(ctx1, {
@@ -275,7 +295,13 @@ function renderCharts() {
       }
     }
   });
-  document.getElementById('windchartcontainer').innerHTML = `<section class="card card-anim" role="region" aria-label="Grafico vento orario"><div class="chart-title">Vento orario (km/h)</div><canvas id="windchart" aria-describedby="winddesc"></canvas><div id="winddesc" hidden>Grafico velocità del vento in chilometri orari per ogni ora del giorno.</div></section>`;
+
+  document.getElementById('windchartcontainer').innerHTML =
+    `<section class="card card-anim" role="region" aria-label="Grafico vento orario">
+      <div class="chart-title">Vento orario (km/h)</div>
+      <div class="canvas-wrap"><canvas id="windchart"></canvas></div>
+      <div id="winddesc" hidden>Grafico velocità del vento in chilometri orari per ogni ora del giorno.</div>
+    </section>`;
   const ctx2 = document.getElementById('windchart').getContext('2d');
   if (windChart) windChart.destroy();
   windChart = new Chart(ctx2, {
@@ -302,7 +328,13 @@ function renderCharts() {
       }
     }
   });
-  document.getElementById('rainchartcontainer').innerHTML = `<section class="card card-anim" role="region" aria-label="Grafico precipitazioni orarie"><div class="chart-title">Precipitazioni orarie (mm)</div><canvas id="rainchart" aria-describedby="raindesc"></canvas><div id="raindesc" hidden>Grafico precipitazioni in millimetri per ogni ora del giorno.</div></section>`;
+
+  document.getElementById('rainchartcontainer').innerHTML =
+    `<section class="card card-anim" role="region" aria-label="Grafico precipitazioni orarie">
+      <div class="chart-title">Precipitazioni orarie (mm)</div>
+      <div class="canvas-wrap"><canvas id="rainchart"></canvas></div>
+      <div id="raindesc" hidden>Grafico precipitazioni in millimetri per ogni ora del giorno.</div>
+    </section>`;
   const ctx3 = document.getElementById('rainchart').getContext('2d');
   if (rainChart) rainChart.destroy();
   rainChart = new Chart(ctx3, {
