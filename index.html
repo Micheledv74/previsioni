@@ -66,12 +66,6 @@
     .mini-day { background: #0b1333b0; color: #c6f3ff; border-radius:11px; padding:9px 15px; font-size:1em; min-width:85px; box-shadow: 0 2px 8px #202b3b44; cursor:pointer; user-select:none; }
     .mini-day:hover { background: rgba(79, 117, 203, 0.47); }
     .mini-day.active { background: rgba(91, 144, 197, 0.78); box-shadow: 0 0 12px #dbefff; }
-    .mini-day .daylabel { font-weight:700; color:#fff;}
-    .mini-day .icon {font-size:1.23em;vertical-align:-4px;}
-    .mini-day .tmax {color:#ffd472;}
-    .mini-day .tmin {color:#6fd7f8;}
-    .mini-day .wind {color:#86caff;}
-    .mini-day .rain {color:#9fffe1;}
     .footer { margin-top: 32px; text-align: center; color: #dbefff; font-size:17px; font-weight:500; text-shadow:0 2px 6px #283c5880;}
     @media (max-width:800px){ .dashboard{gap:12px;} .box{min-width:180px;max-width:97vw;} }
     @media (max-width:650px){ .dashboard{flex-direction:column;align-items:center;gap:14px;} .box{width:100%;max-width:98vw;} .header{font-size:1.17em;}}
@@ -117,6 +111,8 @@ const DATA = {
 };
 
 let selectedDayIndex = 0;
+
+let windChart, rainChart, seaChart, pressChart;
 
 function windDirectionName(deg) {
   if(deg==null) return "--";
@@ -194,7 +190,8 @@ function renderWind(){
   `;
   setTimeout(() => {
     const ctx = document.getElementById('windchart').getContext('2d');
-    new Chart(ctx, {type:'line', data:{
+    if(windChart) windChart.destroy();
+    windChart = new Chart(ctx, {type:'line', data:{
       labels: d.hourly_labels || [], datasets:[{label:'Vento (km/h)', data: d.hourly_winds || [], borderColor:'#66E5FF', backgroundColor:'rgba(90,184,255,0.12)', fill:true, tension:0.21, pointRadius:1}]
     }, options:{responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{y:{beginAtZero:true}, x:{}}}});
   }, 100);
@@ -222,13 +219,17 @@ function renderRain(){
   `;
   setTimeout(() => {
     const ctx = document.getElementById('rainchart').getContext('2d');
-    new Chart(ctx, {type:'bar', data:{
+    if(rainChart) rainChart.destroy();
+    rainChart = new Chart(ctx, {type:'bar', data:{
       labels: d.hourly_labels || [], datasets:[{label:'Precipitazioni (mm)', data: d.hourly_precips || [], backgroundColor:'#52c5f7', borderColor:'#52afe7', borderWidth:2}]
     }, options:{responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{y:{beginAtZero:true}, x:{}}}});
   }, 100);
 }
 
 function renderSea(){
+  // Per ora il mare rimane con dati fissi, puoi estendere se vuoi anche dati dinamici
+  // Se vuoi che cambi con giorno, adegua questa parte per accedere ai dati corretti
+
   const arr = DATA.mergedHourly || [];
   const waveMean = calculateMean(arr.map(h=>h.wave_height));
   const waveRange = calculateRange(arr.map(h=>h.wave_height));
@@ -252,7 +253,8 @@ function renderSea(){
   `;
   setTimeout(() => {
     const ctx = document.getElementById('seachart').getContext('2d');
-    new Chart(ctx, {type:'line', data:{
+    if(seaChart) seaChart.destroy();
+    seaChart = new Chart(ctx, {type:'line', data:{
       labels: arr.map(h => h.time.slice(11,16)), datasets:[
         {label:'Onda (m)', data: arr.map(h => h.wave_height), borderColor:'#41f8bd', backgroundColor:'rgba(34,255,170,0.10)', fill:true, tension:0.22, pointRadius:2, pointBackgroundColor:'#25A9FA'},
         {label:'Swell (m)', data: arr.map(h => h.swell_height), borderColor:'#21D08A', backgroundColor:'rgba(34,255,170,0.06)', fill:true, tension:0.18, pointRadius:2, pointBackgroundColor:'#21D08A'}
@@ -282,7 +284,8 @@ function renderPress(){
   `;
   setTimeout(() => {
     const ctx = document.getElementById('presschart').getContext('2d');
-    new Chart(ctx, {type:'line', data:{
+    if(pressChart) pressChart.destroy();
+    pressChart = new Chart(ctx, {type:'line', data:{
       labels: d.hourly_labels || [], datasets:[{label:'Pressione (hPa)', data: arr, borderColor:'#ffd472', backgroundColor:'rgba(255,240,51,0.10)', fill:true, tension:0.22, pointRadius:1}]
     }, options:{responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{y:{beginAtZero:false}, x:{}}}});
   }, 100);
