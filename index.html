@@ -111,7 +111,6 @@ const DATA = {
 };
 
 let selectedDayIndex = 0;
-
 let windChart, rainChart, seaChart, pressChart;
 
 function windDirectionName(deg) {
@@ -176,7 +175,7 @@ function renderWind(){
     <div class="folata-max">Folata max: <b>${d.wind_gust || d.wind_max || "--"} km/h</b></div>
     <button class="detail-btn" onclick="toggleDetail('wind-detail')">Dettagli / Grafico</button>
     <div class="detail-section" id="wind-detail">
-      <div class="chart-wrap"><canvas id="windchart"></canvas></div>
+      <canvas id="windchart"></canvas>
     </div>
     <div class="box-summary">
       <div class="box-summary-row">
@@ -188,13 +187,11 @@ function renderWind(){
       </div>
     </div>
   `;
-  setTimeout(() => {
-    const ctx = document.getElementById('windchart').getContext('2d');
-    if(windChart) windChart.destroy();
-    windChart = new Chart(ctx, {type:'line', data:{
-      labels: d.hourly_labels || [], datasets:[{label:'Vento (km/h)', data: d.hourly_winds || [], borderColor:'#66E5FF', backgroundColor:'rgba(90,184,255,0.12)', fill:true, tension:0.21, pointRadius:1}]
-    }, options:{responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{y:{beginAtZero:true}, x:{}}}});
-  }, 100);
+  if(windChart) windChart.destroy();
+  const ctx = document.getElementById('windchart').getContext('2d');
+  windChart = new Chart(ctx, {type:'line', data:{
+    labels: d.hourly_labels || [], datasets:[{label:'Vento (km/h)', data: d.hourly_winds || [], borderColor:'#66E5FF', backgroundColor:'rgba(90,184,255,0.12)', fill:true, tension:0.21, pointRadius:1}]
+  }, options:{responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{y:{beginAtZero:true}, x:{}}}});
 }
 
 function renderRain(){
@@ -208,7 +205,7 @@ function renderRain(){
     <div class="desc">Previsione: ${pioggia > 0 ? "Possibile precipitazione" : "Nessuna pioggia significativa"}</div>
     <button class="detail-btn" onclick="toggleDetail('rain-detail')">Dettagli / Grafico</button>
     <div class="detail-section" id="rain-detail">
-      <div class="chart-wrap"><canvas id="rainchart"></canvas></div>
+      <canvas id="rainchart"></canvas>
     </div>
     <div class="box-summary">
       <div class="box-summary-row">
@@ -217,19 +214,14 @@ function renderRain(){
       </div>
     </div>
   `;
-  setTimeout(() => {
-    const ctx = document.getElementById('rainchart').getContext('2d');
-    if(rainChart) rainChart.destroy();
-    rainChart = new Chart(ctx, {type:'bar', data:{
-      labels: d.hourly_labels || [], datasets:[{label:'Precipitazioni (mm)', data: d.hourly_precips || [], backgroundColor:'#52c5f7', borderColor:'#52afe7', borderWidth:2}]
-    }, options:{responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{y:{beginAtZero:true}, x:{}}}});
-  }, 100);
+  if(rainChart) rainChart.destroy();
+  const ctx = document.getElementById('rainchart').getContext('2d');
+  rainChart = new Chart(ctx, {type:'bar', data:{
+    labels: d.hourly_labels || [], datasets:[{label:'Precipitazioni (mm)', data: d.hourly_precips || [], backgroundColor:'#52c5f7', borderColor:'#52afe7', borderWidth:2}]
+  }, options:{responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{y:{beginAtZero:true}, x:{}}}});
 }
 
 function renderSea(){
-  // Per ora il mare rimane con dati fissi, puoi estendere se vuoi anche dati dinamici
-  // Se vuoi che cambi con giorno, adegua questa parte per accedere ai dati corretti
-
   const arr = DATA.mergedHourly || [];
   const waveMean = calculateMean(arr.map(h=>h.wave_height));
   const waveRange = calculateRange(arr.map(h=>h.wave_height));
@@ -241,7 +233,7 @@ function renderSea(){
     <div class="desc">Temperatura mare: <b>${seaTemp.toFixed(1)} °C</b></div>
     <button class="detail-btn" onclick="toggleDetail('sea-detail')">Dettagli / Grafico</button>
     <div class="detail-section" id="sea-detail">
-      <div class="chart-wrap"><canvas id="seachart"></canvas></div>
+      <canvas id="seachart"></canvas>
     </div>
     <div class="box-summary">
       <div class="box-summary-row">
@@ -251,16 +243,14 @@ function renderSea(){
       </div>
     </div>
   `;
-  setTimeout(() => {
-    const ctx = document.getElementById('seachart').getContext('2d');
-    if(seaChart) seaChart.destroy();
-    seaChart = new Chart(ctx, {type:'line', data:{
-      labels: arr.map(h => h.time.slice(11,16)), datasets:[
-        {label:'Onda (m)', data: arr.map(h => h.wave_height), borderColor:'#41f8bd', backgroundColor:'rgba(34,255,170,0.10)', fill:true, tension:0.22, pointRadius:2, pointBackgroundColor:'#25A9FA'},
-        {label:'Swell (m)', data: arr.map(h => h.swell_height), borderColor:'#21D08A', backgroundColor:'rgba(34,255,170,0.06)', fill:true, tension:0.18, pointRadius:2, pointBackgroundColor:'#21D08A'}
-      ]
-    }, options:{responsive:true, maintainAspectRatio:false, plugins:{legend:{display:true}}, scales:{y:{beginAtZero:true}, x:{}}}});
-  }, 100);
+  if(seaChart) seaChart.destroy();
+  const ctx = document.getElementById('seachart').getContext('2d');
+  seaChart = new Chart(ctx, {type:'line', data:{
+    labels: arr.map(h => h.time.slice(11,16)), datasets:[
+      {label:'Onda (m)', data: arr.map(h => h.wave_height), borderColor:'#41f8bd', backgroundColor:'rgba(34,255,170,0.10)', fill:true, tension:0.22, pointRadius:2, pointBackgroundColor:'#25A9FA'},
+      {label:'Swell (m)', data: arr.map(h => h.swell_height), borderColor:'#21D08A', backgroundColor:'rgba(34,255,170,0.06)', fill:true, tension:0.18, pointRadius:2, pointBackgroundColor:'#21D08A'}
+    ]
+  }, options:{responsive:true, maintainAspectRatio:false, plugins:{legend:{display:true}}, scales:{y:{beginAtZero:true}, x:{}}}});
 }
 
 function renderPress(){
@@ -273,7 +263,7 @@ function renderPress(){
     <div class="desc">Tendenza: ${pressureTrend(arr)}</div>
     <button class="detail-btn" onclick="toggleDetail('press-detail')">Dettagli / Grafico</button>
     <div class="detail-section" id="press-detail">
-      <div class="chart-wrap"><canvas id="presschart"></canvas></div>
+      <canvas id="presschart"></canvas>
     </div>
     <div class="box-summary">
       <div class="box-summary-row">
@@ -282,27 +272,11 @@ function renderPress(){
       </div>
     </div>
   `;
-  setTimeout(() => {
-    const ctx = document.getElementById('presschart').getContext('2d');
-    if(pressChart) pressChart.destroy();
-    pressChart = new Chart(ctx, {type:'line', data:{
-      labels: d.hourly_labels || [], datasets:[{label:'Pressione (hPa)', data: arr, borderColor:'#ffd472', backgroundColor:'rgba(255,240,51,0.10)', fill:true, tension:0.22, pointRadius:1}]
-    }, options:{responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{y:{beginAtZero:false}, x:{}}}});
-  }, 100);
-}
-
-function renderMiniDays(){
-  let html = "";
-  DATA.days.slice(0, 7).forEach((d, i) => {
-    html += `
-      <div class="mini-day${i === selectedDayIndex ? " active" : ""}" onclick="selectDay(${i})">
-        <div class="daylabel">${d.day_label} <span class="icon">${d.icon}</span></div>
-        <div><span class="tmax">↑ ${d.temp_max}°</span> <span class="tmin">↓ ${d.temp_min}°</span></div>
-        <div><span class="wind">💨 ${d.wind_max} km/h</span> <span class="rain">${rainIcon(d.precipitation || 0)} ${d.precipitation || 0}mm</span></div>
-      </div>
-    `;
-  });
-  document.getElementById("miniDaysBox").innerHTML = html;
+  if(pressChart) pressChart.destroy();
+  const ctx = document.getElementById('presschart').getContext('2d');
+  pressChart = new Chart(ctx, {type:'line', data:{
+    labels: d.hourly_labels || [], datasets:[{label:'Pressione (hPa)', data: arr, borderColor:'#ffd472', backgroundColor:'rgba(255,240,51,0.10)', fill:true, tension:0.22, pointRadius:1}]
+  }, options:{responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{y:{beginAtZero:false}, x:{}}}});
 }
 
 function renderFooter(){
