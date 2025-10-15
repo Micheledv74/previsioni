@@ -90,7 +90,7 @@ function pressureTrend(arr){
   const meanStart = (arr[0]+arr[1]+arr[2])/3, meanEnd = (arr[arr.length-3]+arr[arr.length-2]+arr[arr.length-1])/3;
   if (meanEnd > meanStart + 1) return 'in aumento ⬆️ (alta)';
   if (meanStart > meanEnd + 1) return 'in calo ⬇️ (bassa)';
-  return 'stabile ↔️’;
+  return 'stabile ↔️';
 }
 // ---- Toggle dettaglio ----
 // Funzione toggle aggiornata in modalità apri/chiudi/toggle
