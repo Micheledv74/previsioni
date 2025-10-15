@@ -63,7 +63,9 @@
     .detail-section.active { display: block; }
     .chart-wrap { width: 99%; max-width: 385px; margin: 0 auto 8px auto; border-radius: 13px; background: #213260d0; padding: 11px 5px 7px 5px;}
     .mini-days { display:flex; flex-wrap:wrap; gap:8px; margin:18px auto 7px auto; justify-content:center;}
-    .mini-day { background: #0b1333b0; color: #c6f3ff; border-radius:11px; padding:9px 15px; font-size:1em; min-width:85px; box-shadow: 0 2px 8px #202b3b44;}
+    .mini-day { background: #0b1333b0; color: #c6f3ff; border-radius:11px; padding:9px 15px; font-size:1em; min-width:85px; box-shadow: 0 2px 8px #202b3b44; cursor:pointer; user-select:none; }
+    .mini-day:hover { background: rgba(79, 117, 203, 0.47); }
+    .mini-day.active { background: rgba(91, 144, 197, 0.78); box-shadow: 0 0 12px #dbefff; }
     .mini-day .daylabel { font-weight:700; color:#fff;}
     .mini-day .icon {font-size:1.23em;vertical-align:-4px;}
     .mini-day .tmax {color:#ffd472;}
@@ -96,7 +98,8 @@ const DATA = {
     {day_label:"16/10",icon:"🌤️",temp_max:20,temp_min:14,precipitation:0,wind_max:12,wind_gust:16,wind_min:5,wind_dir:60},
     {day_label:"17/10",icon:"🌧️",temp_max:18,temp_min:13,precipitation:5.6,wind_max:15,wind_gust:22,wind_min:9,wind_dir:120},
     {day_label:"18/10",icon:"⛅",temp_max:19,temp_min:15,precipitation:0.8,wind_max:11,wind_gust:15,wind_min:6,wind_dir:105},
-    {day_label:"19/10",icon:"🌦️",temp_max:20,temp_min:14,precipitation:1.2,wind_max:8,wind_gust:12,wind_min:4,wind_dir:90}
+    {day_label:"19/10",icon:"🌦️",temp_max:20,temp_min:14,precipitation:1.2,wind_max:8,wind_gust:12,wind_min:4,wind_dir:90},
+    {day_label:"20/10",icon:"⛅",temp_max:21,temp_min:13,precipitation:0.9,wind_max:9,wind_gust:14,wind_min:7,wind_dir:80}
   ],
   mergedHourly:[
     {wave_height:0.05,sea_surface_temperature:21.7,time:"2025-10-14T00:00",swell_height:0.02,swell_direction:209},
@@ -112,6 +115,8 @@ const DATA = {
   advice:"Giornata perfetta per attività all'aperto!",
   updated_at:"14/10/2025, 23:12"
 };
+
+let selectedDayIndex = 0;
 
 function windDirectionName(deg) {
   if(deg==null) return "--";
@@ -134,7 +139,6 @@ function pressureTrend(arr){
   if (meanStart > meanEnd + 1) return '<span class="summary-trend-down">in calo ⬇️ (bassa)</span>';
   return '<span class="summary-trend-stable">stabile ↔️</span>';
 }
-// ---- Toggle dettaglio ----
 function toggleDetail(id){
   let el = document.getElementById(id);
   document.querySelectorAll('.detail-section').forEach(e => {
@@ -143,19 +147,37 @@ function toggleDetail(id){
   el.classList.toggle('active');
 }
 
-// ---- Render Vento ----
+function renderMiniDays() {
+  let html = "";
+  DATA.days.slice(0, 7).forEach((d,i) => {
+    html += `
+      <div class="mini-day${i === selectedDayIndex ? ' active' : ''}" onclick="selectDay(${i})">
+        <div class="daylabel">${d.day_label} <span class="icon">${d.icon}</span></div>
+        <div><span class="tmax">↑ ${d.temp_max}°</span> <span class="tmin">↓ ${d.temp_min}°</span></div>
+        <div><span class="wind">💨 ${d.wind_max} km/h</span> <span class="rain">${rainIcon(d.precipitation || 0)} ${d.precipitation || 0}mm</span></div>
+      </div>
+    `;
+  });
+  document.getElementById("miniDaysBox").innerHTML = html;
+}
+
+function selectDay(dayIndex) {
+  selectedDayIndex = dayIndex;
+  renderAll();
+}
+
 function renderWind(){
-  const d = DATA.days[0];
-  const windSpeed = d.hourly_winds?d.hourly_winds[new Date().getHours()] : d.wind_max || "--";
-  const windDeg = d.hourly_wind_directions?d.hourly_wind_directions[new Date().getHours()]:d.wind_dir||"--";
+  const d = DATA.days[selectedDayIndex];
+  const windSpeed = d.hourly_winds ? d.hourly_winds[new Date().getHours()] : d.wind_max || "--";
+  const windDeg = d.hourly_wind_directions ? d.hourly_wind_directions[new Date().getHours()] : d.wind_dir || "--";
   const windDirTxt = windDirectionName(windDeg);
-  const max = Math.max(...d.hourly_winds);
-  const min = Math.min(...d.hourly_winds);
-  const maxDir = windDirectionName(Math.max(...d.hourly_wind_directions));
+  const max = d.hourly_winds ? Math.max(...d.hourly_winds) : d.wind_max || "--";
+  const min = d.hourly_winds ? Math.min(...d.hourly_winds) : d.wind_min || "--";
+  const maxDir = d.hourly_wind_directions ? windDirectionName(Math.max(...d.hourly_wind_directions)) : windDirTxt;
   document.getElementById("windbox").innerHTML = `
     <div class="box-title">🌬️ Vento</div>
     <p class="wind-info"><span class="wind-speed">🍃 ${windSpeed} km/h</span><span class="wind-dir">⎋ ${windDeg}° ${windDirTxt}</span></p>
-    <div class="folata-max">Folata max: <b>${d.wind_gust||d.wind_max||"--"} km/h</b></div>
+    <div class="folata-max">Folata max: <b>${d.wind_gust || d.wind_max || "--"} km/h</b></div>
     <button class="detail-btn" onclick="toggleDetail('wind-detail')">Dettagli / Grafico</button>
     <div class="detail-section" id="wind-detail">
       <div class="chart-wrap"><canvas id="windchart"></canvas></div>
@@ -170,20 +192,19 @@ function renderWind(){
       </div>
     </div>
   `;
-  setTimeout(()=>{
-    const ctx=document.getElementById('windchart').getContext('2d');
-    new Chart(ctx,{type:'line',data:{
-      labels:d.hourly_labels, datasets:[{label:'Vento (km/h)',data:d.hourly_winds,borderColor:'#66E5FF',backgroundColor:'rgba(90,184,255,0.12)',fill:true,tension:0.21,pointRadius:1}]
-    },options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true},x:{}}}});
-  },100);
+  setTimeout(() => {
+    const ctx = document.getElementById('windchart').getContext('2d');
+    new Chart(ctx, {type:'line', data:{
+      labels: d.hourly_labels || [], datasets:[{label:'Vento (km/h)', data: d.hourly_winds || [], borderColor:'#66E5FF', backgroundColor:'rgba(90,184,255,0.12)', fill:true, tension:0.21, pointRadius:1}]
+    }, options:{responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{y:{beginAtZero:true}, x:{}}}});
+  }, 100);
 }
 
-// ---- Render Pioggia ----
 function renderRain(){
-  const d = DATA.days[0];
+  const d = DATA.days[selectedDayIndex];
   const pioggia = d.precipitation || 0;
-  const max = Math.max(...d.hourly_precips);
-  const oraMax = d.hourly_labels[d.hourly_precips.indexOf(max)];
+  const max = d.hourly_precips ? Math.max(...d.hourly_precips) : 0;
+  const oraMax = d.hourly_labels && d.hourly_precips ? d.hourly_labels[d.hourly_precips.indexOf(max)] : '--';
   document.getElementById("rainbox").innerHTML = `
     <div class="box-title">🌧️ Pioggia</div>
     <div class="main">Totale oggi: <b>${pioggia.toFixed(1)} mm</b> ${rainIcon(pioggia)}</div>
@@ -199,17 +220,16 @@ function renderRain(){
       </div>
     </div>
   `;
-  setTimeout(()=>{
-    const ctx=document.getElementById('rainchart').getContext('2d');
-    new Chart(ctx,{type:'bar',data:{
-      labels:d.hourly_labels, datasets:[{label:'Precipitazioni (mm)',data:d.hourly_precips,backgroundColor:'#52c5f7',borderColor:'#52afe7',borderWidth:2}]
-    },options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true},x:{}}}});
-  },100);
+  setTimeout(() => {
+    const ctx = document.getElementById('rainchart').getContext('2d');
+    new Chart(ctx, {type:'bar', data:{
+      labels: d.hourly_labels || [], datasets:[{label:'Precipitazioni (mm)', data: d.hourly_precips || [], backgroundColor:'#52c5f7', borderColor:'#52afe7', borderWidth:2}]
+    }, options:{responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{y:{beginAtZero:true}, x:{}}}});
+  }, 100);
 }
 
-// ---- Render Mare ----
 function renderSea(){
-  const arr = DATA.mergedHourly||[];
+  const arr = DATA.mergedHourly || [];
   const waveMean = calculateMean(arr.map(h=>h.wave_height));
   const waveRange = calculateRange(arr.map(h=>h.wave_height));
   const waveStdDev = calculateStdDev(arr.map(h=>h.wave_height));
@@ -230,21 +250,20 @@ function renderSea(){
       </div>
     </div>
   `;
-  setTimeout(()=>{
-    const ctx=document.getElementById('seachart').getContext('2d');
-    new Chart(ctx,{type:'line',data:{
-      labels:arr.map(h=>h.time.slice(11,16)),datasets:[
-        {label:'Onda (m)',data:arr.map(h=>h.wave_height),borderColor:'#41f8bd',backgroundColor:'rgba(34,255,170,0.10)',fill:true,tension:0.22,pointRadius:2,pointBackgroundColor:'#25A9FA'},
-        {label:'Swell (m)',data:arr.map(h=>h.swell_height),borderColor:'#21D08A',backgroundColor:'rgba(34,255,170,0.06)',fill:true,tension:0.18,pointRadius:2,pointBackgroundColor:'#21D08A'}
+  setTimeout(() => {
+    const ctx = document.getElementById('seachart').getContext('2d');
+    new Chart(ctx, {type:'line', data:{
+      labels: arr.map(h => h.time.slice(11,16)), datasets:[
+        {label:'Onda (m)', data: arr.map(h => h.wave_height), borderColor:'#41f8bd', backgroundColor:'rgba(34,255,170,0.10)', fill:true, tension:0.22, pointRadius:2, pointBackgroundColor:'#25A9FA'},
+        {label:'Swell (m)', data: arr.map(h => h.swell_height), borderColor:'#21D08A', backgroundColor:'rgba(34,255,170,0.06)', fill:true, tension:0.18, pointRadius:2, pointBackgroundColor:'#21D08A'}
       ]
-    },options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true}},scales:{y:{beginAtZero:true},x:{}}}});
-  },100);
+    }, options:{responsive:true, maintainAspectRatio:false, plugins:{legend:{display:true}}, scales:{y:{beginAtZero:true}, x:{}}}});
+  }, 100);
 }
 
-// ---- Render Pressione ----
 function renderPress(){
-  const d = DATA.days[0];
-  const arr = d.hourly_pressures||[];
+  const d = DATA.days[selectedDayIndex];
+  const arr = d.hourly_pressures || [];
   const pressMean = calculateMean(arr);
   document.getElementById("pressbox").innerHTML = `
     <div class="box-title">🔽 Pressione</div>
@@ -261,35 +280,41 @@ function renderPress(){
       </div>
     </div>
   `;
-  setTimeout(()=>{
-    const ctx=document.getElementById('presschart').getContext('2d');
-    new Chart(ctx,{type:'line',data:{
-      labels:d.hourly_labels, datasets:[{label:'Pressione (hPa)',data:arr,borderColor:'#ffd472',backgroundColor:'rgba(255,240,51,0.10)',fill:true,tension:0.22,pointRadius:1}]
-    },options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:false},x:{}}}});
-  },100);
+  setTimeout(() => {
+    const ctx = document.getElementById('presschart').getContext('2d');
+    new Chart(ctx, {type:'line', data:{
+      labels: d.hourly_labels || [], datasets:[{label:'Pressione (hPa)', data: arr, borderColor:'#ffd472', backgroundColor:'rgba(255,240,51,0.10)', fill:true, tension:0.22, pointRadius:1}]
+    }, options:{responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{y:{beginAtZero:false}, x:{}}}});
+  }, 100);
 }
 
-// ---- Render giorni successivi ----
 function renderMiniDays(){
-  let html="";
-  DATA.days.slice(0,7).forEach(d=>{
-    html+=`
-      <div class="mini-day">
+  let html = "";
+  DATA.days.slice(0, 7).forEach((d, i) => {
+    html += `
+      <div class="mini-day${i === selectedDayIndex ? " active" : ""}" onclick="selectDay(${i})">
         <div class="daylabel">${d.day_label} <span class="icon">${d.icon}</span></div>
         <div><span class="tmax">↑ ${d.temp_max}°</span> <span class="tmin">↓ ${d.temp_min}°</span></div>
-        <div><span class="wind">💨 ${d.wind_max} km/h</span> <span class="rain">${rainIcon(d.precipitation||0)} ${d.precipitation||0}mm</span></div>
+        <div><span class="wind">💨 ${d.wind_max} km/h</span> <span class="rain">${rainIcon(d.precipitation || 0)} ${d.precipitation || 0}mm</span></div>
       </div>
     `;
   });
-  document.getElementById("miniDaysBox").innerHTML=html;
+  document.getElementById("miniDaysBox").innerHTML = html;
 }
-// ---- Render Footer ----
+
 function renderFooter(){
   document.getElementById("footer").innerHTML = `Powered by Open-Meteo • UI by micheledv74 • Ultimo agg.: <span id="updated_stamp">${DATA.updated_at}</span>`;
 }
+
 function renderAll(){
-  renderWind();renderRain();renderSea();renderPress();renderMiniDays();renderFooter();
+  renderWind();
+  renderRain();
+  renderSea();
+  renderPress();
+  renderMiniDays();
+  renderFooter();
 }
+
 renderAll();
 </script>
 </body>
