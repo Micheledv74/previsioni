@@ -150,6 +150,7 @@
   </div>
   <div class="mini-days" id="miniDaysBox"></div>
   <div class="footer" id="footer"></div>
+
   <script>
     const DATA = {
       days:[
@@ -205,64 +206,64 @@
       ],
       sea:[
         [
-          {time:"00:00",wave_height:0.08,swell_height:0.04,swell_direction:209,sea_surface_temperature:21.9},
-          {time:"03:00",wave_height:0.09,swell_height:0.05,swell_direction:212,sea_surface_temperature:22},
-          {time:"06:00",wave_height:0.07,swell_height:0.05,swell_direction:215,sea_surface_temperature:22.3},
-          {time:"09:00",wave_height:0.06,swell_height:0.03,swell_direction:218,sea_surface_temperature:22.5},
-          {time:"12:00",wave_height:0.12,swell_height:0.06,swell_direction:215,sea_surface_temperature:22.6},
-          {time:"15:00",wave_height:0.14,swell_height:0.07,swell_direction:217,sea_surface_temperature:22.8},
-          {time:"18:00",wave_height:0.13,swell_height:0.06,swell_direction:218,sea_surface_temperature:22.4},
-          {time:"21:00",wave_height:0.10,swell_height:0.05,swell_direction:220,sea_surface_temperature:22.1}
+          {time:"00:00", wave_height:0.08, sea_surface_temperature:21.9, swell_height:0.04, swell_direction:209},
+          {time:"03:00", wave_height:0.09, sea_surface_temperature:22.0, swell_height:0.05, swell_direction:212},
+          {time:"06:00", wave_height:0.07, sea_surface_temperature:22.3, swell_height:0.05, swell_direction:215},
+          {time:"09:00", wave_height:0.06, sea_surface_temperature:22.5, swell_height:0.03, swell_direction:218},
+          {time:"12:00", wave_height:0.12, sea_surface_temperature:22.6, swell_height:0.06, swell_direction:215},
+          {time:"15:00", wave_height:0.14, sea_surface_temperature:22.8, swell_height:0.07, swell_direction:217},
+          {time:"18:00", wave_height:0.13, sea_surface_temperature:22.4, swell_height:0.06, swell_direction:218},
+          {time:"21:00", wave_height:0.10, sea_surface_temperature:22.1, swell_height:0.05, swell_direction:220}
         ],
         [
-          {time:"00:00",wave_height:0.04,swell_height:0.02,swell_direction:210,sea_surface_temperature:21.2},
-          {time:"03:00",wave_height:0.05,swell_height:0.02,swell_direction:212,sea_surface_temperature:21.7},
-          {time:"06:00",wave_height:0.05,swell_height:0.01,swell_direction:214,sea_surface_temperature:21.8},
-          {time:"09:00",wave_height:0.06,swell_height:0.02,swell_direction:216,sea_surface_temperature:21.9},
-          {time:"12:00",wave_height:0.10,swell_height:0.04,swell_direction:215,sea_surface_temperature:22},
-          {time:"15:00",wave_height:0.12,swell_height:0.05,swell_direction:217,sea_surface_temperature:22.2},
-          {time:"18:00",wave_height:0.11,swell_height:0.04,swell_direction:218,sea_surface_temperature:22},
-          {time:"21:00",wave_height:0.08,swell_height:0.03,swell_direction:220,sea_surface_temperature:21.8}
+          {time:"00:00", wave_height:0.04, sea_surface_temperature:21.2, swell_height:0.02, swell_direction:210},
+          {time:"03:00", wave_height:0.05, sea_surface_temperature:21.7, swell_height:0.02, swell_direction:212},
+          {time:"06:00", wave_height:0.05, sea_surface_temperature:21.8, swell_height:0.01, swell_direction:214},
+          {time:"09:00", wave_height:0.06, sea_surface_temperature:21.9, swell_height:0.02, swell_direction:216},
+          {time:"12:00", wave_height:0.10, sea_surface_temperature:22.0, swell_height:0.04, swell_direction:215},
+          {time:"15:00", wave_height:0.12, sea_surface_temperature:22.2, swell_height:0.05, swell_direction:217},
+          {time:"18:00", wave_height:0.11, sea_surface_temperature:22.0, swell_height:0.04, swell_direction:218},
+          {time:"21:00", wave_height:0.08, sea_surface_temperature:21.8, swell_height:0.03, swell_direction:220}
         ],
         [
-          {time:"00:00",wave_height:0.05,swell_height:0.03,swell_direction:210,sea_surface_temperature:21},
-          {time:"03:00",wave_height:0.06,swell_height:0.03,swell_direction:211,sea_surface_temperature:21.1},
-          {time:"06:00",wave_height:0.05,swell_height:0.02,swell_direction:212,sea_surface_temperature:21.2},
-          {time:"09:00",wave_height:0.05,swell_height:0.02,swell_direction:213,sea_surface_temperature:21.3},
-          {time:"12:00",wave_height:0.07,swell_height:0.03,swell_direction:214,sea_surface_temperature:21.4},
-          {time:"15:00",wave_height:0.09,swell_height:0.03,swell_direction:215,sea_surface_temperature:21.6},
-          {time:"18:00",wave_height:0.10,swell_height:0.03,swell_direction:216,sea_surface_temperature:21.3},
-          {time:"21:00",wave_height:0.07,swell_height:0.02,swell_direction:217,sea_surface_temperature:21.4}
+          {time:"00:00", wave_height:0.05, sea_surface_temperature:21.0, swell_height:0.03, swell_direction:210},
+          {time:"03:00", wave_height:0.06, sea_surface_temperature:21.1, swell_height:0.03, swell_direction:211},
+          {time:"06:00", wave_height:0.05, sea_surface_temperature:21.2, swell_height:0.02, swell_direction:212},
+          {time:"09:00", wave_height:0.05, sea_surface_temperature:21.3, swell_height:0.02, swell_direction:213},
+          {time:"12:00", wave_height:0.07, sea_surface_temperature:21.4, swell_height:0.03, swell_direction:214},
+          {time:"15:00", wave_height:0.09, sea_surface_temperature:21.6, swell_height:0.03, swell_direction:215},
+          {time:"18:00", wave_height:0.10, sea_surface_temperature:21.3, swell_height:0.03, swell_direction:216},
+          {time:"21:00", wave_height:0.07, sea_surface_temperature:21.4, swell_height:0.02, swell_direction:217}
         ],
         [
-          {time:"00:00",wave_height:0.06,swell_height:0.04,swell_direction:210,sea_surface_temperature:20.7},
-          {time:"03:00",wave_height:0.06,swell_height:0.04,swell_direction:211,sea_surface_temperature:20.6},
-          {time:"06:00",wave_height:0.05,swell_height:0.03,swell_direction:212,sea_surface_temperature:20.5},
-          {time:"09:00",wave_height:0.06,swell_height:0.03,swell_direction:213,sea_surface_temperature:20.4},
-          {time:"12:00",wave_height:0.06,swell_height:0.04,swell_direction:214,sea_surface_temperature:20.5},
-          {time:"15:00",wave_height:0.06,swell_height:0.04,swell_direction:215,sea_surface_temperature:20.6},
-          {time:"18:00",wave_height:0.07,swell_height:0.04,swell_direction:216,sea_surface_temperature:20.6},
-          {time:"21:00",wave_height:0.07,swell_height:0.03,swell_direction:217,sea_surface_temperature:20.5}
+          {time:"00:00", wave_height:0.06, sea_surface_temperature:20.7, swell_height:0.04, swell_direction:210},
+          {time:"03:00", wave_height:0.06, sea_surface_temperature:20.6, swell_height:0.04, swell_direction:211},
+          {time:"06:00", wave_height:0.05, sea_surface_temperature:20.5, swell_height:0.03, swell_direction:212},
+          {time:"09:00", wave_height:0.06, sea_surface_temperature:20.4, swell_height:0.03, swell_direction:213},
+          {time:"12:00", wave_height:0.06, sea_surface_temperature:20.5, swell_height:0.04, swell_direction:214},
+          {time:"15:00", wave_height:0.06, sea_surface_temperature:20.6, swell_height:0.04, swell_direction:215},
+          {time:"18:00", wave_height:0.07, sea_surface_temperature:20.6, swell_height:0.04, swell_direction:216},
+          {time:"21:00", wave_height:0.07, sea_surface_temperature:20.5, swell_height:0.03, swell_direction:217}
         ],
         [
-          {time:"00:00",wave_height:0.08,swell_height:0.05,swell_direction:210,sea_surface_temperature:20.2},
-          {time:"03:00",wave_height:0.08,swell_height:0.05,swell_direction:211,sea_surface_temperature:20.1},
-          {time:"06:00",wave_height:0.07,swell_height:0.04,swell_direction:212,sea_surface_temperature:20},
-          {time:"09:00",wave_height:0.07,swell_height:0.05,swell_direction:213,sea_surface_temperature:20.1},
-          {time:"12:00",wave_height:0.08,swell_height:0.06,swell_direction:214,sea_surface_temperature:20.1},
-          {time:"15:00",wave_height:0.08,swell_height:0.06,swell_direction:215,sea_surface_temperature:20.1},
-          {time:"18:00",wave_height:0.08,swell_height:0.06,swell_direction:216,sea_surface_temperature:20.2},
-          {time:"21:00",wave_height:0.07,swell_height:0.04,swell_direction:217,sea_surface_temperature:20.3}
+          {time:"00:00", wave_height:0.08, sea_surface_temperature:20.2, swell_height:0.05, swell_direction:210},
+          {time:"03:00", wave_height:0.08, sea_surface_temperature:20.1, swell_height:0.05, swell_direction:211},
+          {time:"06:00", wave_height:0.07, sea_surface_temperature:20.1, swell_height:0.04, swell_direction:212},
+          {time:"09:00", wave_height:0.07, sea_surface_temperature:20.0, swell_height:0.05, swell_direction:213},
+          {time:"12:00", wave_height:0.08, sea_surface_temperature:20.1, swell_height:0.06, swell_direction:214},
+          {time:"15:00", wave_height:0.08, sea_surface_temperature:20.1, swell_height:0.06, swell_direction:215},
+          {time:"18:00", wave_height:0.08, sea_surface_temperature:20.2, swell_height:0.06, swell_direction:216},
+          {time:"21:00", wave_height:0.07, sea_surface_temperature:20.3, swell_height:0.04, swell_direction:217}
         ],
         [
-          {time:"00:00",wave_height:0.11,swell_height:0.07,swell_direction:210,sea_surface_temperature:19.9},
-          {time:"03:00",wave_height:0.11,swell_height:0.07,swell_direction:211,sea_surface_temperature:19.8},
-          {time:"06:00",wave_height:0.10,swell_height:0.06,swell_direction:212,sea_surface_temperature:19.8},
-          {time:"09:00",wave_height:0.10,swell_height:0.06,swell_direction:213,sea_surface_temperature:19.7},
-          {time:"12:00",wave_height:0.10,swell_height:0.06,swell_direction:214,sea_surface_temperature:19.7},
-          {time:"15:00",wave_height:0.10,swell_height:0.07,swell_direction:215,sea_surface_temperature:19.8},
-          {time:"18:00",wave_height:0.10,swell_height:0.07,swell_direction:216,sea_surface_temperature:19.9},
-          {time:"21:00",wave_height:0.10,swell_height:0.07,swell_direction:217,sea_surface_temperature:20}
+          {time:"00:00", wave_height:0.11, sea_surface_temperature:19.9, swell_height:0.07, swell_direction:210},
+          {time:"03:00", wave_height:0.11, sea_surface_temperature:19.8, swell_height:0.07, swell_direction:211},
+          {time:"06:00", wave_height:0.10, sea_surface_temperature:19.8, swell_height:0.06, swell_direction:212},
+          {time:"09:00", wave_height:0.10, sea_surface_temperature:19.7, swell_height:0.06, swell_direction:213},
+          {time:"12:00", wave_height:0.10, sea_surface_temperature:19.7, swell_height:0.06, swell_direction:214},
+          {time:"15:00", wave_height:0.10, sea_surface_temperature:19.8, swell_height:0.07, swell_direction:215},
+          {time:"18:00", wave_height:0.10, sea_surface_temperature:19.9, swell_height:0.07, swell_direction:216},
+          {time:"21:00", wave_height:0.10, sea_surface_temperature:20.0, swell_height:0.07, swell_direction:217}
         ]
       ]
     };
