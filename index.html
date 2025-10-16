@@ -112,7 +112,7 @@
   <script>
     // QUESTA VARIABILE SARA' POPOLATA DAI DATI PROVENIENTI DA N8N
     // Sostituisci il contenuto di RAW_API_DATA con i dati JSON dal tuo nodo n8n
-    const RAW_API_DATA = [
+     const RAW_API_DATA = <%= JSON.stringify($json) %>;
       {
         "mergedHourly": [], // Inserisci qui l'array mergedHourly dal JSON
         "days": [],         // Inserisci qui l'array days dal JSON
