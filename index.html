@@ -121,8 +121,8 @@
     ];
 
     // Funzione per processare i dati dall'API e crearli nel formato necessario
-    function processAPIData(apiData) {
-      const data = apiData; // Prende il primo elemento dell'array
+function processAPIData(apiData) {
+  const data = apiData[0];  // ✅ CORRETTO - prende il primo elemento dell'array
       
       // Processa i dati mare: raggruppa per giorno
       const seaByDay = [];
