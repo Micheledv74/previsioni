@@ -110,26 +110,18 @@
   <div class="mini-days" id="miniDaysBox"></div>
   <div class="footer" id="footer"></div>
 
-  <!-- Script JSON dati reali da n8n: n8n deve sostituire il contenuto di questo tag con il JSON realmente prodotto -->
+  <!-- Inserzione JSON da n8n in template inline -->
   <script id="n8n-json-data" type="application/json">
-  <!--
-    Inserire qui in modo inline il JSON n8n come testo puro senza escape.
-    Esempio:
-    {
-      "days": [...],
-      "mergedHourly": [...]
-    }
-  -->
+  <!-- Inserire qui il JSON prodotto da n8n, senza commenti o escape -->
   </script>
 
   <script>
-    // Estrazione e parser JSON da script inline n8n
+    // Fase 1: Lettura e parsing dati JSON inline come da vecchio html funzionante
     let rawJson = document.getElementById('n8n-json-data')?.textContent;
     let rawData = {};
     if (rawJson) {
       try {
         const parsed = JSON.parse(rawJson);
-        // n8n tipico output: array 
         if (Array.isArray(parsed) && parsed.length && parsed[0].days) {
           rawData = parsed[0];
         } else if (parsed.days) {
@@ -153,7 +145,7 @@
       };
     }
 
-    // Normalizzazione campo sea, usando mergedHourly (RAW) come array di array dividendo in blocchi da 8
+    // Fase 2: Normalizzazione dati per compatibilità con rendering nuovo html
     let DATA = {};
     DATA.days = rawData.days || [];
     if (rawData.mergedHourly && Array.isArray(rawData.mergedHourly)) {
@@ -167,7 +159,7 @@
       DATA.sea = [];
     }
 
-    // Variabili per i grafici
+    // Variabili grafici
     let selectedDayIndex = 0;
     let windChart, rainChart, seaChart, pressChart;
 
@@ -197,7 +189,9 @@
 
     function pressureTrend(arr) {
       if (!arr || arr.length < 5) return "N/D";
-      const meanStart = (arr + arr + arr) / 3, meanEnd = (arr[arr.length - 3] + arr[arr.length - 2] + arr[arr.length - 1]) / 3;
+      // Corretto calcolo della tendenza pressione
+      const meanStart = (arr[0] + arr[1] + arr[2]) / 3;
+      const meanEnd = (arr[arr.length - 3] + arr[arr.length - 2] + arr[arr.length - 1]) / 3;
       if (meanEnd > meanStart + 1) return '<span class="summary-trend-up">in aumento ⬆️ (alta)</span>';
       if (meanStart > meanEnd + 1) return '<span class="summary-trend-down">in calo ⬇️ (bassa)</span>';
       return '<span class="summary-trend-stable">stabile ↔️</span>';
