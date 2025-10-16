@@ -3,33 +3,43 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes" />
-  <title>Test Grafico Pioggia Dinamico</title>
+  <title>Test Grafico Mare Dinamico</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     body { background:#22365c; color:#f0f8ff; font-family:Roboto,Arial,sans-serif;}
     .mini-day { cursor:pointer; padding:8px 12px; background:#355088; border-radius:7px; margin:3px; display:inline-block; }
     .mini-day.active { background:#4fa9df; font-weight:700; color:#fff;}
-    .rain-box { max-width:410px; margin:30px auto; padding:22px; background:rgba(37,59,102,0.22); border-radius:16px;}
+    .sea-box { max-width:410px; margin:30px auto; padding:22px; background:rgba(37,59,102,0.22); border-radius:16px;}
   </style>
 </head>
 <body>
   <div id="miniDaysBox"></div>
-  <div class="rain-box" id="rainbox"></div>
+  <div class="sea-box" id="seabox"></div>
 <script>
 const DATA = {
-  days:[
-    { day_label:"14/10", icon:"☀️", precipitation:2.3, hourly_labels:["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"],
-      hourly_precips:[0,0,0,0,0,0.4,0.8,0.0,0,0,0,0,0.2,0,0,0,0.7,0,0,0,0,0,0,0]
-    },
-    { day_label:"15/10", icon:"⛅", precipitation:0.5, hourly_labels:["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"],
-      hourly_precips:[0,0,0,0,0,0,0,0,0.1,0.3,0,0,0,0,0,0,0.1,0,0,0,0,0,0,0]
-    }
+  days: [
+    { day_label:"14/10", icon:"☀️" },
+    { day_label:"15/10", icon:"⛅" }
+  ],
+  sea:[
+    [ // mergedHourly per 14/10
+      {time:"00:00",wave_height:0.08,sea_surface_temperature:21.9,swell_height:0.04},
+      {time:"03:00",wave_height:0.09,sea_surface_temperature:22.0,swell_height:0.05},
+      {time:"06:00",wave_height:0.07,sea_surface_temperature:22.3,swell_height:0.05},
+      {time:"09:00",wave_height:0.06,sea_surface_temperature:22.5,swell_height:0.03},
+      {time:"12:00",wave_height:0.12,sea_surface_temperature:22.6,swell_height:0.06}
+    ],
+    [ // mergedHourly per 15/10
+      {time:"00:00",wave_height:0.04,sea_surface_temperature:21.2,swell_height:0.02},
+      {time:"03:00",wave_height:0.05,sea_surface_temperature:21.7,swell_height:0.02},
+      {time:"06:00",wave_height:0.05,sea_surface_temperature:21.8,swell_height:0.01},
+      {time:"09:00",wave_height:0.06,sea_surface_temperature:21.9,swell_height:0.02},
+      {time:"12:00",wave_height:0.10,sea_surface_temperature:22.0,swell_height:0.04}
+    ]
   ]
 };
-function rainIcon(valmm){if(valmm<0.1)return'';if(valmm<0.5)return'💧';if(valmm<1)return'💧💧';if(valmm<3)return'💧💧💧';if(valmm<10)return'💧💧💧💧';return'💧💧💧💧💧';}
-
 let selectedDayIndex = 0;
-let rainChart;
+let seaChart;
 
 function renderMiniDays() {
   let html = "";
@@ -43,61 +53,62 @@ function renderMiniDays() {
 
 function selectDay(dayIndex) {
   selectedDayIndex = dayIndex;
-  renderRain();
+  renderSea();
   renderMiniDays();
 }
+function calculateMean(arr){if(!arr.length)return 0;return arr.reduce((a,b)=>a+b,0)/arr.length;}
+function calculateRange(arr){if(!arr.length)return 0;return Math.max(...arr)-Math.min(...arr);}
+function calculateStdDev(arr){if(!arr.length)return 0;const m=calculateMean(arr);return Math.sqrt(arr.reduce((a,b)=>a+(b-m)**2,0)/arr.length);}
 
-function renderRain() {
-  const d = DATA.days[selectedDayIndex];
-  const pioggia = d.precipitation || 0;
-  const max = Math.max(...d.hourly_precips);
-  const oraMax = d.hourly_labels[d.hourly_precips.indexOf(max)];
-  document.getElementById("rainbox").innerHTML = `
-    <h3>🌧️ Pioggia ${d.day_label}</h3>
-    <div>Totale oggi: <b>${pioggia.toFixed(1)} mm</b> ${rainIcon(pioggia)}</div>
-    <div><b>Max oraria:</b> ${max} mm &nbsp; <b>Ora più piovosa:</b> ${oraMax}</div>
-    <button onclick="toggleRainDetail()">Dettagli / Grafico</button>
-    <div id="rain-detail" style="display:none;">
-      <canvas id="rainchart"></canvas>
+function renderSea() {
+  const merged = DATA.sea[selectedDayIndex] || [];
+  const waveMean = calculateMean(merged.map(h=>h.wave_height));
+  const waveRange = calculateRange(merged.map(h=>h.wave_height));
+  const waveStdDev = calculateStdDev(merged.map(h=>h.wave_height));
+  const seaTemp = calculateMean(merged.map(h=>h.sea_surface_temperature));
+  document.getElementById("seabox").innerHTML = `
+    <h3>🌊 Mare ${DATA.days[selectedDayIndex].day_label}</h3>
+    <div>Altezza media onda: <b>${waveMean.toFixed(2)} m</b></div>
+    <div>Temperatura mare: <b>${seaTemp.toFixed(1)} °C</b></div>
+    <button onclick="toggleSeaDetail()">Dettagli / Grafico</button>
+    <div id="sea-detail" style="display:none;">
+      <canvas id="seachart"></canvas>
     </div>
   `;
 }
-function toggleRainDetail() {
-  const el = document.getElementById('rain-detail');
+function toggleSeaDetail() {
+  const el = document.getElementById('sea-detail');
   el.style.display = el.style.display === "none" ? "block" : "none";
   if (el.style.display === "block") {
-    renderRainChart();
+    renderSeaChart();
   } else {
-    if(rainChart) rainChart.destroy();
+    if(seaChart) seaChart.destroy();
   }
 }
-function renderRainChart() {
-  const d = DATA.days[selectedDayIndex];
-  if (rainChart) rainChart.destroy();
-  const ctx = document.getElementById('rainchart').getContext('2d');
-  rainChart = new Chart(ctx, {
-    type: 'bar',
+function renderSeaChart() {
+  const merged = DATA.sea[selectedDayIndex] || [];
+  if (seaChart) seaChart.destroy();
+  const ctx = document.getElementById('seachart').getContext('2d');
+  seaChart = new Chart(ctx, {
+    type: 'line',
     data: {
-      labels: d.hourly_labels,
-      datasets: [{
-        label: 'Precipitazioni (mm)',
-        data: d.hourly_precips,
-        backgroundColor: '#52c5f7',
-        borderColor: '#52afe7',
-        borderWidth: 2
-      }]
+      labels: merged.map(h=>h.time),
+      datasets: [
+        {label:'Onda (m)',data:merged.map(h=>h.wave_height),borderColor:'#41f8bd',backgroundColor:'rgba(34,255,170,0.10)',fill:true,tension:0.22,pointRadius:2,pointBackgroundColor:'#25A9FA'},
+        {label:'Swell (m)',data:merged.map(h=>h.swell_height),borderColor:'#21D08A',backgroundColor:'rgba(34,255,170,0.06)',fill:true,tension:0.18,pointRadius:2,pointBackgroundColor:'#21D08A'}
+      ]
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      plugins: {legend: {display: false}},
+      plugins: {legend: {display: true}},
       scales: {y: {beginAtZero: true}, x:{}}
     }
   });
 }
 
 renderMiniDays();
-renderRain();
+renderSea();
 </script>
 </body>
 </html>
