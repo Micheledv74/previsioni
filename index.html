@@ -3,32 +3,33 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes" />
-  <title>Test Grafico Pressione Dinamico</title>
+  <title>Test Grafico Pioggia Dinamico</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     body { background:#22365c; color:#f0f8ff; font-family:Roboto,Arial,sans-serif;}
     .mini-day { cursor:pointer; padding:8px 12px; background:#355088; border-radius:7px; margin:3px; display:inline-block; }
     .mini-day.active { background:#4fa9df; font-weight:700; color:#fff;}
-    .press-box { max-width:410px; margin:30px auto; padding:22px; background:rgba(37,59,102,0.22); border-radius:16px;}
+    .rain-box { max-width:410px; margin:30px auto; padding:22px; background:rgba(37,59,102,0.22); border-radius:16px;}
   </style>
 </head>
 <body>
   <div id="miniDaysBox"></div>
-  <div class="press-box" id="pressbox"></div>
+  <div class="rain-box" id="rainbox"></div>
 <script>
 const DATA = {
   days:[
-    { day_label:"14/10", icon:"☀️", hourly_labels:["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"],
-      hourly_pressures:[1017,1018,1018,1018,1018,1018,1017,1017,1017,1017,1018,1019,1020,1019,1018,1018,1017,1016,1016,1016,1016,1016,1017,1017]
+    { day_label:"14/10", icon:"☀️", precipitation:2.3, hourly_labels:["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"],
+      hourly_precips:[0,0,0,0,0,0.4,0.8,0.0,0,0,0,0,0.2,0,0,0,0.7,0,0,0,0,0,0,0]
     },
-    { day_label:"15/10", icon:"⛅", hourly_labels:["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"],
-      hourly_pressures:[1011,1011,1012,1012,1012,1012,1012,1012,1011,1011,1011,1012,1013,1012,1011,1011,1010,1010,1009,1009,1009,1008,1008,1008]
+    { day_label:"15/10", icon:"⛅", precipitation:0.5, hourly_labels:["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"],
+      hourly_precips:[0,0,0,0,0,0,0,0,0.1,0.3,0,0,0,0,0,0,0.1,0,0,0,0,0,0,0]
     }
   ]
 };
+function rainIcon(valmm){if(valmm<0.1)return'';if(valmm<0.5)return'💧';if(valmm<1)return'💧💧';if(valmm<3)return'💧💧💧';if(valmm<10)return'💧💧💧💧';return'💧💧💧💧💧';}
 
 let selectedDayIndex = 0;
-let pressChart;
+let rainChart;
 
 function renderMiniDays() {
   let html = "";
@@ -42,72 +43,61 @@ function renderMiniDays() {
 
 function selectDay(dayIndex) {
   selectedDayIndex = dayIndex;
-  renderPress();
+  renderRain();
   renderMiniDays();
 }
 
-// logica pressione:
-function calculateMean(arr){if(!arr.length)return 0;return arr.reduce((a,b)=>a+b,0)/arr.length;}
-function pressureTrend(arr){
-  if (!arr || arr.length < 5) return "N/D";
-  const meanStart = (arr[0]+arr[1]+arr[2])/3, meanEnd = (arr[arr.length-3]+arr[arr.length-2]+arr[arr.length-1])/3;
-  if (meanEnd > meanStart + 1) return 'in aumento ⬆️ (alta)';
-  if (meanStart > meanEnd + 1) return 'in calo ⬇️ (bassa)';
-  return 'stabile ↔️';
-}
-
-function renderPress() {
+function renderRain() {
   const d = DATA.days[selectedDayIndex];
-  const arr = d.hourly_pressures || [];
-  const pressMean = calculateMean(arr);
-  document.getElementById("pressbox").innerHTML = `
-    <h3>🔽 Pressione ${d.day_label}</h3>
-    <div>Media: <b>${pressMean.toFixed(1)} hPa</b></div>
-    <div>Tendenza: ${pressureTrend(arr)}</div>
-    <button onclick="togglePressDetail()">Dettagli / Grafico</button>
-    <div id="press-detail" style="display:none;">
-      <canvas id="presschart"></canvas>
+  const pioggia = d.precipitation || 0;
+  const max = Math.max(...d.hourly_precips);
+  const oraMax = d.hourly_labels[d.hourly_precips.indexOf(max)];
+  document.getElementById("rainbox").innerHTML = `
+    <h3>🌧️ Pioggia ${d.day_label}</h3>
+    <div>Totale oggi: <b>${pioggia.toFixed(1)} mm</b> ${rainIcon(pioggia)}</div>
+    <div><b>Max oraria:</b> ${max} mm &nbsp; <b>Ora più piovosa:</b> ${oraMax}</div>
+    <button onclick="toggleRainDetail()">Dettagli / Grafico</button>
+    <div id="rain-detail" style="display:none;">
+      <canvas id="rainchart"></canvas>
     </div>
   `;
 }
-function togglePressDetail() {
-  const el = document.getElementById('press-detail');
+function toggleRainDetail() {
+  const el = document.getElementById('rain-detail');
   el.style.display = el.style.display === "none" ? "block" : "none";
   if (el.style.display === "block") {
-    renderPressChart();
+    renderRainChart();
   } else {
-    if(pressChart) pressChart.destroy();
+    if(rainChart) rainChart.destroy();
   }
 }
-function renderPressChart() {
+function renderRainChart() {
   const d = DATA.days[selectedDayIndex];
-  if (pressChart) pressChart.destroy();
-  const ctx = document.getElementById('presschart').getContext('2d');
-  pressChart = new Chart(ctx, {
-    type: 'line',
+  if (rainChart) rainChart.destroy();
+  const ctx = document.getElementById('rainchart').getContext('2d');
+  rainChart = new Chart(ctx, {
+    type: 'bar',
     data: {
       labels: d.hourly_labels,
       datasets: [{
-        label: 'Pressione (hPa)',
-        data: d.hourly_pressures,
-        borderColor: '#ffd472',
-        backgroundColor: 'rgba(255,240,51,0.10)',
-        fill: true,
-        tension: 0.22,
-        pointRadius: 1
+        label: 'Precipitazioni (mm)',
+        data: d.hourly_precips,
+        backgroundColor: '#52c5f7',
+        borderColor: '#52afe7',
+        borderWidth: 2
       }]
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {legend: {display: false}},
-      scales: {y: {beginAtZero: false}, x:{}}
+      scales: {y: {beginAtZero: true}, x:{}}
     }
   });
 }
 
 renderMiniDays();
-renderPress();
+renderRain();
 </script>
 </body>
 </html>
