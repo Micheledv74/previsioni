@@ -293,7 +293,7 @@
       const min = d.hourly_winds ? Math.min(...d.hourly_winds) : d.wind_min || "--";
       const maxDir = d.hourly_wind_directions ? windDirectionName(Math.max(...d.hourly_wind_directions)) : windDirTxt;
       document.getElementById("windbox").innerHTML = `
-        <div class="box-title">🌬️ Vento ${d.day_label}</div>
+        <div class="box-title">🌬️ Vento</div>
         <p class="wind-info"><span class="wind-speed">🍃 ${windSpeed} km/h</span><span class="wind-dir">⎋ ${windDeg}° ${windDirTxt}</span></p>
         <div class="folata-max">Folata max: <b>${d.wind_gust || d.wind_max || "--"} km/h</b></div>
         <button class="detail-btn" onclick="toggleDetail('wind-detail')">Dettagli / Grafico</button>
@@ -361,7 +361,7 @@
       const max = d.hourly_precips ? Math.max(...d.hourly_precips) : 0;
       const oraMax = d.hourly_labels && d.hourly_precips ? d.hourly_labels[d.hourly_precips.indexOf(max)] : '--';
       document.getElementById("rainbox").innerHTML = `
-        <div class="box-title">🌧️ Pioggia ${d.day_label}</div>
+        <div class="box-title">🌧️ Pioggia</div>
         <div class="main">Totale oggi: <b>${pioggia.toFixed(1)} mm</b> ${rainIcon(pioggia)}</div>
         <div class="desc"><b>Max oraria:</b> ${max} mm &nbsp; <b>Ora più piovosa:</b> ${oraMax}</div>
         <button class="detail-btn" onclick="toggleDetail('rain-detail')">Dettagli / Grafico</button>
@@ -421,7 +421,7 @@
       const waveStdDev = calculateStdDev(merged.map(h => h.wave_height));
       const seaTemp = calculateMean(merged.map(h => h.sea_surface_temperature));
       document.getElementById("seabox").innerHTML = `
-        <div class="box-title">🌊 Mare ${DATA.days[selectedDayIndex].day_label}</div>
+        <div class="box-title">🌊 Mare</div>
         <div class="main">Altezza media onda: <b>${waveMean.toFixed(2)} m</b></div>
         <div class="desc">Temperatura mare: <b>${seaTemp.toFixed(1)} °C</b></div>
         <button class="detail-btn" onclick="toggleDetail('sea-detail')">Dettagli / Grafico</button>
@@ -504,7 +504,7 @@
       const arr = d.hourly_pressures || [];
       const pressMean = calculateMean(arr);
       document.getElementById("pressbox").innerHTML = `
-        <div class="box-title">🔽 Pressione ${d.day_label}</div>
+        <div class="box-title">🔽 Pressione</div>
         <div class="main">Media oggi: <b>${pressMean.toFixed(1)} hPa</b></div>
         <div class="desc">Tendenza: ${pressureTrend(arr)}</div>
         <button class="detail-btn" onclick="toggleDetail('press-detail')">Dettagli / Grafico</button>
