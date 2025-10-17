@@ -3,236 +3,310 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes" />
-  <title>Previsioni Procida - Meteo Giornaliero</title>
+  <title>Previsioni Meteo Procida - Dinamico Moderno</title>
   <style>
+    /* Tutto il CSS moderno come nella tua versione preferita */
     @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Roboto&display=swap');
-    html { box-sizing: border-box;} *,*:before,*:after { box-sizing: inherit; }
-    body { font-family: 'Roboto', Arial, sans-serif; max-width: 950px; margin: 40px auto; background: linear-gradient(135deg, #26365a, #2a3a7f 85%, #3498db 97%); color: #f0f8ff; padding: 22px 12px 22px 12px; overflow-x: hidden; min-height: 100vh; }
-    .header { font-family: 'Montserrat', sans-serif; font-size: 2.6rem; font-weight: 900; text-align: center; color: #cfe9ff; text-shadow: 1px 2px 15px #09172a; letter-spacing: 2px; user-select: none; margin-bottom: 35px; }
-    .today-main { background: linear-gradient(120deg,#24335b90 60%,#25355a 100%); border-radius: 32px; box-shadow: 0 8px 38px #2b488c33; padding: 26px 20px 24px 20px; margin: 0 auto 34px auto; max-width: 870px; min-height: 210px; display: grid; grid-template-columns: 1.2fr 5fr; gap: 0 11px; align-items: center; position: relative;}
-    .slot-icon { grid-column: 1/2; display: flex; align-items: center; justify-content: center; height: 150px; }
-    .main-icon { font-size: 108px; filter: drop-shadow(0 5px 17px #0690d9cc); user-select: none; margin: 0; }
-    .slots-info { grid-column: 2/3; display: grid; grid-template-columns: repeat(5,1fr); align-items: start; width: 100%; gap: 0 10px;}
-    .slot-meteo { display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start; gap: 8px; min-width: 0;}
-    .main-values { margin-bottom: 8px; margin-top: -8px;}
-    .main-temp { font-family: 'Montserrat', sans-serif; font-size: 2.6rem; font-weight: 900; color: #fee044; letter-spacing: -2px; text-shadow: 0 4px 12px #ffe16754; margin-right: 12px; display: inline-block; }
-    .main-temp-min { font-size: 2rem; color: #64c7fa; font-weight: 900; margin-left: 0px; text-shadow: 0 4px 10px #3affff33; display: inline-block;}
-    .sea-temp { font-size: 1.8rem; color: #4dd0e1; font-weight: 700; margin-left: 6px; text-shadow: 0 3px 5px #27a0b5; display: inline-block; }
-    .main-details { font-size: 1.16rem; font-weight: 500; color: #ddeffd; display: flex; align-items: center; margin: 2px 0 6px 0; gap: 8px; }
-    .data-label { color: #ffeebb; font-weight: 700; min-width:50px;}
-    .data-up { color: #ffd452; font-size:1.13em; margin-right:5px;}
-    .data-down { color: #78dbfd; font-size:1.13em; margin-right:5px;}
-    .data-wind { color: #abdefa; font-size:1.17em;}
-    .rain-icon { font-size:1.13em;vertical-align:-3px;}
-    .info-title { font-size: 1.07rem; color: #b4e6fd; font-weight: 800; margin-bottom: 5px; }
-    .advice-row { grid-column: 1/5; width: 100%; display: flex; justify-content: center; align-items: center; margin-top: 20px; }
-    .main-advice { background: rgba(44, 88, 235, 0.13); color: #54e2ff; font-family: 'Montserrat', sans-serif; font-size: 1.17rem; font-weight: 700; border-radius: 13px; padding: 10px 44px; box-shadow: 0 1px 10px #23293b22; text-align: center; letter-spacing: 0.03em; display: inline-block; min-width: 180px; max-width: 95vw; }
-    .footer { margin-top: 25px; text-align: center; color: #cbefff; font-size: 17px; font-weight: 500; }
-    .tabs { display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; justify-content: center; }
-    .tab { background: rgba(255,255,255,0.14); border: 2px solid #66bfff; padding: 13px 19px; border-radius: 12px; cursor: pointer; transition: background 0.2s; }
-    .tab.active { background: #0580ff; color: #fff; border-bottom: 4px solid #32d3ff; font-weight: bold; }
-    .tab .bigicon { font-size: 2em; }
-    .tab:hover { background: #3498db; }
-    .card { background: rgba(255,255,255,0.09); border-radius: 18px; padding: 22px 12px; margin-bottom: 19px; box-shadow: 0 3px 14px rgba(27,74,128,0.07);}
-    .chart-title { font-size: 17px; font-weight: bold; margin-bottom: 2px; color: #acf;}
-    .chart-container { width: 100%; max-width: 900px; margin: 0 auto 18px auto; display: flex; flex-direction: column; box-sizing: border-box; overflow-x: auto;}
-    .canvas-wrap { width: 100vw !important; max-width: 100vw !important; min-width: 0 !important; box-sizing: border-box !important; overflow-x: auto !important; aspect-ratio: 16/7; border-radius: 15px; position: relative;}
-    canvas { width: 100% !important; max-width: 100vw !important; min-width: 0 !important; height: auto !important; display: block !important; background: rgba(255,255,255,0.12); border-radius: 14px; box-shadow: 0 0 24px #2886d9bb; }
-    .card-anim { animation: fadeIn 0.45s; }
-    @keyframes fadeIn { from {opacity:0;transform:translateY(20px);} to {opacity:1;transform:translateY(0);} }
-    @media (max-width:900px){ body {max-width: 99vw;} .chart-container {padding: 0 1vw;} }
-    @media (max-width: 700px) { 
-      .today-main { display: flex !important; flex-direction: column !important; padding: 6vw 2vw 0 2vw; min-height: unset; align-items: stretch; gap: 0; } 
-      .slot-icon { align-self: center; margin-bottom: 2vw; } 
-      .main-icon { font-size: 60px; } 
-      .slots-info { display: flex !important; flex-direction: column; gap: 0; width: 100%; margin: 0 auto; } 
-      .slot-meteo { border-radius: 7px; padding: 6px 2vw 10px 2vw; margin-bottom: 13px; background: rgba(43,81,143,0.14); box-shadow: none; font-size: 1.13em; align-items: flex-start; } 
-      .main-values {margin-bottom: 6px;} 
-      .info-title { font-size: 1.03rem; margin-bottom: 1px;} 
-      .main-advice { font-size: 0.96rem; padding: 6px 2vw;} 
-      .advice-row {margin-top: 10px;} .card, .card-anim {padding: 9px 2vw;} .chart-title {font-size: 1.03em;} 
-      .canvas-wrap { aspect-ratio: 11/9; min-height: 160px;} 
-      .footer {font-size: 15px;} .tabs {gap: 6px; margin-bottom: 13px;} .tab {padding: 7px 7px;font-size:0.95em;} 
-    }
-    @media (max-width: 500px) { .canvas-wrap { aspect-ratio: 13/15; min-height: 95px;} .main-advice { font-size: 0.94rem;} }
-    @media (orientation: landscape) and (max-width: 820px) { .chart-container { max-width: 98vw; } .canvas-wrap { aspect-ratio: 2/1;} canvas { min-height: 110px;} }
+    html { box-sizing: border-box; } *,*:before,*:after { box-sizing: inherit;}
+    body { font-family: 'Roboto', Arial, sans-serif; max-width: 1000px; margin: 0 auto; background: linear-gradient(135deg, #26365a, #3498db 92%); color: #f0f8ff; padding: 14px 2px 18px 2px; min-height: 100vh; }
+    .header { font-family: 'Montserrat', sans-serif; font-size: 2.45em; font-weight: 900; text-align: center; color: #cfe9ff; text-shadow: 1px 2px 14px #09172a; letter-spacing: 2px; user-select: none; margin-bottom: 19px; }
+    .selected-date { font-family: 'Montserrat', sans-serif; font-size: 1.45em; font-weight: 900; text-align: center; color: #73c9f8; margin-bottom: 12px; letter-spacing: 1px;}
+    .dashboard { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto auto; gap: 30px 30px; width: 98%; margin: 0 auto 20px auto; max-width: 900px;}
+    .box { background: linear-gradient(125deg, #23406c 92%, #2e8cc9 100%); border-radius: 18px; box-shadow: 0 8px 26px 0 #06183970; padding: 24px 17px 22px 17px; min-width: 210px; min-height: 215px; display: flex; flex-direction: column; align-items: center; position: relative; transition: box-shadow 0.22s, transform 0.22s;}
+    .box:focus-within, .box:hover { box-shadow: 0 0 25px #2c9efa99, 0 7px 24px #06183980; transform: translateY(-3px) scale(1.012); z-index: 2;}
+    .box-title { font-size: 1.58rem; font-weight: 900; color: #b8f6ff; letter-spacing: 1px; margin-bottom: 8px; text-shadow: 1px 1px 8px #03182b45; font-family: 'Montserrat', sans-serif; display: flex; align-items: center; gap: 8px; }
+    .box .main { font-weight: 700; font-size: 1.15em; color: #84dbff; }
+    .box .desc { margin: 6px 0 0 0; font-size:1.09em; color: #c3ccdf;}
+    .box-summary, .box-summary-row, .box-summary-row2 { margin-top: 15px; }
+    .box-summary-row span, .box-summary-row2 span { font-size: 1.08em; margin-right: 17px; }
+    .wind-info { font-weight: 700; font-size: 1.16em; margin: 0; display: flex; justify-content: center; gap: 12px; }
+    .wind-info span { display: inline-block; }
+    .wind-info .wind-speed { color: #84dbff; }
+    .wind-info .wind-dir { color: #c3ccdf; }
+    .folata-max { color: #84dbff; font-weight: 700; font-size: 1.13em; margin-top: 6px;}
+    .detail-btn { margin: 12px 0 7px 0; background: linear-gradient(92deg,#137af7 60%,#269beb 100%); color: #fff; font-weight:600; font-size: 1.1em; border: 1.7px solid #a2d8ff; border-radius: 9px; padding: 10px 28px; cursor: pointer; outline: none; box-shadow: 0 2px 12px #16518545; transition: background 0.20s, box-shadow 0.18s;}
+    .detail-btn:hover, .detail-btn:focus { background: linear-gradient(92deg,#269beb 20%,#137af7 100%); box-shadow: 0 0 18px #24aef7a1;}
+    .summary-label { font-weight: 700;}
+    .summary-max { color: #ffd472;}
+    .summary-min { color: #6fd7f8;}
+    .summary-dir { color: #8effa6;}
+    .summary-mean { color: #b6fffa;}
+    .summary-range { color: #fee3a1;}
+    .summary-std { color: #c2cafd;}
+    .summary-trend-up { color: #09e889;}
+    .summary-trend-down { color: #ff9a00;}
+    .summary-trend-stable { color: #ffd472;}
+    .summary-max-mm { color: #a1b4ff;}
+    .summary-min-mm { color: #72b6cc;}
+    .summary-hour { color: #e0deff;}
+    .summary-temp { color: #ffb2e6;}
+    .detail-section { display: none; margin-top: 8px; width: 100%;}
+    .detail-section.active { display: block;}
+    .chart-wrap { width: 99%; max-width: 385px; margin: 0 auto 8px auto; border-radius: 13px; background: #213260d0; padding: 11px 5px 7px 5px;}
+    .mini-days { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px auto 7px auto; justify-content: center;}
+    .mini-day { background: #0b1333b0; color: #c6f3ff; border-radius: 11px; padding: 9px 15px; font-size: 1em; min-width: 85px; box-shadow: 0 2px 8px #202b3b44; cursor: pointer; user-select: none;}
+    .mini-day:hover { background: rgba(79,117,203,0.47);}
+    .mini-day.active { background: rgba(91,144,197,0.78); box-shadow: 0 0 12px #dbefff;}
+    .footer { margin-top: 32px; text-align: center; color: #dbefff; font-size: 17px; font-weight: 500; text-shadow: 0 2px 6px #283c5880;}
+    .update-label { color: #ffe09c; margin-left: 18px; font-size: 15px; }
+    @media (max-width: 840px) { .dashboard { grid-template-columns: 1fr; grid-template-rows: auto auto auto auto; gap: 15px 0; max-width: none;} }
+    @media (max-width: 800px) { .box { min-width: 180px; max-width: 97vw;} }
+    @media (max-width: 650px) { .header { font-size: 1.17em;} .box { width: 100%; max-width: 98vw;} }
+    @media (max-width: 600px) { .box { min-height: 174px; padding: 11px 4px 14px 4px;}}
+    @media (max-width: 510px) { .mini-day { padding: 6px 5px; font-size: 0.93em;} }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-  <div class="header">PREVISIONI METEO - PROCIDA</div>
-  <div id="maininfo" class="today-main"></div>
-  <div id="tabbar" class="tabs"></div>
-  <div class="chart-container" id="chartcontainer"></div>
-  <div class="chart-container" id="windchartcontainer"></div>
-  <div class="chart-container" id="rainchartcontainer"></div>
-  <div class="chart-container" id="marinechartcontainer">
-    <section class="card card-anim" role="region" aria-label="Grafico onde marine">
-      <div class="chart-title">Condizioni Marine</div>
-      <div class="canvas-wrap"><canvas id="marine-wave-chart"></canvas></div>
-      <div id="marine-summary"></div>
-      <div id="marine-alerts"></div>
-    </section>
+  <div class="header">PREVISIONI METEO PROCIDA</div>
+  <div id="selectedDayBox" class="selected-date"></div>
+  <div class="dashboard">
+    <section class="box vento" id="windbox"></section>
+    <section class="box pioggia" id="rainbox"></section>
+    <section class="box mare" id="seabox"></section>
+    <section class="box pressione" id="pressbox"></section>
   </div>
+  <div class="mini-days" id="miniDaysBox"></div>
   <div class="footer" id="footer"></div>
-<script>
-// --- DATI DIRETTI, NON ARRAY! ---
-const DATA = {"mergedHourly":[{"time":"2025-10-17T00:00","wave_height":0.7,"swell_height":0.24,"swell_direction":161,"sea_surface_temperature":20.6},{"time":"2025-10-17T01:00","wave_height":0.68,"swell_height":0.2,"swell_direction":183,"sea_surface_temperature":20.5},{"time":"2025-10-17T02:00","wave_height":0.66,"swell_height":0.18,"swell_direction":205,"sea_surface_temperature":20.5},{"time":"2025-10-17T03:00","wave_height":0.62,"swell_height":0.18,"swell_direction":169,"sea_surface_temperature":20.5},{"time":"2025-10-17T04:00","wave_height":0.56,"swell_height":0.18,"swell_direction":134,"sea_surface_temperature":20.5},{"time":"2025-10-17T05:00","wave_height":0.52,"swell_height":0.18,"swell_direction":98,"sea_surface_temperature":20.5},{"time":"2025-10-17T06:00","wave_height":0.48,"swell_height":0.18,"swell_direction":110,"sea_surface_temperature":20.5},{"time":"2025-10-17T07:00","wave_height":0.46,"swell_height":0.16,"swell_direction":123,"sea_surface_temperature":20.5},{"time":"2025-10-17T08:00","wave_height":0.42,"swell_height":0.16,"swell_direction":135,"sea_surface_temperature":20.5},{"time":"2025-10-17T09:00","wave_height":0.4,"swell_height":0.16,"swell_direction":136,"sea_surface_temperature":20.5},{"time":"2025-10-17T10:00","wave_height":0.36,"swell_height":0.14,"swell_direction":138,"sea_surface_temperature":20.5},{"time":"2025-10-17T11:00","wave_height":0.34,"swell_height":0.14,"swell_direction":139,"sea_surface_temperature":20.5},{"time":"2025-10-17T12:00","wave_height":0.3,"swell_height":0.14,"swell_direction":136,"sea_surface_temperature":20.5},{"time":"2025-10-17T13:00","wave_height":0.26,"swell_height":0.12,"swell_direction":133,"sea_surface_temperature":20.6},{"time":"2025-10-17T14:00","wave_height":0.22,"swell_height":0.12,"swell_direction":130,"sea_surface_temperature":20.6},{"time":"2025-10-17T15:00","wave_height":0.2,"swell_height":0.1,"swell_direction":184,"sea_surface_temperature":20.6},{"time":"2025-10-17T16:00","wave_height":0.18,"swell_height":0.1,"swell_direction":239,"sea_surface_temperature":20.5},{"time":"2025-10-17T17:00","wave_height":0.16,"swell_height":0.08,"swell_direction":293,"sea_surface_temperature":20.5},{"time":"2025-10-17T18:00","wave_height":0.16,"swell_height":0.1,"swell_direction":292,"sea_surface_temperature":20.5},{"time":"2025-10-17T19:00","wave_height":0.16,"swell_height":0.1,"swell_direction":292,"sea_surface_temperature":20.5},{"time":"2025-10-17T20:00","wave_height":0.16,"swell_height":0.12,"swell_direction":291,"sea_surface_temperature":20.5},{"time":"2025-10-17T21:00","wave_height":0.16,"swell_height":0.12,"swell_direction":290,"sea_surface_temperature":20.4},{"time":"2025-10-17T22:00","wave_height":0.18,"swell_height":0.14,"swell_direction":290,"sea_surface_temperature":20.4},{"time":"2025-10-17T23:00","wave_height":0.18,"swell_height":0.14,"swell_direction":289,"sea_surface_temperature":20.4},{"time":"2025-10-18T00:00","wave_height":0.18,"swell_height":0.14,"swell_direction":288,"sea_surface_temperature":20.4},{"time":"2025-10-18T01:00","wave_height":0.18,"swell_height":0.16,"swell_direction":288,"sea_surface_temperature":20.3},{"time":"2025-10-18T02:00","wave_height":0.18,"swell_height":0.16,"swell_direction":287,"sea_surface_temperature":20.3},{"time":"2025-10-18T03:00","wave_height":0.18,"swell_height":0.16,"swell_direction":286,"sea_surface_temperature":20.3},{"time":"2025-10-18T04:00","wave_height":0.2,"swell_height":0.18,"swell_direction":286,"sea_surface_temperature":20.2},{"time":"2025-10-18T05:00","wave_height":0.2,"swell_height":0.18,"swell_direction":285,"sea_surface_temperature":20.2},{"time":"2025-10-18T06:00","wave_height":0.2,"swell_height":0.18,"swell_direction":284,"sea_surface_temperature":20.2},{"time":"2025-10-18T07:00","wave_height":0.22,"swell_height":0.2,"swell_direction":284,"sea_surface_temperature":20.2},{"time":"2025-10-18T08:00","wave_height":0.22,"swell_height":0.2,"swell_direction":283,"sea_surface_temperature":20.2},{"time":"2025-10-18T09:00","wave_height":0.22,"swell_height":0.2,"swell_direction":283,"sea_surface_temperature":20.2},{"time":"2025-10-18T10:00","wave_height":0.22,"swell_height":0.2,"swell_direction":282,"sea_surface_temperature":20.2},{"time":"2025-10-18T11:00","wave_height":0.22,"swell_height":0.2,"swell_direction":282,"sea_surface_temperature":20.2},{"time":"2025-10-18T12:00","wave_height":0.22,"swell_height":0.2,"swell_direction":281,"sea_surface_temperature":20.3},{"time":"2025-10-18T13:00","wave_height":0.22,"swell_height":0.22,"swell_direction":281,"sea_surface_temperature":20.3},{"time":"2025-10-18T14:00","wave_height":0.22,"swell_height":0.22,"swell_direction":280,"sea_surface_temperature":20.3},{"time":"2025-10-18T15:00","wave_height":0.22,"swell_height":0.22,"swell_direction":281,"sea_surface_temperature":20.3},{"time":"2025-10-18T16:00","wave_height":0.22,"swell_height":0.22,"swell_direction":281,"sea_surface_temperature":20.2},{"time":"2025-10-18T17:00","wave_height":0.22,"swell_height":0.22,"swell_direction":282,"sea_surface_temperature":20.2},{"time":"2025-10-18T18:00","wave_height":0.22,"swell_height":0.22,"swell_direction":280,"sea_surface_temperature":20.2},{"time":"2025-10-18T19:00","wave_height":0.22,"swell_height":0.22,"swell_direction":277,"sea_surface_temperature":20.2},{"time":"2025-10-18T20:00","wave_height":0.22,"swell_height":0.22,"swell_direction":275,"sea_surface_temperature":20.1},{"time":"2025-10-18T21:00","wave_height":0.22,"swell_height":0.22,"swell_direction":277,"sea_surface_temperature":20.1},{"time":"2025-10-18T22:00","wave_height":0.2,"swell_height":0.2,"swell_direction":278,"sea_surface_temperature":20.1},{"time":"2025-10-18T23:00","wave_height":0.2,"swell_height":0.2,"swell_direction":280,"sea_surface_temperature":20},{"time":"2025-10-19T00:00","wave_height":0.2,"swell_height":0.18,"swell_direction":280,"sea_surface_temperature":20},{"time":"2025-10-19T01:00","wave_height":0.18,"swell_height":0.18,"swell_direction":279,"sea_surface_temperature":20},{"time":"2025-10-19T02:00","wave_height":0.18,"swell_height":0.16,"swell_direction":279,"sea_surface_temperature":20},{"time":"2025-10-19T03:00","wave_height":0.18,"swell_height":0.16,"swell_direction":276,"sea_surface_temperature":20},{"time":"2025-10-19T04:00","wave_height":0.18,"swell_height":0.14,"swell_direction":272,"sea_surface_temperature":20},{"time":"2025-10-19T05:00","wave_height":0.18,"swell_height":0.14,"swell_direction":269,"sea_surface_temperature":19.9},{"time":"2025-10-19T06:00","wave_height":0.22,"swell_height":0.14,"swell_direction":269,"sea_surface_temperature":19.9},{"time":"2025-10-19T07:00","wave_height":0.24,"swell_height":0.12,"swell_direction":270,"sea_surface_temperature":19.9},{"time":"2025-10-19T08:00","wave_height":0.28,"swell_height":0.12,"swell_direction":270,"sea_surface_temperature":19.9},{"time":"2025-10-19T09:00","wave_height":0.26,"swell_height":0.12,"swell_direction":270,"sea_surface_temperature":19.9},{"time":"2025-10-19T10:00","wave_height":0.26,"swell_height":0.1,"swell_direction":271,"sea_surface_temperature":19.9},{"time":"2025-10-19T11:00","wave_height":0.24,"swell_height":0.1,"swell_direction":271,"sea_surface_temperature":19.9},{"time":"2025-10-19T12:00","wave_height":0.22,"swell_height":0.12,"swell_direction":318,"sea_surface_temperature":19.9},{"time":"2025-10-19T13:00","wave_height":0.2,"swell_height":0.12,"swell_direction":5,"sea_surface_temperature":19.9},{"time":"2025-10-19T14:00","wave_height":0.18,"swell_height":0.14,"swell_direction":52,"sea_surface_temperature":19.9},{"time":"2025-10-19T15:00","wave_height":0.16,"swell_height":0.12,"swell_direction":72,"sea_surface_temperature":19.9},{"time":"2025-10-19T16:00","wave_height":0.14,"swell_height":0.1,"swell_direction":93,"sea_surface_temperature":19.9},{"time":"2025-10-19T17:00","wave_height":0.12,"swell_height":0.08,"swell_direction":113,"sea_surface_temperature":19.9},{"time":"2025-10-19T18:00","wave_height":0.12,"swell_height":0.08,"swell_direction":170,"sea_surface_temperature":19.9},{"time":"2025-10-19T19:00","wave_height":0.1,"swell_height":0.06,"swell_direction":228,"sea_surface_temperature":19.8},{"time":"2025-10-19T20:00","wave_height":0.1,"swell_height":0.06,"swell_direction":285,"sea_surface_temperature":19.8},{"time":"2025-10-19T21:00","wave_height":0.12,"swell_height":0.08,"swell_direction":291,"sea_surface_temperature":19.8},{"time":"2025-10-19T22:00","wave_height":0.16,"swell_height":0.08,"swell_direction":298,"sea_surface_temperature":19.8},{"time":"2025-10-19T23:00","wave_height":0.18,"swell_height":0.1,"swell_direction":304,"sea_surface_temperature":19.8},{"time":"2025-10-20T00:00","wave_height":0.18,"swell_height":0.1,"swell_direction":303,"sea_surface_temperature":19.8},{"time":"2025-10-20T01:00","wave_height":0.18,"swell_height":0.12,"swell_direction":303,"sea_surface_temperature":19.8},{"time":"2025-10-20T02:00","wave_height":0.18,"swell_height":0.12,"swell_direction":302,"sea_surface_temperature":19.8},{"time":"2025-10-20T03:00","wave_height":0.16,"swell_height":0.12,"swell_direction":302,"sea_surface_temperature":19.8},{"time":"2025-10-20T04:00","wave_height":0.16,"swell_height":0.1,"swell_direction":301,"sea_surface_temperature":19.8},{"time":"2025-10-20T05:00","wave_height":0.14,"swell_height":0.1,"swell_direction":301,"sea_surface_temperature":19.8},{"time":"2025-10-20T06:00","wave_height":0.12,"swell_height":0.1,"swell_direction":300,"sea_surface_temperature":19.8},{"time":"2025-10-20T07:00","wave_height":0.12,"swell_height":0.08,"swell_direction":300,"sea_surface_temperature":19.8},{"time":"2025-10-20T08:00","wave_height":0.1,"swell_height":0.08,"swell_direction":299,"sea_surface_temperature":19.8},{"time":"2025-10-20T09:00","wave_height":0.1,"swell_height":0.08,"swell_direction":298,"sea_surface_temperature":19.8},{"time":"2025-10-20T10:00","wave_height":0.08,"swell_height":0.06,"swell_direction":297,"sea_surface_temperature":19.9},{"time":"2025-10-20T11:00","wave_height":0.08,"swell_height":0.06,"swell_direction":296,"sea_surface_temperature":19.9},{"time":"2025-10-20T12:00","wave_height":0.08,"swell_height":0.06,"swell_direction":296,"sea_surface_temperature":20},{"time":"2025-10-20T13:00","wave_height":0.06,"swell_height":0.04,"swell_direction":296,"sea_surface_temperature":20},{"time":"2025-10-20T14:00","wave_height":0.06,"swell_height":0.04,"swell_direction":296,"sea_surface_temperature":20},{"time":"2025-10-20T15:00","wave_height":0.06,"swell_height":0.04,"swell_direction":295,"sea_surface_temperature":20},{"time":"2025-10-20T16:00","wave_height":0.06,"swell_height":0.04,"swell_direction":295,"sea_surface_temperature":20},{"time":"2025-10-20T17:00","wave_height":0.06,"swell_height":0.04,"swell_direction":294,"sea_surface_temperature":20},{"time":"2025-10-20T18:00","wave_height":0.06,"swell_height":0.04,"swell_direction":294,"sea_surface_temperature":20},{"time":"2025-10-20T19:00","wave_height":0.04,"swell_height":0.04,"swell_direction":295,"sea_surface_temperature":19.9},{"time":"2025-10-20T20:00","wave_height":0.04,"swell_height":0.04,"swell_direction":295,"sea_surface_temperature":19.9},{"time":"2025-10-20T21:00","wave_height":0.04,"swell_height":0.04,"swell_direction":295,"sea_surface_temperature":19.9},{"time":"2025-10-20T22:00","wave_height":0.04,"swell_height":0.04,"swell_direction":295,"sea_surface_temperature":19.9},{"time":"2025-10-20T23:00","wave_height":0.04,"swell_height":0.04,"swell_direction":295,"sea_surface_temperature":19.9},{"time":"2025-10-21T00:00","wave_height":0.04,"swell_height":0.04,"swell_direction":295,"sea_surface_temperature":19.9},{"time":"2025-10-21T01:00","wave_height":0.04,"swell_height":0.02,"swell_direction":294,"sea_surface_temperature":19.9},{"time":"2025-10-21T02:00","wave_height":0.04,"swell_height":0.02,"swell_direction":294,"sea_surface_temperature":19.9},{"time":"2025-10-21T03:00","wave_height":0.04,"swell_height":0.02,"swell_direction":249,"sea_surface_temperature":19.9},{"time":"2025-10-21T04:00","wave_height":0.04,"swell_height":0.02,"swell_direction":204,"sea_surface_temperature":19.9},{"time":"2025-10-21T05:00","wave_height":0.04,"swell_height":0.02,"swell_direction":159,"sea_surface_temperature":19.8},{"time":"2025-10-21T06:00","wave_height":0.04,"swell_height":0.02,"swell_direction":193,"sea_surface_temperature":19.8},{"time":"2025-10-21T07:00","wave_height":0.04,"swell_height":0.02,"swell_direction":228,"sea_surface_temperature":19.8},{"time":"2025-10-21T08:00","wave_height":0.04,"swell_height":0.02,"swell_direction":262,"sea_surface_temperature":19.8},{"time":"2025-10-21T09:00","wave_height":0.08,"swell_height":0.02,"swell_direction":262,"sea_surface_temperature":19.8},{"time":"2025-10-21T10:00","wave_height":0.1,"swell_height":0.04,"swell_direction":263,"sea_surface_temperature":19.9},{"time":"2025-10-21T11:00","wave_height":0.14,"swell_height":0.04,"swell_direction":263,"sea_surface_temperature":19.9},{"time":"2025-10-21T12:00","wave_height":0.18,"swell_height":0.08,"swell_direction":217,"sea_surface_temperature":19.9},{"time":"2025-10-21T13:00","wave_height":0.22,"swell_height":0.1,"swell_direction":172,"sea_surface_temperature":19.9},{"time":"2025-10-21T14:00","wave_height":0.26,"swell_height":0.14,"swell_direction":126,"sea_surface_temperature":19.9},{"time":"2025-10-21T15:00","wave_height":0.3,"swell_height":0.16,"swell_direction":171,"sea_surface_temperature":19.9},{"time":"2025-10-21T16:00","wave_height":0.34,"swell_height":0.18,"swell_direction":217,"sea_surface_temperature":19.9},{"time":"2025-10-21T17:00","wave_height":0.38,"swell_height":0.2,"swell_direction":262,"sea_surface_temperature":19.9},{"time":"2025-10-21T18:00","wave_height":0.42,"swell_height":0.22,"swell_direction":263,"sea_surface_temperature":19.9},{"time":"2025-10-21T19:00","wave_height":0.46,"swell_height":0.26,"swell_direction":264,"sea_surface_temperature":19.9},{"time":"2025-10-21T20:00","wave_height":0.5,"swell_height":0.28,"swell_direction":265,"sea_surface_temperature":19.9},{"time":"2025-10-21T21:00","wave_height":0.6,"swell_height":0.28,"swell_direction":265,"sea_surface_temperature":19.9},{"time":"2025-10-21T22:00","wave_height":0.68,"swell_height":0.3,"swell_direction":264,"sea_surface_temperature":19.9},{"time":"2025-10-21T23:00","wave_height":0.78,"swell_height":0.3,"swell_direction":264,"sea_surface_temperature":19.9},{"time":"2025-10-22T00:00","wave_height":0.84,"swell_height":0.38,"swell_direction":257,"sea_surface_temperature":19.9},{"time":"2025-10-22T01:00","wave_height":0.92,"swell_height":0.48,"swell_direction":249,"sea_surface_temperature":19.9},{"time":"2025-10-22T02:00","wave_height":0.98,"swell_height":0.56,"swell_direction":242,"sea_surface_temperature":19.9},{"time":"2025-10-22T03:00","wave_height":1.04,"swell_height":0.7,"swell_direction":238,"sea_surface_temperature":19.9},{"time":"2025-10-22T04:00","wave_height":1.12,"swell_height":0.84,"swell_direction":235,"sea_surface_temperature":19.9},{"time":"2025-10-22T05:00","wave_height":1.18,"swell_height":0.98,"swell_direction":231,"sea_surface_temperature":19.9},{"time":"2025-10-22T06:00","wave_height":1.2,"swell_height":1.02,"swell_direction":228,"sea_surface_temperature":19.9},{"time":"2025-10-22T07:00","wave_height":1.24,"swell_height":1.06,"swell_direction":225,"sea_surface_temperature":19.9},{"time":"2025-10-22T08:00","wave_height":1.26,"swell_height":1.1,"swell_direction":222,"sea_surface_temperature":19.9},{"time":"2025-10-22T09:00","wave_height":1.24,"swell_height":1.12,"swell_direction":223,"sea_surface_temperature":19.9},{"time":"2025-10-22T10:00","wave_height":1.22,"swell_height":1.14,"swell_direction":224,"sea_surface_temperature":19.9},{"time":"2025-10-22T11:00","wave_height":1.2,"swell_height":1.16,"swell_direction":225,"sea_surface_temperature":20},{"time":"2025-10-22T12:00","wave_height":1.18,"swell_height":1.14,"swell_direction":225,"sea_surface_temperature":20},{"time":"2025-10-22T13:00","wave_height":1.14,"swell_height":1.12,"swell_direction":224,"sea_surface_temperature":20},{"time":"2025-10-22T14:00","wave_height":1.12,"swell_height":1.1,"swell_direction":224,"sea_surface_temperature":20},{"time":"2025-10-22T15:00","wave_height":1.08,"swell_height":1.08,"swell_direction":225,"sea_surface_temperature":20},{"time":"2025-10-22T16:00","wave_height":1.06,"swell_height":1.04,"swell_direction":225,"sea_surface_temperature":20.1},{"time":"2025-10-22T17:00","wave_height":1.02,"swell_height":1.02,"swell_direction":226,"sea_surface_temperature":20.1},{"time":"2025-10-22T18:00","wave_height":1,"swell_height":0.94,"swell_direction":231,"sea_surface_temperature":20.1},{"time":"2025-10-22T19:00","wave_height":0.98,"swell_height":0.88,"swell_direction":236,"sea_surface_temperature":20.1},{"time":"2025-10-22T20:00","wave_height":0.96,"swell_height":0.8,"swell_direction":241,"sea_surface_temperature":20.1},{"time":"2025-10-22T21:00","wave_height":0.94,"swell_height":0.78,"swell_direction":235,"sea_surface_temperature":20.1},{"time":"2025-10-22T22:00","wave_height":0.92,"swell_height":0.78,"swell_direction":228,"sea_surface_temperature":20.1},{"time":"2025-10-22T23:00","wave_height":0.9,"swell_height":0.76,"swell_direction":222,"sea_surface_temperature":20.1},{"time":"2025-10-23T00:00","wave_height":0.88,"swell_height":0.74,"swell_direction":222,"sea_surface_temperature":20},{"time":"2025-10-23T01:00","wave_height":0.88,"swell_height":0.74,"swell_direction":222,"sea_surface_temperature":20},{"time":"2025-10-23T02:00","wave_height":0.86,"swell_height":0.72,"swell_direction":222,"sea_surface_temperature":20},{"time":"2025-10-23T03:00","wave_height":0.84,"swell_height":0.7,"swell_direction":223,"sea_surface_temperature":20},{"time":"2025-10-23T04:00","wave_height":0.82,"swell_height":0.68,"swell_direction":223,"sea_surface_temperature":20},{"time":"2025-10-23T05:00","wave_height":0.8,"swell_height":0.66,"swell_direction":224,"sea_surface_temperature":20},{"time":"2025-10-23T06:00","wave_height":0.78,"swell_height":0.64,"swell_direction":225,"sea_surface_temperature":20},{"time":"2025-10-23T07:00","wave_height":0.76,"swell_height":0.64,"swell_direction":226,"sea_surface_temperature":20},{"time":"2025-10-23T08:00","wave_height":0.74,"swell_height":0.62,"swell_direction":227,"sea_surface_temperature":20},{"time":"2025-10-23T09:00","wave_height":0.74,"swell_height":0.62,"swell_direction":227,"sea_surface_temperature":20.1},{"time":"2025-10-23T10:00","wave_height":0.72,"swell_height":0.6,"swell_direction":228,"sea_surface_temperature":20.1},{"time":"2025-10-23T11:00","wave_height":0.72,"swell_height":0.6,"swell_direction":228,"sea_surface_temperature":20.2},{"time":"2025-10-23T12:00","wave_height":0.72,"swell_height":0.58,"swell_direction":229,"sea_surface_temperature":20.2},{"time":"2025-10-23T13:00","wave_height":0.7,"swell_height":0.58,"swell_direction":230,"sea_surface_temperature":20.3},{"time":"2025-10-23T14:00","wave_height":0.7,"swell_height":0.56,"swell_direction":231,"sea_surface_temperature":20.4},{"time":"2025-10-23T15:00","wave_height":0.68,"swell_height":0.54,"swell_direction":230,"sea_surface_temperature":20.4},{"time":"2025-10-23T16:00","wave_height":0.68,"swell_height":0.54,"swell_direction":228,"sea_surface_temperature":20.4},{"time":"2025-10-23T17:00","wave_height":0.66,"swell_height":0.52,"swell_direction":227,"sea_surface_temperature":20.4},{"time":"2025-10-23T18:00","wave_height":0.66,"swell_height":0.5,"swell_direction":232,"sea_surface_temperature":20.4},{"time":"2025-10-23T19:00","wave_height":0.64,"swell_height":0.48,"swell_direction":238,"sea_surface_temperature":20.3},{"time":"2025-10-23T20:00","wave_height":0.64,"swell_height":0.46,"swell_direction":243,"sea_surface_temperature":20.3},{"time":"2025-10-23T21:00","wave_height":0.64,"swell_height":0.48,"swell_direction":241,"sea_surface_temperature":20.3},{"time":"2025-10-23T22:00","wave_height":0.62,"swell_height":0.5,"swell_direction":238,"sea_surface_temperature":20.3},{"time":"2025-10-23T23:00","wave_height":0.62,"swell_height":0.52,"swell_direction":236,"sea_surface_temperature":20.2}],"alerts":[{"type":"mare_mosso","message":"Mare mosso, attenzione nelle partenze."}],"advice":"Consiglio: mare mosso, utilizza precauzioni.","tides":{},"days":[{"day_label":"17/10","temp_max":"20.4","temp_min":"17.6","precipitation":"0.60","icon":"⛅","hourly_labels":["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"],"hourly_temps":[17.6,17.8,17.8,17.9,17.9,17.9,17.8,17.8,18,18.2,18.5,18.9,19.3,19.7,20.4,20.4,20.2,19.9,19.7,19.4,19.4,19.4,19.4,19.3],"hourly_winds":[18,16.4,16.3,15.9,15.1,16.2,15.5,15.2,14.2,14.8,13.8,15.4,15.2,14.6,13,11.9,11.6,13.1,12.2,12.2,11,9,7.6,7.2],"hourly_wind_directions":[29,15,6,4,359,4,3,356,353,357,351,349,346,351,2,346,334,328,336,341,349,358,3,354],"hourly_precips":[0.1,0.1,0.1,0.1,0,0,0,0,0,0,0,0,0,0,0,0,0.1,0,0.1,0,0,0,0,0],"hourly_pressures":[1013.9,1013.8,1013.1,1012.9,1012.3,1012.8,1012.8,1013,1013.4,1013.7,1014,1014.6,1014.7,1014.4,1014.1,1014.3,1014.5,1014.7,1015.2,1015.8,1016.2,1016.7,1017.3,1017.6],"pressure_avg":"1014.4"},{"day_label":"18/10","temp_max":"19.8","temp_min":"18.3","precipitation":"0.00","icon":"🌤️","hourly_labels":["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"],"hourly_temps":[18.6,18.3,18.5,18.5,18.6,18.5,18.5,18.5,18.6,18.6,18.5,18.6,18.8,19.3,19.7,19.8,19.8,19.8,19.7,19.6,19.5,19.4,19.3,18.7],"hourly_winds":[7.2,4.7,3.6,3.8,2.9,2.5,1.8,2,4.3,4.7,3.6,3.1,4.3,5.4,6.2,6,6.4,6.2,4.3,1.6,2.5,5,6.9,8.3],"hourly_wind_directions":[354,360,6,343,7,8,11,45,66,81,96,126,175,184,190,197,196,201,204,207,45,69,81,88],"hourly_precips":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"hourly_pressures":[1017.9,1017.9,1018.1,1017.9,1018,1018.1,1018.6,1018.7,1019.2,1019.8,1020.5,1020.6,1020.5,1020.1,1019.8,1019.5,1019.4,1019.1,1019.3,1019.5,1019.9,1020.1,1020.4,1020.6],"pressure_avg":"1019.3"},{"day_label":"19/10","temp_max":"20.1","temp_min":"17.6","precipitation":"0.00","icon":"☀️","hourly_labels":["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"],"hourly_temps":[18.5,18.5,18.3,18.1,17.9,17.8,17.8,17.6,17.6,17.6,17.9,18.3,18.9,19.5,19.9,20.1,20.1,20,20,20.1,19.9,20.1,19.8,19.4],"hourly_winds":[6.8,7.4,8.4,9.5,9.7,9.4,9.2,10.7,10.7,11.2,11,11.8,10.6,8.1,5.6,3.5,3.6,4.6,6.2,8.4,8.1,7.7,7.2,6.5],"hourly_wind_directions":[90,76,59,53,48,50,45,40,40,42,52,50,62,69,75,114,186,231,263,295,315,332,6,34],"hourly_precips":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"hourly_pressures":[1020.7,1020.6,1020.7,1020.6,1020.6,1020.3,1020.1,1020.2,1020.4,1020.8,1020.9,1020.9,1020.6,1020.1,1019.6,1019,1018.6,1018.5,1018.3,1018.4,1018.4,1018,1018,1018],"pressure_avg":"1019.7"},{"day_label":"20/10","temp_max":"19.5","temp_min":"17.6","precipitation":"0.00","icon":"⛅","hourly_labels":["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"],"hourly_temps":[19.1,18.8,18.5,18.3,18.1,17.9,17.8,17.7,17.6,17.7,17.9,18.2,18.5,18.9,19,19.2,19.5,19.4,19.3,19.3,19.3,19.3,19.2,19.2],"hourly_winds":[6.9,6.6,6.7,6.4,6.7,6.5,4.8,5.4,4.1,4.4,3.8,3.8,2.2,2.6,4,5.1,5.8,7,6.9,6.8,6.6,6,5.6,5.1],"hourly_wind_directions":[47,49,54,47,36,34,48,48,52,55,73,73,99,164,207,225,240,249,242,238,241,237,230,225],"hourly_precips":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"hourly_pressures":[1017.8,1017.6,1017.1,1016.8,1016.4,1016.2,1015.8,1015.6,1015.7,1015.9,1016,1016,1015.9,1015.3,1014.5,1013.8,1013.5,1013.4,1013.2,1013.3,1013.3,1013.2,1013.2,1013],"pressure_avg":"1015.1"},{"day_label":"21/10","temp_max":"20.3","temp_min":"18.9","precipitation":"18.90","icon":"🌤️","hourly_labels":["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"],"hourly_temps":[19.2,19.2,19.2,19.1,19.1,19.1,19.1,19.3,19.4,19.5,19.7,19.8,19.8,19.8,19.9,20.1,20.3,20.3,20,19.4,19,18.9,18.9,19],"hourly_winds":[5.1,5.4,5.9,6.6,7.7,8.2,7.9,6.9,6.9,8.9,11.6,13.8,14.3,14.8,15.6,16.7,18,19.2,21,22.8,23.3,21.6,19.5,17.4],"hourly_wind_directions":[219,217,218,225,229,232,231,227,219,212,206,200,192,180,172,166,164,163,164,168,172,180,192,202],"hourly_precips":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.8,0.8,0.8,5.5,5.5,5.5],"hourly_pressures":[1012.7,1012.3,1011.9,1011.5,1011,1010.7,1010.6,1010.5,1010.6,1010.8,1011,1011.1,1010.9,1010.5,1010,1009.5,1008.9,1008.5,1008.3,1008.2,1008,1007.6,1007.2,1006.7],"pressure_avg":"1010.0"},{"day_label":"22/10","temp_max":"20.8","temp_min":"18.5","precipitation":"8.40","icon":"🌤️","hourly_labels":["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"],"hourly_temps":[19.2,19.4,19.6,19.5,19.2,19,18.8,18.6,18.5,18.7,19,19.4,19.8,20.2,20.5,20.6,20.6,20.6,20.6,20.6,20.7,20.7,20.8,20.7],"hourly_winds":[15.3,12.6,9.3,3.7,2.9,7.2,8,7.6,7.4,7.9,8.6,8.9,9.5,10.8,11.7,14.9,14.8,14.1,13.1,11.4,10.1,8.1,6.5,5.4],"hourly_wind_directions":[204,200,196,191,30,18,8,352,337,330,327,320,307,296,288,277,276,276,278,283,287,283,273,266],"hourly_precips":[2.5,2.5,2.5,0.3,0.3,0.3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"hourly_pressures":[1006.2,1005.6,1005.2,1004.8,1004.5,1004.5,1004.8,1005.4,1006,1006.7,1007.6,1008.2,1008.6,1008.8,1008.9,1009.1,1009.3,1009.7,1010.3,1011,1011.6,1012.1,1012.7,1013.1],"pressure_avg":"1008.1"},{"day_label":"23/10","temp_max":"21.2","temp_min":"19.1","precipitation":"0.60","icon":"🌤️","hourly_labels":["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"],"hourly_temps":[20.4,19.8,19.4,19.2,19.2,19.1,19.1,19.1,19.2,19.4,19.7,20,20.3,20.6,20.9,21.1,21.2,21.2,21.1,20.9,20.7,20.7,20.7,20.8],"hourly_winds":[6.1,7.3,8.1,7.3,6.1,4.3,3,5.1,7.9,9.8,11.4,11.5,10.8,10.5,11.2,11.1,10.5,9.8,8.1,6.2,4.7,4.8,5.4,6.2],"hourly_wind_directions":[270,281,283,279,267,246,194,141,129,126,125,129,143,164,182,193,202,208,212,216,212,207,200,190],"hourly_precips":[0.1,0.1,0.1,0.1,0.1,0.1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"hourly_pressures":[1013.5,1013.8,1014.1,1014.2,1014.3,1014.4,1014.6,1014.7,1015,1015.4,1015.9,1016.2,1016.4,1016.4,1016.4,1016.3,1016.1,1016.1,1016.4,1016.9,1017.3,1017.5,1017.7,1017.8],"pressure_avg":"1015.7"}],"updated_at":"17/10/2025, 19:00:47"};
-const days = DATA.days;
-const mergedHourly = DATA.mergedHourly || [];
-const alerts = DATA.alerts || [];
-const advice = DATA.advice || "";
-const updated_at = DATA.updated_at;
-let current = 0;
-let tempChart = null, windChart = null, rainChart = null, marineChart = null;
+  <script>
+    const jsonInput = {"mergedHourly":[{"time":"2025-10-17T00:00","wave_height":0.7,"swell_height":0.24,"swell_direction":161,"sea_surface_temperature":20.6},{"time":"2025-10-17T01:00","wave_height":0.68,"swell_height":0.2,"swell_direction":183,"sea_surface_temperature":20.5},{"time":"2025-10-17T02:00","wave_height":0.66,"swell_height":0.18,"swell_direction":205,"sea_surface_temperature":20.5},{"time":"2025-10-17T03:00","wave_height":0.62,"swell_height":0.18,"swell_direction":169,"sea_surface_temperature":20.5},{"time":"2025-10-17T04:00","wave_height":0.56,"swell_height":0.18,"swell_direction":134,"sea_surface_temperature":20.5},{"time":"2025-10-17T05:00","wave_height":0.52,"swell_height":0.18,"swell_direction":98,"sea_surface_temperature":20.5},{"time":"2025-10-17T06:00","wave_height":0.48,"swell_height":0.18,"swell_direction":110,"sea_surface_temperature":20.5},{"time":"2025-10-17T07:00","wave_height":0.46,"swell_height":0.16,"swell_direction":123,"sea_surface_temperature":20.5},{"time":"2025-10-17T08:00","wave_height":0.42,"swell_height":0.16,"swell_direction":135,"sea_surface_temperature":20.5},{"time":"2025-10-17T09:00","wave_height":0.4,"swell_height":0.16,"swell_direction":136,"sea_surface_temperature":20.5},{"time":"2025-10-17T10:00","wave_height":0.36,"swell_height":0.14,"swell_direction":138,"sea_surface_temperature":20.5},{"time":"2025-10-17T11:00","wave_height":0.34,"swell_height":0.14,"swell_direction":139,"sea_surface_temperature":20.5},{"time":"2025-10-17T12:00","wave_height":0.3,"swell_height":0.14,"swell_direction":136,"sea_surface_temperature":20.5},{"time":"2025-10-17T13:00","wave_height":0.26,"swell_height":0.12,"swell_direction":133,"sea_surface_temperature":20.6},{"time":"2025-10-17T14:00","wave_height":0.22,"swell_height":0.12,"swell_direction":130,"sea_surface_temperature":20.6},{"time":"2025-10-17T15:00","wave_height":0.2,"swell_height":0.1,"swell_direction":184,"sea_surface_temperature":20.6},{"time":"2025-10-17T16:00","wave_height":0.18,"swell_height":0.1,"swell_direction":239,"sea_surface_temperature":20.5},{"time":"2025-10-17T17:00","wave_height":0.16,"swell_height":0.08,"swell_direction":293,"sea_surface_temperature":20.5},{"time":"2025-10-17T18:00","wave_height":0.16,"swell_height":0.1,"swell_direction":292,"sea_surface_temperature":20.5},{"time":"2025-10-17T19:00","wave_height":0.16,"swell_height":0.1,"swell_direction":292,"sea_surface_temperature":20.5},{"time":"2025-10-17T20:00","wave_height":0.16,"swell_height":0.12,"swell_direction":291,"sea_surface_temperature":20.5},{"time":"2025-10-17T21:00","wave_height":0.16,"swell_height":0.12,"swell_direction":290,"sea_surface_temperature":20.4},{"time":"2025-10-17T22:00","wave_height":0.18,"swell_height":0.14,"swell_direction":290,"sea_surface_temperature":20.4},{"time":"2025-10-17T23:00","wave_height":0.18,"swell_height":0.14,"swell_direction":289,"sea_surface_temperature":20.4},{"time":"2025-10-18T00:00","wave_height":0.18,"swell_height":0.14,"swell_direction":288,"sea_surface_temperature":20.4},{"time":"2025-10-18T01:00","wave_height":0.18,"swell_height":0.16,"swell_direction":288,"sea_surface_temperature":20.3},{"time":"2025-10-18T02:00","wave_height":0.18,"swell_height":0.16,"swell_direction":287,"sea_surface_temperature":20.3},{"time":"2025-10-18T03:00","wave_height":0.18,"swell_height":0.16,"swell_direction":286,"sea_surface_temperature":20.3},{"time":"2025-10-18T04:00","wave_height":0.2,"swell_height":0.18,"swell_direction":286,"sea_surface_temperature":20.2},{"time":"2025-10-18T05:00","wave_height":0.2,"swell_height":0.18,"swell_direction":285,"sea_surface_temperature":20.2},{"time":"2025-10-18T06:00","wave_height":0.2,"swell_height":0.18,"swell_direction":284,"sea_surface_temperature":20.2},{"time":"2025-10-18T07:00","wave_height":0.22,"swell_height":0.2,"swell_direction":284,"sea_surface_temperature":20.2},{"time":"2025-10-18T08:00","wave_height":0.22,"swell_height":0.2,"swell_direction":283,"sea_surface_temperature":20.2},{"time":"2025-10-18T09:00","wave_height":0.22,"swell_height":0.2,"swell_direction":283,"sea_surface_temperature":20.2},{"time":"2025-10-18T10:00","wave_height":0.22,"swell_height":0.2,"swell_direction":282,"sea_surface_temperature":20.2},{"time":"2025-10-18T11:00","wave_height":0.22,"swell_height":0.2,"swell_direction":282,"sea_surface_temperature":20.2},{"time":"2025-10-18T12:00","wave_height":0.22,"swell_height":0.2,"swell_direction":281,"sea_surface_temperature":20.3},{"time":"2025-10-18T13:00","wave_height":0.22,"swell_height":0.22,"swell_direction":281,"sea_surface_temperature":20.3},{"time":"2025-10-18T14:00","wave_height":0.22,"swell_height":0.22,"swell_direction":280,"sea_surface_temperature":20.3},{"time":"2025-10-18T15:00","wave_height":0.22,"swell_height":0.22,"swell_direction":281,"sea_surface_temperature":20.3},{"time":"2025-10-18T16:00","wave_height":0.22,"swell_height":0.22,"swell_direction":281,"sea_surface_temperature":20.2},{"time":"2025-10-18T17:00","wave_height":0.22,"swell_height":0.22,"swell_direction":282,"sea_surface_temperature":20.2},{"time":"2025-10-18T18:00","wave_height":0.22,"swell_height":0.22,"swell_direction":280,"sea_surface_temperature":20.2},{"time":"2025-10-18T19:00","wave_height":0.22,"swell_height":0.22,"swell_direction":277,"sea_surface_temperature":20.2},{"time":"2025-10-18T20:00","wave_height":0.22,"swell_height":0.22,"swell_direction":275,"sea_surface_temperature":20.1},{"time":"2025-10-18T21:00","wave_height":0.22,"swell_height":0.22,"swell_direction":277,"sea_surface_temperature":20.1},{"time":"2025-10-18T22:00","wave_height":0.2,"swell_height":0.2,"swell_direction":278,"sea_surface_temperature":20.1},{"time":"2025-10-18T23:00","wave_height":0.2,"swell_height":0.2,"swell_direction":280,"sea_surface_temperature":20},{"time":"2025-10-19T00:00","wave_height":0.2,"swell_height":0.18,"swell_direction":280,"sea_surface_temperature":20},{"time":"2025-10-19T01:00","wave_height":0.18,"swell_height":0.18,"swell_direction":279,"sea_surface_temperature":20},{"time":"2025-10-19T02:00","wave_height":0.18,"swell_height":0.16,"swell_direction":279,"sea_surface_temperature":20},{"time":"2025-10-19T03:00","wave_height":0.18,"swell_height":0.16,"swell_direction":276,"sea_surface_temperature":20},{"time":"2025-10-19T04:00","wave_height":0.18,"swell_height":0.14,"swell_direction":272,"sea_surface_temperature":20},{"time":"2025-10-19T05:00","wave_height":0.18,"swell_height":0.14,"swell_direction":269,"sea_surface_temperature":19.9},{"time":"2025-10-19T06:00","wave_height":0.22,"swell_height":0.14,"swell_direction":269,"sea_surface_temperature":19.9},{"time":"2025-10-19T07:00","wave_height":0.24,"swell_height":0.12,"swell_direction":270,"sea_surface_temperature":19.9},{"time":"2025-10-19T08:00","wave_height":0.28,"swell_height":0.12,"swell_direction":270,"sea_surface_temperature":19.9},{"time":"2025-10-19T09:00","wave_height":0.26,"swell_height":0.12,"swell_direction":270,"sea_surface_temperature":19.9},{"time":"2025-10-19T10:00","wave_height":0.26,"swell_height":0.1,"swell_direction":271,"sea_surface_temperature":19.9},{"time":"2025-10-19T11:00","wave_height":0.24,"swell_height":0.1,"swell_direction":271,"sea_surface_temperature":19.9},{"time":"2025-10-19T12:00","wave_height":0.22,"swell_height":0.12,"swell_direction":318,"sea_surface_temperature":19.9},{"time":"2025-10-19T13:00","wave_height":0.2,"swell_height":0.12,"swell_direction":5,"sea_surface_temperature":19.9},{"time":"2025-10-19T14:00","wave_height":0.18,"swell_height":0.14,"swell_direction":52,"sea_surface_temperature":19.9},{"time":"2025-10-19T15:00","wave_height":0.16,"swell_height":0.12,"swell_direction":72,"sea_surface_temperature":19.9},{"time":"2025-10-19T16:00","wave_height":0.14,"swell_height":0.1,"swell_direction":93,"sea_surface_temperature":19.9},{"time":"2025-10-19T17:00","wave_height":0.12,"swell_height":0.08,"swell_direction":113,"sea_surface_temperature":19.9},{"time":"2025-10-19T18:00","wave_height":0.12,"swell_height":0.08,"swell_direction":170,"sea_surface_temperature":19.9},{"time":"2025-10-19T19:00","wave_height":0.1,"swell_height":0.06,"swell_direction":228,"sea_surface_temperature":19.8},{"time":"2025-10-19T20:00","wave_height":0.1,"swell_height":0.06,"swell_direction":285,"sea_surface_temperature":19.8},{"time":"2025-10-19T21:00","wave_height":0.12,"swell_height":0.08,"swell_direction":291,"sea_surface_temperature":19.8},{"time":"2025-10-19T22:00","wave_height":0.16,"swell_height":0.08,"swell_direction":298,"sea_surface_temperature":19.8},{"time":"2025-10-19T23:00","wave_height":0.18,"swell_height":0.1,"swell_direction":304,"sea_surface_temperature":19.8},{"time":"2025-10-20T00:00","wave_height":0.18,"swell_height":0.1,"swell_direction":303,"sea_surface_temperature":19.8},{"time":"2025-10-20T01:00","wave_height":0.18,"swell_height":0.12,"swell_direction":303,"sea_surface_temperature":19.8},{"time":"2025-10-20T02:00","wave_height":0.18,"swell_height":0.12,"swell_direction":302,"sea_surface_temperature":19.8},{"time":"2025-10-20T03:00","wave_height":0.16,"swell_height":0.12,"swell_direction":302,"sea_surface_temperature":19.8},{"time":"2025-10-20T04:00","wave_height":0.16,"swell_height":0.1,"swell_direction":301,"sea_surface_temperature":19.8},{"time":"2025-10-20T05:00","wave_height":0.14,"swell_height":0.1,"swell_direction":301,"sea_surface_temperature":19.8},{"time":"2025-10-20T06:00","wave_height":0.12,"swell_height":0.1,"swell_direction":300,"sea_surface_temperature":19.8},{"time":"2025-10-20T07:00","wave_height":0.12,"swell_height":0.08,"swell_direction":300,"sea_surface_temperature":19.8},{"time":"2025-10-20T08:00","wave_height":0.1,"swell_height":0.08,"swell_direction":299,"sea_surface_temperature":19.8},{"time":"2025-10-20T09:00","wave_height":0.1,"swell_height":0.08,"swell_direction":298,"sea_surface_temperature":19.8},{"time":"2025-10-20T10:00","wave_height":0.08,"swell_height":0.06,"swell_direction":297,"sea_surface_temperature":19.9},{"time":"2025-10-20T11:00","wave_height":0.08,"swell_height":0.06,"swell_direction":296,"sea_surface_temperature":19.9},{"time":"2025-10-20T12:00","wave_height":0.08,"swell_height":0.06,"swell_direction":296,"sea_surface_temperature":20},{"time":"2025-10-20T13:00","wave_height":0.06,"swell_height":0.04,"swell_direction":296,"sea_surface_temperature":20},{"time":"2025-10-20T14:00","wave_height":0.06,"swell_height":0.04,"swell_direction":296,"sea_surface_temperature":20},{"time":"2025-10-20T15:00","wave_height":0.06,"swell_height":0.04,"swell_direction":295,"sea_surface_temperature":20},{"time":"2025-10-20T16:00","wave_height":0.06,"swell_height":0.04,"swell_direction":295,"sea_surface_temperature":20},{"time":"2025-10-20T17:00","wave_height":0.06,"swell_height":0.04,"swell_direction":294,"sea_surface_temperature":20},{"time":"2025-10-20T18:00","wave_height":0.06,"swell_height":0.04,"swell_direction":294,"sea_surface_temperature":20},{"time":"2025-10-20T19:00","wave_height":0.04,"swell_height":0.04,"swell_direction":295,"sea_surface_temperature":19.9},{"time":"2025-10-20T20:00","wave_height":0.04,"swell_height":0.04,"swell_direction":295,"sea_surface_temperature":19.9},{"time":"2025-10-20T21:00","wave_height":0.04,"swell_height":0.04,"swell_direction":295,"sea_surface_temperature":19.9},{"time":"2025-10-20T22:00","wave_height":0.04,"swell_height":0.04,"swell_direction":295,"sea_surface_temperature":19.9},{"time":"2025-10-20T23:00","wave_height":0.04,"swell_height":0.04,"swell_direction":295,"sea_surface_temperature":19.9},{"time":"2025-10-21T00:00","wave_height":0.04,"swell_height":0.04,"swell_direction":295,"sea_surface_temperature":19.9},{"time":"2025-10-21T01:00","wave_height":0.04,"swell_height":0.02,"swell_direction":294,"sea_surface_temperature":19.9},{"time":"2025-10-21T02:00","wave_height":0.04,"swell_height":0.02,"swell_direction":294,"sea_surface_temperature":19.9},{"time":"2025-10-21T03:00","wave_height":0.04,"swell_height":0.02,"swell_direction":249,"sea_surface_temperature":19.9},{"time":"2025-10-21T04:00","wave_height":0.04,"swell_height":0.02,"swell_direction":204,"sea_surface_temperature":19.9},{"time":"2025-10-21T05:00","wave_height":0.04,"swell_height":0.02,"swell_direction":159,"sea_surface_temperature":19.8},{"time":"2025-10-21T06:00","wave_height":0.04,"swell_height":0.02,"swell_direction":193,"sea_surface_temperature":19.8},{"time":"2025-10-21T07:00","wave_height":0.04,"swell_height":0.02,"swell_direction":228,"sea_surface_temperature":19.8},{"time":"2025-10-21T08:00","wave_height":0.04,"swell_height":0.02,"swell_direction":262,"sea_surface_temperature":19.8},{"time":"2025-10-21T09:00","wave_height":0.08,"swell_height":0.02,"swell_direction":262,"sea_surface_temperature":19.8},{"time":"2025-10-21T10:00","wave_height":0.1,"swell_height":0.04,"swell_direction":263,"sea_surface_temperature":19.9},{"time":"2025-10-21T11:00","wave_height":0.14,"swell_height":0.04,"swell_direction":263,"sea_surface_temperature":19.9},{"time":"2025-10-21T12:00","wave_height":0.18,"swell_height":0.08,"swell_direction":217,"sea_surface_temperature":19.9},{"time":"2025-10-21T13:00","wave_height":0.22,"swell_height":0.1,"swell_direction":172,"sea_surface_temperature":19.9},{"time":"2025-10-21T14:00","wave_height":0.26,"swell_height":0.14,"swell_direction":126,"sea_surface_temperature":19.9},{"time":"2025-10-21T15:00","wave_height":0.3,"swell_height":0.16,"swell_direction":171,"sea_surface_temperature":19.9},{"time":"2025-10-21T16:00","wave_height":0.34,"swell_height":0.18,"swell_direction":217,"sea_surface_temperature":19.9},{"time":"2025-10-21T17:00","wave_height":0.38,"swell_height":0.2,"swell_direction":262,"sea_surface_temperature":19.9},{"time":"2025-10-21T18:00","wave_height":0.42,"swell_height":0.22,"swell_direction":263,"sea_surface_temperature":19.9},{"time":"2025-10-21T19:00","wave_height":0.46,"swell_height":0.26,"swell_direction":264,"sea_surface_temperature":19.9},{"time":"2025-10-21T20:00","wave_height":0.5,"swell_height":0.28,"swell_direction":265,"sea_surface_temperature":19.9},{"time":"2025-10-21T21:00","wave_height":0.6,"swell_height":0.28,"swell_direction":265,"sea_surface_temperature":19.9},{"time":"2025-10-21T22:00","wave_height":0.68,"swell_height":0.3,"swell_direction":264,"sea_surface_temperature":19.9},{"time":"2025-10-21T23:00","wave_height":0.78,"swell_height":0.3,"swell_direction":264,"sea_surface_temperature":19.9},{"time":"2025-10-22T00:00","wave_height":0.84,"swell_height":0.38,"swell_direction":257,"sea_surface_temperature":19.9},{"time":"2025-10-22T01:00","wave_height":0.92,"swell_height":0.48,"swell_direction":249,"sea_surface_temperature":19.9},{"time":"2025-10-22T02:00","wave_height":0.98,"swell_height":0.56,"swell_direction":242,"sea_surface_temperature":19.9},{"time":"2025-10-22T03:00","wave_height":1.04,"swell_height":0.7,"swell_direction":238,"sea_surface_temperature":19.9},{"time":"2025-10-22T04:00","wave_height":1.12,"swell_height":0.84,"swell_direction":235,"sea_surface_temperature":19.9},{"time":"2025-10-22T05:00","wave_height":1.18,"swell_height":0.98,"swell_direction":231,"sea_surface_temperature":19.9},{"time":"2025-10-22T06:00","wave_height":1.2,"swell_height":1.02,"swell_direction":228,"sea_surface_temperature":19.9},{"time":"2025-10-22T07:00","wave_height":1.24,"swell_height":1.06,"swell_direction":225,"sea_surface_temperature":19.9},{"time":"2025-10-22T08:00","wave_height":1.26,"swell_height":1.1,"swell_direction":222,"sea_surface_temperature":19.9},{"time":"2025-10-22T09:00","wave_height":1.24,"swell_height":1.12,"swell_direction":223,"sea_surface_temperature":19.9},{"time":"2025-10-22T10:00","wave_height":1.22,"swell_height":1.14,"swell_direction":224,"sea_surface_temperature":19.9},{"time":"2025-10-22T11:00","wave_height":1.2,"swell_height":1.16,"swell_direction":225,"sea_surface_temperature":20},{"time":"2025-10-22T12:00","wave_height":1.18,"swell_height":1.14,"swell_direction":225,"sea_surface_temperature":20},{"time":"2025-10-22T13:00","wave_height":1.14,"swell_height":1.12,"swell_direction":224,"sea_surface_temperature":20},{"time":"2025-10-22T14:00","wave_height":1.12,"swell_height":1.1,"swell_direction":224,"sea_surface_temperature":20},{"time":"2025-10-22T15:00","wave_height":1.08,"swell_height":1.08,"swell_direction":225,"sea_surface_temperature":20},{"time":"2025-10-22T16:00","wave_height":1.06,"swell_height":1.04,"swell_direction":225,"sea_surface_temperature":20.1},{"time":"2025-10-22T17:00","wave_height":1.02,"swell_height":1.02,"swell_direction":226,"sea_surface_temperature":20.1},{"time":"2025-10-22T18:00","wave_height":1,"swell_height":0.94,"swell_direction":231,"sea_surface_temperature":20.1},{"time":"2025-10-22T19:00","wave_height":0.98,"swell_height":0.88,"swell_direction":236,"sea_surface_temperature":20.1},{"time":"2025-10-22T20:00","wave_height":0.96,"swell_height":0.8,"swell_direction":241,"sea_surface_temperature":20.1},{"time":"2025-10-22T21:00","wave_height":0.94,"swell_height":0.78,"swell_direction":235,"sea_surface_temperature":20.1},{"time":"2025-10-22T22:00","wave_height":0.92,"swell_height":0.78,"swell_direction":228,"sea_surface_temperature":20.1},{"time":"2025-10-22T23:00","wave_height":0.9,"swell_height":0.76,"swell_direction":222,"sea_surface_temperature":20.1},{"time":"2025-10-23T00:00","wave_height":0.88,"swell_height":0.74,"swell_direction":222,"sea_surface_temperature":20},{"time":"2025-10-23T01:00","wave_height":0.88,"swell_height":0.74,"swell_direction":222,"sea_surface_temperature":20},{"time":"2025-10-23T02:00","wave_height":0.86,"swell_height":0.72,"swell_direction":222,"sea_surface_temperature":20},{"time":"2025-10-23T03:00","wave_height":0.84,"swell_height":0.7,"swell_direction":223,"sea_surface_temperature":20},{"time":"2025-10-23T04:00","wave_height":0.82,"swell_height":0.68,"swell_direction":223,"sea_surface_temperature":20},{"time":"2025-10-23T05:00","wave_height":0.8,"swell_height":0.66,"swell_direction":224,"sea_surface_temperature":20},{"time":"2025-10-23T06:00","wave_height":0.78,"swell_height":0.64,"swell_direction":225,"sea_surface_temperature":20},{"time":"2025-10-23T07:00","wave_height":0.76,"swell_height":0.64,"swell_direction":226,"sea_surface_temperature":20},{"time":"2025-10-23T08:00","wave_height":0.74,"swell_height":0.62,"swell_direction":227,"sea_surface_temperature":20},{"time":"2025-10-23T09:00","wave_height":0.74,"swell_height":0.62,"swell_direction":227,"sea_surface_temperature":20.1},{"time":"2025-10-23T10:00","wave_height":0.72,"swell_height":0.6,"swell_direction":228,"sea_surface_temperature":20.1},{"time":"2025-10-23T11:00","wave_height":0.72,"swell_height":0.6,"swell_direction":228,"sea_surface_temperature":20.2},{"time":"2025-10-23T12:00","wave_height":0.72,"swell_height":0.58,"swell_direction":229,"sea_surface_temperature":20.2},{"time":"2025-10-23T13:00","wave_height":0.7,"swell_height":0.58,"swell_direction":230,"sea_surface_temperature":20.3},{"time":"2025-10-23T14:00","wave_height":0.7,"swell_height":0.56,"swell_direction":231,"sea_surface_temperature":20.4},{"time":"2025-10-23T15:00","wave_height":0.68,"swell_height":0.54,"swell_direction":230,"sea_surface_temperature":20.4},{"time":"2025-10-23T16:00","wave_height":0.68,"swell_height":0.54,"swell_direction":228,"sea_surface_temperature":20.4},{"time":"2025-10-23T17:00","wave_height":0.66,"swell_height":0.52,"swell_direction":227,"sea_surface_temperature":20.4},{"time":"2025-10-23T18:00","wave_height":0.66,"swell_height":0.5,"swell_direction":232,"sea_surface_temperature":20.4},{"time":"2025-10-23T19:00","wave_height":0.64,"swell_height":0.48,"swell_direction":238,"sea_surface_temperature":20.3},{"time":"2025-10-23T20:00","wave_height":0.64,"swell_height":0.46,"swell_direction":243,"sea_surface_temperature":20.3},{"time":"2025-10-23T21:00","wave_height":0.64,"swell_height":0.48,"swell_direction":241,"sea_surface_temperature":20.3},{"time":"2025-10-23T22:00","wave_height":0.62,"swell_height":0.5,"swell_direction":238,"sea_surface_temperature":20.3},{"time":"2025-10-23T23:00","wave_height":0.62,"swell_height":0.52,"swell_direction":236,"sea_surface_temperature":20.2}],"alerts":[{"type":"mare_mosso","message":"Mare mosso, attenzione nelle partenze."}],"advice":"Consiglio: mare mosso, utilizza precauzioni.","tides":{},"days":[{"day_label":"17/10","temp_max":"20.4","temp_min":"17.6","precipitation":"0.60","icon":"⛅","hourly_labels":["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"],"hourly_temps":[17.6,17.8,17.8,17.9,17.9,17.9,17.8,17.8,18,18.2,18.5,18.9,19.3,19.7,20.4,20.4,20.2,19.9,19.7,19.4,19.4,19.4,19.4,19.3],"hourly_winds":[18,16.4,16.3,15.9,15.1,16.2,15.5,15.2,14.2,14.8,13.8,15.4,15.2,14.6,13,11.9,11.6,13.1,12.2,12.2,11,9,7.6,7.2],"hourly_wind_directions":[29,15,6,4,359,4,3,356,353,357,351,349,346,351,2,346,334,328,336,341,349,358,3,354],"hourly_precips":[0.1,0.1,0.1,0.1,0,0,0,0,0,0,0,0,0,0,0,0,0.1,0,0.1,0,0,0,0,0],"hourly_pressures":[1013.9,1013.8,1013.1,1012.9,1012.3,1012.8,1012.8,1013,1013.4,1013.7,1014,1014.6,1014.7,1014.4,1014.1,1014.3,1014.5,1014.7,1015.2,1015.8,1016.2,1016.7,1017.3,1017.6],"pressure_avg":"1014.4"},{"day_label":"18/10","temp_max":"19.8","temp_min":"18.3","precipitation":"0.00","icon":"🌤️","hourly_labels":["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"],"hourly_temps":[18.6,18.3,18.5,18.5,18.6,18.5,18.5,18.5,18.6,18.6,18.5,18.6,18.8,19.3,19.7,19.8,19.8,19.8,19.7,19.6,19.5,19.4,19.3,18.7],"hourly_winds":[7.2,4.7,3.6,3.8,2.9,2.5,1.8,2,4.3,4.7,3.6,3.1,4.3,5.4,6.2,6,6.4,6.2,4.3,1.6,2.5,5,6.9,8.3],"hourly_wind_directions":[354,360,6,343,7,8,11,45,66,81,96,126,175,184,190,197,196,201,204,207,45,69,81,88],"hourly_precips":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"hourly_pressures":[1017.9,1017.9,1018.1,1017.9,1018,1018.1,1018.6,1018.7,1019.2,1019.8,1020.5,1020.6,1020.5,1020.1,1019.8,1019.5,1019.4,1019.1,1019.3,1019.5,1019.9,1020.1,1020.4,1020.6],"pressure_avg":"1019.3"},{"day_label":"19/10","temp_max":"20.1","temp_min":"17.6","precipitation":"0.00","icon":"☀️","hourly_labels":["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"],"hourly_temps":[18.5,18.5,18.3,18.1,17.9,17.8,17.8,17.6,17.6,17.6,17.9,18.3,18.9,19.5,19.9,20.1,20.1,20,20,20.1,19.9,20.1,19.8,19.4],"hourly_winds":[6.8,7.4,8.4,9.5,9.7,9.4,9.2,10.7,10.7,11.2,11,11.8,10.6,8.1,5.6,3.5,3.6,4.6,6.2,8.4,8.1,7.7,7.2,6.5],"hourly_wind_directions":[90,76,59,53,48,50,45,40,40,42,52,50,62,69,75,114,186,231,263,295,315,332,6,34],"hourly_precips":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"hourly_pressures":[1020.7,1020.6,1020.7,1020.6,1020.6,1020.3,1020.1,1020.2,1020.4,1020.8,1020.9,1020.9,1020.6,1020.1,1019.6,1019,1018.6,1018.5,1018.3,1018.4,1018.4,1018,1018,1018],"pressure_avg":"1019.7"},{"day_label":"20/10","temp_max":"19.5","temp_min":"17.6","precipitation":"0.00","icon":"⛅","hourly_labels":["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"],"hourly_temps":[19.1,18.8,18.5,18.3,18.1,17.9,17.8,17.7,17.6,17.7,17.9,18.2,18.5,18.9,19,19.2,19.5,19.4,19.3,19.3,19.3,19.3,19.2,19.2],"hourly_winds":[6.9,6.6,6.7,6.4,6.7,6.5,4.8,5.4,4.1,4.4,3.8,3.8,2.2,2.6,4,5.1,5.8,7,6.9,6.8,6.6,6,5.6,5.1],"hourly_wind_directions":[47,49,54,47,36,34,48,48,52,55,73,73,99,164,207,225,240,249,242,238,241,237,230,225],"hourly_precips":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"hourly_pressures":[1017.8,1017.6,1017.1,1016.8,1016.4,1016.2,1015.8,1015.6,1015.7,1015.9,1016,1016,1015.9,1015.3,1014.5,1013.8,1013.5,1013.4,1013.2,1013.3,1013.3,1013.2,1013.2,1013],"pressure_avg":"1015.1"},{"day_label":"21/10","temp_max":"20.3","temp_min":"18.9","precipitation":"18.90","icon":"🌤️","hourly_labels":["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"],"hourly_temps":[19.2,19.2,19.2,19.1,19.1,19.1,19.1,19.3,19.4,19.5,19.7,19.8,19.8,19.8,19.9,20.1,20.3,20.3,20,19.4,19,18.9,18.9,19],"hourly_winds":[5.1,5.4,5.9,6.6,7.7,8.2,7.9,6.9,6.9,8.9,11.6,13.8,14.3,14.8,15.6,16.7,18,19.2,21,22.8,23.3,21.6,19.5,17.4],"hourly_wind_directions":[219,217,218,225,229,232,231,227,219,212,206,200,192,180,172,166,164,163,164,168,172,180,192,202],"hourly_precips":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.8,0.8,0.8,5.5,5.5,5.5],"hourly_pressures":[1012.7,1012.3,1011.9,1011.5,1011,1010.7,1010.6,1010.5,1010.6,1010.8,1011,1011.1,1010.9,1010.5,1010,1009.5,1008.9,1008.5,1008.3,1008.2,1008,1007.6,1007.2,1006.7],"pressure_avg":"1010.0"},{"day_label":"22/10","temp_max":"20.8","temp_min":"18.5","precipitation":"8.40","icon":"🌤️","hourly_labels":["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"],"hourly_temps":[19.2,19.4,19.6,19.5,19.2,19,18.8,18.6,18.5,18.7,19,19.4,19.8,20.2,20.5,20.6,20.6,20.6,20.6,20.6,20.7,20.7,20.8,20.7],"hourly_winds":[15.3,12.6,9.3,3.7,2.9,7.2,8,7.6,7.4,7.9,8.6,8.9,9.5,10.8,11.7,14.9,14.8,14.1,13.1,11.4,10.1,8.1,6.5,5.4],"hourly_wind_directions":[204,200,196,191,30,18,8,352,337,330,327,320,307,296,288,277,276,276,278,283,287,283,273,266],"hourly_precips":[2.5,2.5,2.5,0.3,0.3,0.3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"hourly_pressures":[1006.2,1005.6,1005.2,1004.8,1004.5,1004.5,1004.8,1005.4,1006,1006.7,1007.6,1008.2,1008.6,1008.8,1008.9,1009.1,1009.3,1009.7,1010.3,1011,1011.6,1012.1,1012.7,1013.1],"pressure_avg":"1008.1"},{"day_label":"23/10","temp_max":"21.2","temp_min":"19.1","precipitation":"0.60","icon":"🌤️","hourly_labels":["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"],"hourly_temps":[20.4,19.8,19.4,19.2,19.2,19.1,19.1,19.1,19.2,19.4,19.7,20,20.3,20.6,20.9,21.1,21.2,21.2,21.1,20.9,20.7,20.7,20.7,20.8],"hourly_winds":[6.1,7.3,8.1,7.3,6.1,4.3,3,5.1,7.9,9.8,11.4,11.5,10.8,10.5,11.2,11.1,10.5,9.8,8.1,6.2,4.7,4.8,5.4,6.2],"hourly_wind_directions":[270,281,283,279,267,246,194,141,129,126,125,129,143,164,182,193,202,208,212,216,212,207,200,190],"hourly_precips":[0.1,0.1,0.1,0.1,0.1,0.1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"hourly_pressures":[1013.5,1013.8,1014.1,1014.2,1014.3,1014.4,1014.6,1014.7,1015,1015.4,1015.9,1016.2,1016.4,1016.4,1016.4,1016.3,1016.1,1016.1,1016.4,1016.9,1017.3,1017.5,1017.7,1017.8],"pressure_avg":"1015.7"}],"updated_at":"17/10/2025, 19:11:10"};
+    let selectedDayIndex = 0;
+    let windChart, rainChart, seaChart, pressChart;
 
-function rainIntensityIcon(valmm){if(valmm<0.1)return'';if(valmm<0.5)return'💧';if(valmm<1)return'💧💧';if(valmm<3)return'💧💧💧';if(valmm<10)return'💧💧💧💧';return'💧💧💧💧💧';}
-function windDescriptor(speed){if(speed<6)return"calmo";if(speed<13)return"brezza";if(speed<25)return"ventoso";return"molto forte";}
-function dailyAdvice(day){if(parseFloat(day.precipitation)>5.0)return"🗞️ Potrebbe piovere forte, porta un ombrello e valuta attività al coperto.";if(parseFloat(day.temp_max)>=34)return"🗞️ Giornata molto calda: resta idratato e cerca zone ombreggiate.";if(parseFloat(day.temp_max)-parseFloat(day.temp_min)>15)return"🗞️ Attenzione: forti escursioni termiche oggi.";if(parseFloat(day.precipitation)>0.2)return"🗞️ Possibile pioggia, attività all'aperto da valutare.";if(parseFloat(day.temp_min)<5)return"🗞️ Giornata fredda, copriti bene!";if(parseFloat(day.wind_max||0)>30)return"🗞️ Previsto vento molto forte, massima cautela!";return"🗞️ Giornata generalmente serena, goditela!";}
-function humanDirection(deg){if(deg==null)return'--';const d=['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW'];return d[Math.round(deg/22.5)%16];}
-function getTraditionalWindName(deg){const n=["Tramontana","Tramontana","Grecale","Grecale","Levante","Levante","Scirocco","Scirocco","Ostro","Ostro","Libeccio","Libeccio","Ponente","Ponente","Maestrale","Maestrale"];return n[Math.round(deg/22.5)%16];}
-function averageWindDirection(arr){if(!arr.length)return null;let sin=0,cos=0;arr.forEach(deg=>{const rad=deg*Math.PI/180;sin+=Math.sin(rad);cos+=Math.cos(rad);});const avgRad=Math.atan2(sin/arr.length,cos/arr.length);return (avgRad*180/Math.PI+360)%360;}
-function calculateMean(arr){if(!arr.length)return 0;return arr.reduce((a,b)=>a+b,0)/arr.length;}
-function calculateRange(arr){if(!arr.length)return 0;return Math.max(...arr)-Math.min(...arr);}
-function calculateStdDev(arr){if(!arr.length)return 0;const m=calculateMean(arr);return Math.sqrt(arr.reduce((a,b)=>a+(b-m)**2,0)/arr.length);}
-function calculateHsig(waves){if(!waves||!waves.length)return 0;const sorted=[...waves].sort((a,b)=>b-a),topThird=sorted.slice(0,Math.ceil(waves.length/3));return calculateMean(topThird);}
-function getDouglasScale(hsig){if(hsig<0.1)return"0 - Calmo";if(hsig<0.5)return"1 - Quasi calmo";if(hsig<1.25)return"2 - Poco mosso";if(hsig<2.5)return"3 - Mosso";if(hsig<4)return"4 - Molto mosso";if(hsig<6)return"5 - Agitato";if(hsig<9)return"6 - Molto agitato";return"7+ - Tempestoso";}
-function detectRogueWaveRisk(waves,hsig){if(!waves.length||hsig===0)return false;const maxWave=Math.max(...waves);return maxWave>(hsig*2.2);}
-function marineRiskAdvice(hsig,rogueRisk,windSpeed){let advice=[];if(hsig<0.5)advice.push("Mare calmo, condizioni favorevoli.");else if(hsig<2.5)advice.push("Mare mosso, cautela per attività diportistiche.");else if(hsig<4)advice.push("Mare molto mosso, attenzione alla navigazione.");else advice.push("Mare agitato o tempestoso, evitare uscita in mare.");if(rogueRisk)advice.push("⚠️ Presenza di onde anomale! Massima prudenza.");if(windSpeed>=25)advice.push("⚠️ Vento forte in arrivo, precauzioni raccomandate.");return advice.join(" "); }
-function getMarineDataForDay(){const day = days && days[current];if (!day || !mergedHourly.length) return [];let someTime = mergedHourly[0].time;const pref_year = someTime.substring(0,4);const [dd, mm] = day.day_label.split('/');const dateString = `${pref_year}-${mm.padStart(2,'0')}-${dd.padStart(2,'0')}`;return mergedHourly.filter(h=>h.time&&h.time.startsWith(dateString));}
+    function rainIcon(valmm) {
+      if (valmm < 0.1) return '';
+      if (valmm < 0.5) return '💧';
+      if (valmm < 1) return '💧💧';
+      if (valmm < 3) return '💧💧💧';
+      if (valmm < 10) return '💧💧💧💧';
+      return '💧💧💧💧💧';
+    }
+    function windDirectionName(deg) {
+      const winds = [
+        { name: "Tramontana", abbr: "N" }, { name: "Grecale", abbr: "NE" },
+        { name: "Levante", abbr: "E" }, { name: "Scirocco", abbr: "SE" },
+        { name: "Ostro", abbr: "S" }, { name: "Libeccio", abbr: "SO" },
+        { name: "Ponente", abbr: "O" }, { name: "Maestrale", abbr: "NO" }
+      ];
+      const idx = Math.floor(((deg + 22.5) % 360) / 45);
+      return winds[idx] ? winds[idx].name + " (" + winds[idx].abbr + ")" : "N/D";
+    }
+    function toggleDetail(id) {
+      let el = document.getElementById(id);
+      document.querySelectorAll('.detail-section').forEach(e => {
+        if (e !== el) e.classList.remove('active');
+      });
+      el.classList.toggle('active');
+    }
+    function calculateMean(arr) { if (!arr || !arr.length) return 0; return arr.reduce((a, b) => a + b, 0) / arr.length;}
+    function calculateRange(arr) { if (!arr || !arr.length) return 0; return Math.max(...arr) - Math.min(...arr);}
+    function calculateStdDev(arr) { if (!arr || !arr.length) return 0; const m = calculateMean(arr); return Math.sqrt(arr.reduce((a, b) => a + (b - m) ** 2, 0) / arr.length);}
+    function getCurrentDayISO() {
+      if (!jsonInput.mergedHourly || !jsonInput.mergedHourly.length) return "";
+      const ref = jsonInput.mergedHourly[selectedDayIndex * 24];
+      return ref ? ref.time.slice(0,10) : "";
+    }
+    function getMergedHourlyForDay(dateStr) {
+      if (!jsonInput.mergedHourly) return [];
+      return jsonInput.mergedHourly.filter(h => h.time.startsWith(dateStr));
+    }
+    function renderMiniDays() {
+      let html = "";
+      if (!jsonInput.days) {
+        document.getElementById("miniDaysBox").innerHTML = "<div>Dati giorni non disponibili</div>"; return;
+      }
+      jsonInput.days.forEach((d, i) => {
+        html += `<div class="mini-day${i === selectedDayIndex ? " active" : ""}" onclick="selectDay(${i})">${d.day_label ? d.day_label : "?"} <span class="icon">${d.icon || ''}</span></div>`;
+      });
+      document.getElementById("miniDaysBox").innerHTML = html;
+    }
+    function selectDay(idx) {
+      selectedDayIndex = idx;
+      renderAll();
+    }
 
-function renderMainToday(){
-  const d=days&&days[current];if(!d)return;
-  let tempData=d.hourly_temps||[],windData=d.hourly_winds||[],windDirData=d.hourly_wind_directions||[],precipData=d.hourly_precips||[],pressureData=d.hourly_pressures||[],timeData=d.hourly_labels||[];
-  const tmax=Math.max(...tempData),tmin=Math.min(...tempData),imax=tempData.indexOf(tmax),imin=tempData.indexOf(tmin),tmax_hh=imax!==-1&&timeData[imax]?timeData[imax]:"--:--",tmin_hh=imin!==-1&&timeData[imin]?timeData[imin]:"--:--",windmax=Math.max(...windData),iwmax=windData.indexOf(windmax),windmax_hh=iwmax!==-1&&timeData[iwmax]?timeData[iwmax]:"--:--",windlast=windData[windData.length-1],windDirectionAvg=windDirData.length?averageWindDirection(windDirData):null,windName=windDirectionAvg!==null?getTraditionalWindName(windDirectionAvg):'--',pressureAvg=pressureData.length?calculateMean(pressureData):null,rainIcon=rainIntensityIcon(precipData.reduce((a,b)=>a+b,0)),ptotal=precipData.reduce((a,b)=>a+b,0);
-  let pressureAdvice="";if(pressureAvg!==null){if(pressureAvg<1010)pressureAdvice="⚠️ Bassa pressione in arrivo, condizioni instabili.";else if(pressureAvg>1020)pressureAdvice="📈 Alta pressione, tempo stabile previsto.";else pressureAdvice="Pressione atmosferica nella media.";}
-  const marineDayData=getMarineDataForDay();const seaTemps=marineDayData.map(h=>h.sea_surface_temperature).filter(t=>typeof t==='number');const seaTempAvg=seaTemps.length?calculateMean(seaTemps):null;
-  const advice=dailyAdvice({...d,wind_max:windmax});
-  document.getElementById('maininfo').innerHTML=`
-  <div class="slot-icon"><span class="main-icon">${d.icon}</span></div>
-  <div class="slots-info">
-    <div class="slot-meteo">
-      <div class="main-values"><span class="main-temp">${tmax.toFixed(1)}°</span><span class="main-temp-min">${tmin.toFixed(1)}°</span></div>
-      <div class="main-details"><span class="rain-icon">🌧️</span> Precipitazioni: ${ptotal.toFixed(1)} mm ${rainIcon}</div>
-    </div>
-    <div class="slot-meteo">
-      <div class="info-title">Temperature/Orari</div>
-      <div class="data-up">↗️ max: <b>${tmax.toFixed(1)}°C</b> alle ${tmax_hh}</div>
-      <div class="data-down">↘️ min: <b>${tmin.toFixed(1)}°C</b> alle ${tmin_hh}</div>
-    </div>
-    <div class="slot-meteo">
-      <div class="info-title">Temperatura mare</div>
-      <div class="data-label sea-temp">${seaTempAvg !== null ? seaTempAvg.toFixed(1)+" °C":"N.D."}</div>
-    </div>
-    <div class="slot-meteo">
-      <div class="info-title">Vento</div>
-      <div class="data-wind">💨 max: <b>${windmax.toFixed(1)} km/h</b> (${windName} - ${windDirectionAvg!==null?windDirectionAvg.toFixed(0):'--'}°) alle ${windmax_hh}</div>
-      <div class="data-wind">💨 ora: <b>${windlast.toFixed(1)} km/h</b></div>
-    </div>
-    <div class="slot-meteo">
-      <div class="info-title">Pressione atmosferica</div>
-      <div class="data-label">${pressureAvg!==null?pressureAvg.toFixed(1)+" hPa":"--"}</div>
-      <div class="data-label" style="color:#ffcc66;">${pressureAdvice}</div>
-    </div>
-    <div class="advice-row"><span class="main-advice">${advice}</span></div>
-  </div>`;
-}
+    function renderSelectedDayDate() {
+      const d = jsonInput.days && jsonInput.days[selectedDayIndex] ? jsonInput.days[selectedDayIndex] : null;
+      document.getElementById("selectedDayBox").textContent = d?.day_label ? `Dati aggiornati per il giorno: ${d.day_label}` : "";
+    }
 
-function renderTabs(){
-  const tabbar=document.getElementById('tabbar');tabbar.innerHTML='';if(!days)return;
-  days.forEach((d,idx)=>{const el=document.createElement('div');el.className=idx===current?'tab active':'tab';
-    el.role='tab';el.id=`tab-${idx}`;el.tabIndex=idx===current?0:-1;
-    el.setAttribute('aria-selected',idx===current?'true':'false');
-    el.setAttribute('aria-controls',`tabpanel-${idx}`);el.setAttribute('aria-label',`Previsioni giorno ${d.day_label}`);
-    el.innerHTML=`<div class="bigicon" aria-hidden="true">${d.icon}</div><div>${d.day_label}</div><div><span class="tempmax">${d.temp_max}°</span> <span class="tempmin">${d.temp_min}°</span></div>`;
-    el.onclick=()=>{switchTab(idx);};el.onkeydown=e=>{if(e.key==='ArrowRight')switchTab((idx+1)%days.length);else if(e.key==='ArrowLeft')switchTab((idx-1+days.length)%days.length);else if(e.key==="Enter"||e.key===" ")switchTab(idx);};
-    tabbar.appendChild(el);});
-}
-function switchTab(idx){current=idx;renderAll();const tab=document.getElementById(`tab-${idx}`);if(tab)tab.focus();}
-function renderCharts(){
-  const d=days&&days[current];if(!d)return;
-  document.getElementById('chartcontainer').innerHTML=
-    `<section class="card card-anim" role="region" aria-label="Grafico temperatura oraria">
-      <div class="chart-title">Temperatura oraria (°C)</div>
-      <div class="canvas-wrap"><canvas id="chart"></canvas></div></section>`;
-  const ctx1=document.getElementById('chart').getContext('2d');
-  if(tempChart)tempChart.destroy();
-  tempChart=new Chart(ctx1,{type:'line',data:{
-    labels:d.hourly_labels,datasets:[{label:'Temperatura (°C)',data:d.hourly_temps,borderColor:'rgba(255,214,91,1)',backgroundColor:'rgba(255,214,91,0.10)',fill:true,tension:0.3,pointRadius:2}]
-  },options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{mode:'index',intersect:false}},scales:{y:{beginAtZero:false,title:{display:true,text:'°C',color:'#fff'},ticks:{color:'#fff',font:{weight:'bold'}}},x:{title:{display:true,text:'Ora locale',color:'#fff'},ticks:{color:'#fff',font:{weight:'bold',size:15},maxRotation:0,minRotation:0}}}}});
-  // GRAFICO VENTO
-  document.getElementById('windchartcontainer').innerHTML=
-    `<section class="card card-anim" role="region" aria-label="Grafico vento orario">
-      <div class="chart-title">Vento orario (km/h)</div>
-      <div class="canvas-wrap"><canvas id="windchart"></canvas></div></section>`;
-  const ctx2=document.getElementById('windchart').getContext('2d');
-  if(windChart)windChart.destroy();
-  windChart=new Chart(ctx2,{type:'line',data:{
-    labels:d.hourly_labels,datasets:[{label:'Vento (km/h)',data:d.hourly_winds,borderColor:'rgba(90,184,255,1)',backgroundColor:'rgba(90,184,255,0.18)',fill:true,tension:0.3,pointRadius:2}]
-  },options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{mode:'index',intersect:false}},scales:{y:{beginAtZero:true,title:{display:true,text:'km/h',color:'#fff'},ticks:{color:'#fff',font:{weight:'bold'}}},x:{title:{display:true,text:'Ora locale',color:'#fff'},ticks:{color:'#fff',font:{weight:'bold',size:15},maxRotation:0,minRotation:0}}}}});
-  // GRAFICO PIOGGIA
-  document.getElementById('rainchartcontainer').innerHTML=
-    `<section class="card card-anim" role="region" aria-label="Grafico precipitazioni orarie">
-      <div class="chart-title">Precipitazioni orarie (mm)</div>
-      <div class="canvas-wrap"><canvas id="rainchart"></canvas></div></section>`;
-  const ctx3=document.getElementById('rainchart').getContext('2d');
-  if(rainChart)rainChart.destroy();
-  rainChart=new Chart(ctx3,{type:'bar',data:{
-    labels:d.hourly_labels,datasets:[{label:'Precipitazioni (mm)',data:d.hourly_precips,backgroundColor:'rgba(30,180,255,0.73)',borderColor:'rgba(13,80,180,1)',borderWidth:1,minBarLength:1}]
-  },options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{mode:'index',intersect:false}},scales:{y:{beginAtZero:true,title:{display:true,text:'mm',color:'#fff'},ticks:{color:'#fff',font:{weight:'bold'}}},x:{title:{display:true,text:'Ora locale',color:'#fff'},ticks:{color:'#fff',font:{weight:'bold',size:15},maxRotation:0,minRotation:0}}}}});
-}
+    function renderWind() {
+      const d = jsonInput.days && jsonInput.days[selectedDayIndex] ? jsonInput.days[selectedDayIndex] : null;
+      if (!d) {
+        document.getElementById("windbox").innerHTML = `<div class="box-title">Vento</div><div class="main">Dati vento non disponibili</div>`; return;
+      }
+      const nowHour = new Date().getHours();
+      const windSpeed = d.hourly_winds ? d.hourly_winds[nowHour] : d.wind_max || "--";
+      const windDeg = d.hourly_wind_directions ? d.hourly_wind_directions[nowHour] : d.wind_dir || "--";
+      const windDirTxt = windDirectionName(windDeg);
+      const windsArr = d.hourly_winds || [];
+      const windDirsArr = d.hourly_wind_directions || [];
+      // Ore di massimo, minimo
+      const max = Math.max(...windsArr);
+      const min = Math.min(...windsArr);
+      const iMax = windsArr.indexOf(max);
+      const iMin = windsArr.indexOf(min);
+      const hourMax = d.hourly_labels ? d.hourly_labels[iMax] : "--:--";
+      const hourMin = d.hourly_labels ? d.hourly_labels[iMin] : "--:--";
+      // Direzione massima e ora
+      const maxDirVal = Math.max(...windDirsArr);
+      const iMaxDir = windDirsArr.indexOf(maxDirVal);
+      const hourMaxDir = d.hourly_labels ? d.hourly_labels[iMaxDir] : "--:--";
+      const maxDirTxt = windDirectionName(maxDirVal);
+      // Folata max
+      let gust =
+        typeof d.wind_gust !== "undefined"
+        ? Number(d.wind_gust)
+        : (windsArr.length ? Math.max(...windsArr) : "--");
+      document.getElementById("windbox").innerHTML = `
+        <div class="box-title">Vento</div>
+        <p class="wind-info"><span class="wind-speed">🍃 ${windSpeed} km/h</span><span class="wind-dir">⎋ ${windDeg}° ${windDirTxt}</span></p>
+        <div class="folata-max">Folata max: <b>${gust !== "--" ? gust + " km/h" : "-- km/h"}</b></div>
+        <button class="detail-btn" onclick="toggleDetail('wind-detail')">Dettagli / Grafico</button>
+        <div class="detail-section" id="wind-detail"><div class="chart-wrap"><canvas id="windchart"></canvas></div></div>
+        <div class="box-summary">
+          <div class="box-summary-row">
+            <span class="summary-label summary-max">Max.: ${max} km/h 🕙 ${hourMax}</span>
+            <span class="summary-label summary-min">Min.: ${min} km/h 🕙 ${hourMin}</span>
+          </div>
+          <div class="box-summary-row2">
+            <span class="summary-label summary-dir">Max.: ⎋ ${maxDirVal}° ${maxDirTxt} 🕙 ${hourMaxDir}</span>
+          </div>
+        </div>
+      `;
+      if (windChart) windChart.destroy();
+      if (windsArr.length && d.hourly_labels) {
+        const ctx = document.getElementById('windchart').getContext('2d');
+        windChart = new Chart(ctx, {
+          type: 'line',
+          data: { labels: d.hourly_labels, datasets: [{ label: 'Vento (km/h)', data: windsArr, borderColor: '#66E5FF', backgroundColor: 'rgba(90,184,255,0.12)', fill: true, tension: 0.21, pointRadius: 1 }] },
+          options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+        });
+      }
+    }
 
-function renderMarine(){
-  const canvasWrap=document.querySelector('#marinechartcontainer .canvas-wrap');
-  canvasWrap.innerHTML='<canvas id="marine-wave-chart"></canvas>';
-  const marineForDay=getMarineDataForDay();
-  const waveData=marineForDay.map(h=>typeof h.wave_height==='number'?h.wave_height:0);
-  const swellData=marineForDay.map(h=>typeof h.swell_height==='number'?h.swell_height:0);
-  const hsig=calculateHsig(waveData);
-  const douglasScale=getDouglasScale(hsig);
-  const rogueRisk=detectRogueWaveRisk(waveData,hsig);
-  const waveMean=calculateMean(waveData);
-  const waveRange=calculateRange(waveData);
-  const waveStdDev=calculateStdDev(waveData);
-  const windMax=days[current]?.wind_max||0;
-  const adviceText=marineRiskAdvice(hsig,rogueRisk,windMax);
-  const divSummary=document.getElementById('marine-summary');
-  if(marineForDay.length){
-    const h=marineForDay[0];
-    divSummary.innerHTML=`
-      <div style="color:#94dfeb;font-size:1.11em;font-weight:bold;margin-bottom:2px;">
-        H<sub>sig</sub> (altezza significativa): ${hsig.toFixed(2)} m
-      </div>
-      <div style="color:#8ee4af; font-weight:bold; margin-bottom:4px;">
-        Scala Douglas: ${douglasScale}
-      </div>
-      <div style="color:#a0d8ef; margin-top: 8px; font-size: 0.95rem;">
-        <div>Media altezza onda: ${waveMean.toFixed(2)} m</div>
-        <div>Range onda: ${waveRange.toFixed(2)} m</div>
-        <div>Deviazione standard: ${waveStdDev.toFixed(3)} m</div>
-      </div>
-      <div>
-        Altezza onda: ${(h.wave_height??0).toFixed(2)}m, direzione swell: ${humanDirection(h.swell_direction)} (${h.swell_direction??'-'}°), altezza swell: ${(h.swell_height??0).toFixed(2)}m.
-      </div>
-      ${rogueRisk?'<div style="color: #f85c50; font-weight: 900; margin-top: 6px;">⚠️ Attenzione! Possibile onda anomala rilevata.</div>':''}`;
-  }else{divSummary.textContent="Dati marine non disponibili.";}
-  const divAlerts=document.getElementById('marine-alerts');divAlerts.textContent=adviceText;
-  const ctx=document.getElementById('marine-wave-chart').getContext('2d');
-  const labels=marineForDay.map(h=>h.time&&h.time.length>11?h.time.slice(11,16):h.time||"");
-  if(marineChart)marineChart.destroy();
-  marineChart=new Chart(ctx,{type:'line',data:{
-    labels,datasets:[
-      {label:'Altezza onda (m)',borderColor:'#25A9FA',backgroundColor:'rgba(30,144,255,0.13)',fill:true,data:waveData,borderWidth:4,pointRadius:3,pointBackgroundColor:'#25A9FA',tension:0.28},
-      {label:'Altezza swell (m)',borderColor:'#21D08A',backgroundColor:'rgba(34,255,170,0.10)',fill:true,data:swellData,borderWidth:4,pointRadius:3,pointBackgroundColor:'#21D08A',tension:0.28}
-    ]
-  },options:{responsive:false,maintainAspectRatio:false,plugins:{legend:{display:true}},scales:{y:{beginAtZero:true,title:{display:true,text:'m',color:'#bae7fd',font:{size:16,weight:'bold'}},ticks:{color:'#bfe8ff',font:{size:18,weight:'bold'},stepSize:0.02,maxTicksLimit:7}},x:{title:{display:false},ticks:{color:'#ddddff',font:{size:18,family:"'Roboto', Arial",weight:'bold'},maxTicksLimit:8,padding:8}}},layout:{padding:{top:10,bottom:11,left:8,right:12}}}});
-}
+    function renderRain() {
+      const d = jsonInput.days && jsonInput.days[selectedDayIndex] ? jsonInput.days[selectedDayIndex] : null;
+      if (!d || !d.hourly_precips) {
+        document.getElementById("rainbox").innerHTML = `<div class="box-title">Pioggia</div><div class="main">Dati pioggia non disponibili</div>`; return;
+      }
+      const pioggia = Number(d.precipitation) || 0;
+      const precArr = d.hourly_precips;
+      const max = Math.max(...precArr);
+      const iMax = precArr.indexOf(max);
+      const oraMax = d.hourly_labels ? d.hourly_labels[iMax] : '--:--';
+      document.getElementById("rainbox").innerHTML = `
+        <div class="box-title">Pioggia</div>
+        <div class="main">Totale oggi: <b>${pioggia.toFixed(1)} mm</b> ${rainIcon(pioggia)}</div>
+        <div class="desc"><b>Max oraria:</b> ${max} mm <span style="margin-left:18px;"></span> <b>Ora più piovosa:</b> ${oraMax}</div>
+        <button class="detail-btn" onclick="toggleDetail('rain-detail')">Dettagli / Grafico</button>
+        <div class="detail-section" id="rain-detail"><div class="chart-wrap"><canvas id="rainchart"></canvas></div></div>
+        <div class="box-summary"><div class="box-summary-row">
+        <span class="summary-label summary-max">Max oraria: ${max} mm</span>
+        <span class="summary-label summary-hour">Ora più piovosa: ${oraMax}</span>
+        </div></div>
+      `;
+      if (rainChart) rainChart.destroy();
+      if (d.hourly_labels) {
+        const ctx = document.getElementById('rainchart').getContext('2d');
+        rainChart = new Chart(ctx, {
+          type: 'bar',
+          data: { labels: d.hourly_labels, datasets: [{ label: 'Precipitazioni (mm)', data: precArr, backgroundColor: '#52c5f7', borderColor: '#52afe7', borderWidth: 2 }] },
+          options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+        });
+      }
+    }
 
-function renderAll(){
-  renderMainToday();renderTabs();renderCharts();renderMarine();
-  document.getElementById('footer').innerHTML=`Powered by Open-Meteo • UI by micheledv74 • Ultimo agg.: <span id="updated_stamp">${updated_at}</span>`;
-}
-renderAll();
-</script>
+    function renderSea() {
+      const day = jsonInput.days && jsonInput.days[selectedDayIndex] ? jsonInput.days[selectedDayIndex] : null;
+      const dateISO = getCurrentDayISO();
+      const dayData = getMergedHourlyForDay(dateISO);
+      if (!day || !dayData.length) {
+        document.getElementById("seabox").innerHTML = `<div class="box-title">Mare</div><div class="main">Dati mare non disponibili</div>`; return;
+      }
+      const waveMean = calculateMean(dayData.map(h => h.wave_height));
+      const waveRange = calculateRange(dayData.map(h => h.wave_height));
+      const waveStdDev = calculateStdDev(dayData.map(h => h.wave_height));
+      const seaTemp = calculateMean(dayData.map(h => h.sea_surface_temperature));
+      document.getElementById("seabox").innerHTML = `
+        <div class="box-title">Mare</div>
+        <div class="main">Altezza media onda: <b>${waveMean.toFixed(2)} m</b></div>
+        <div class="desc">Temperatura mare: <b>${seaTemp.toFixed(1)} °C</b></div>
+        <button class="detail-btn" onclick="toggleDetail('sea-detail')">Dettagli / Grafico</button>
+        <div class="detail-section" id="sea-detail"><div class="chart-wrap"><canvas id="seachart"></canvas></div></div>
+        <div class="box-summary">
+          <div class="box-summary-row">
+            <span class="summary-label summary-mean">Hsig: ${waveMean.toFixed(2)} m</span>
+            <span class="summary-label summary-range">Range: ${waveRange.toFixed(2)} m</span>
+            <span class="summary-label summary-std">Dev.Std.: ${waveStdDev.toFixed(2)} m</span>
+          </div>
+        </div>
+      `;
+      if (seaChart) seaChart.destroy();
+      const ctx = document.getElementById('seachart').getContext('2d');
+      seaChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: dayData.map(h => h.time.slice(11,16)),
+          datasets: [
+            { label: 'Onda (m)', data: dayData.map(h => h.wave_height), borderColor: '#41f8bd', backgroundColor: 'rgba(34,255,170,0.10)', fill: true, tension: 0.22, pointRadius: 2, pointBackgroundColor: '#25A9FA' },
+            { label: 'Swell (m)', data: dayData.map(h => h.swell_height), borderColor: '#21D08A', backgroundColor: 'rgba(34,255,170,0.06)', fill: true, tension: 0.18, pointRadius: 2, pointBackgroundColor: '#21D08A' }
+          ]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true } } }
+      });
+    }
+
+    function renderPress() {
+      const d = jsonInput.days && jsonInput.days[selectedDayIndex] ? jsonInput.days[selectedDayIndex] : null;
+      if (!d || !d.hourly_pressures) {
+        document.getElementById("pressbox").innerHTML = `<div class="box-title">Pressione</div><div class="main">Dati pressione non disponibili</div>`; return;
+      }
+      const hourly = d.hourly_pressures.map(x => Number(x));
+      const pressMean = calculateMean(hourly);
+      let trend = "N.D.";
+      if (hourly.length >= 3) {
+        const start = (hourly[0] + hourly[1] + hourly[2])/3;
+        const end = (hourly[hourly.length-3] + hourly[hourly.length-2] + hourly[hourly.length-1])/3;
+        if (end > start + 1) trend = '<span class="summary-trend-up">in aumento ⬆️</span>';
+        else if (start > end + 1) trend = '<span class="summary-trend-down">in calo ⬇️</span>';
+        else trend = '<span class="summary-trend-stable">stabile ↔️</span>';
+      }
+      const max = Math.max(...hourly), min = Math.min(...hourly);
+      document.getElementById("pressbox").innerHTML = `
+        <div class="box-title">Pressione</div>
+        <div class="main">Media oggi: <b>${pressMean.toFixed(1)} hPa</b></div>
+        <div class="desc">Tendenza: ${trend}</div>
+        <button class="detail-btn" onclick="toggleDetail('press-detail')">Dettagli / Grafico</button>
+        <div class="detail-section" id="press-detail"><div class="chart-wrap"><canvas id="presschart"></canvas></div></div>
+        <div class="box-summary">
+          <div class="box-summary-row">
+            <span class="summary-label summary-max">Max: ${max} hPa</span>
+            <span class="summary-label summary-min">Min: ${min} hPa</span>
+          </div>
+        </div>
+      `;
+      if (pressChart) pressChart.destroy();
+      const ctx = document.getElementById('presschart').getContext('2d');
+      pressChart = new Chart(ctx, {
+        type: 'line',
+        data: { labels: d.hourly_labels, datasets: [{ label: 'Pressione (hPa)', data: hourly, borderColor: '#ffd472', backgroundColor: 'rgba(255,240,51,0.10)', fill: true, tension: 0.22, pointRadius: 1 }] },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+      });
+    }
+
+    function renderAll() {
+      renderSelectedDayDate();
+      renderWind();
+      renderRain();
+      renderSea();
+      renderPress();
+      renderMiniDays();
+      document.getElementById("footer").innerHTML =
+        `Powered by Open-Meteo • UI by micheledv74` +
+        (jsonInput.updated_at ? `<span class="update-label">Ultimo aggiornamento: ${jsonInput.updated_at}</span>` : "");
+    }
+    renderAll();
+  </script>
 </body>
 </html>
