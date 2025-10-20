@@ -7,318 +7,240 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.12/css/weather-icons.min.css">
   <style>
     body { font-family: 'Roboto', Arial, sans-serif; background: linear-gradient(135deg, #26365a, #3498db 92%); color: #f0f8ff; margin:0; padding:0; }
-    .header { font-family: Montserrat, sans-serif; font-size: 2.3em; font-weight: 900; color: #cfe9ff; text-shadow: 1px 2px 20px #09172a; text-align: center; margin: 21px 0 11px 0; letter-spacing:2px;}
+    .header { font-family: Montserrat, sans-serif; font-size: 2.3em; font-weight: 900; color: #cfe9ff; text-shadow: 1px 2px 20px #09172a; text-align: center; margin: 21px 0 11px 0; letter-spacing:2px; }
     .dashboard { display: flex; flex-wrap: wrap; gap: 13px; justify-content: center; margin: 22px 0; }
-    .box { background: rgba(37,59,102,0.22); border-radius: 18px; box-shadow: 0 5px 26px #06214672; padding: 17px; min-width:200px; max-width:380px; flex:1; margin-bottom: 12px; position:relative;}
+    .box { background: rgba(37,59,102,0.22); border-radius: 18px; box-shadow: 0 5px 26px #06214672; padding: 17px; min-width:200px; max-width:380px; flex:1; margin-bottom: 12px; position:relative; }
     .box-title { font-family: Montserrat,sans-serif; font-size:1.18em; font-weight:800; color:#aadcf8; margin-bottom:9px; }
-    .summ { font-size:1.15em; font-weight: 700; color:#efefa5;margin:16px auto 11px auto;text-align:center;}
-    .det-btn { background: #127af7; color: #fff; font-weight:700; border: none; border-radius: 8px; padding: 8px 22px; margin:7px auto 0 auto; display:block;transition: background 0.15s;}
+    .summ { font-size:1.15em; font-weight: 700; color:#efefa5; margin: 16px auto 11px auto; text-align:center; }
+    .det-btn { background: #127af7; color: #fff; font-weight:700; border: none; border-radius: 8px; padding: 8px 22px; margin:7px auto 0 auto; display:block; transition: background 0.15s; cursor:pointer; }
     .det-btn:hover { background: #5bd5fd; }
-    .wi {margin-right:7px;}
-    .mini-days {display:flex;flex-wrap:wrap;gap:8px;margin:14px auto 17px auto;justify-content:center;}
-    .mini-day { background: #0b1333b0; color: #c6f3ff; border-radius: 10px; padding: 8px 12px; font-size: 0.98em; min-width:79px; box-shadow: 0 2px 8px #202b3b44; cursor: pointer; user-select: none; margin-bottom:4px;}
+    .wi { margin-right:7px; }
+    .mini-days { display:flex; flex-wrap:wrap; gap:8px; margin:14px auto 17px auto; justify-content:center; }
+    .mini-day { background: #0b1333b0; color: #c6f3ff; border-radius: 10px; padding: 8px 12px; font-size: 0.98em; min-width:79px; box-shadow: 0 2px 8px #202b3b44; cursor: pointer; user-select: none; margin-bottom:4px; }
     .mini-day.active { background: #5dbef2d1; color:#fff; box-shadow: 0 0 12px #dbefff; }
-    .icon {margin-left:4px; margin-right:1px;font-size:1.25em;}
-    #aiPopup { display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:99;
-      background:rgba(20,36,64,0.96); color:#e4fbff; overflow:auto;}
-    #aiPopup .mod-content { max-width:750px; margin:55px auto; background:#22365acd; border-radius:18px; padding:35px; position:relative; max-height: 90vh; overflow-y: auto;}
-    #aiPopup .close { position: absolute; right:17px; top: 11px; background:none; border:none; color:#fff; font-size:2.3em; cursor:pointer;}
-    .footer { margin:22px 0 0 0; text-align:center; color:#badcff;}
-    @media (max-width: 800px) { .dashboard{ flex-direction:column; gap:12px; } }
-    @media (max-width:497px) { .header{font-size:1.1em;} .mod-content{padding:7px;} }
+    .icon { margin-left:4px; margin-right:1px; font-size:1.25em; }
+    #aiPopup { display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:99; background:rgba(20,36,64,0.96); color:#e4fbff; overflow:auto; }
+    #aiPopup .mod-content { max-width:750px; margin:55px auto; background:#22365acd; border-radius:18px; padding:35px; position:relative; max-height: 90vh; overflow-y: auto; }
+    #aiPopup .close { position: absolute; right:17px; top: 11px; background:none; border:none; color:#fff; font-size:2.3em; cursor:pointer; }
+    .detail-section { display: none; margin-top: 15px; }
+    .footer { margin:22px 0 0 0; text-align:center; color:#badcff; }
+    @media (max-width: 800px) { .dashboard { flex-direction: column; gap: 12px; } }
+    @media (max-width: 497px) { .header { font-size: 1.1em; } .mod-content { padding: 7px; } }
   </style>
 </head>
 <body>
   <div class="header">PREVISIONI METEO PROCIDA <i class="wi wi-day-sunny"></i> MultiFonte & AI</div>
+
   <div class="mini-days" id="miniDaysBox"></div>
+
   <button class="det-btn" onclick="document.getElementById('aiPopup').style.display='block'">
     <span class="wi wi-forecast-io-partly-cloudy-day"></span> Sintesi e Dettaglio AI
   </button>
-  <div id="aiPopup">
+
+  <div id="aiPopup" role="dialog" aria-modal="true" aria-labelledby="aiPopupTitle">
     <div class="mod-content">
       <button class="close" title="Chiudi" onclick="document.getElementById('aiPopup').style.display='none'">&times;</button>
+      <h2 id="aiPopupTitle">Sintesi AI Multi-Sorgente</h2>
       <div id="ai-popup-content">
-        <!-- Qui va la sintesi AI HTML generata dal nodo Code n8n -->
         undefined
       </div>
     </div>
   </div>
+
   <div class="dashboard">
     <section class="box vento" id="windbox"></section>
     <section class="box pioggia" id="rainbox"></section>
     <section class="box mare" id="seabox"></section>
     <section class="box pressione" id="pressbox"></section>
   </div>
+
   <div class="footer">Powered by n8n + Gemini & fonti meteo • Ultimo aggiornamento: <span id="updated_stamp"></span></div>
-  <pre>{
-  "days": [
-    {
-      "day_label": "Martedì 23 Luglio 2024",
-      "icon": "wi-day-sunny",
-      "temp_max": 31,
-      "temp_min": 21,
-      "precipitation": 0,
-      "wind_max": 10,
-      "wind_gust": 10,
-      "wind_min": 3,
-      "wind_dir": "NNE",
-      "hourly_labels": [
-        "00",
-        "06",
-        "12",
-        "18"
-      ],
-      "hourly_temps": [
-        22,
-        23,
-        30,
-        27
-      ],
-      "hourly_winds": [
-        5,
-        3,
-        8,
-        7
-      ],
-      "hourly_precips": [
-        0,
-        0,
-        0,
-        0
-      ],
-      "hourly_pressures": [
-        1015,
-        1016,
-        1015,
-        1014
-      ]
-    },
-    {
-      "day_label": "Mercoledì 24 Luglio 2024",
-      "icon": "wi-day-showers",
-      "temp_max": 29,
-      "temp_min": 22,
-      "precipitation": 1,
-      "wind_max": 20,
-      "wind_gust": 35,
-      "wind_min": 10,
-      "wind_dir": "SW",
-      "hourly_labels": [
-        "00",
-        "06",
-        "12",
-        "15",
-        "18",
-        "21"
-      ],
-      "hourly_temps": [
-        23,
-        24,
-        27,
-        28,
-        26,
-        24
-      ],
-      "hourly_winds": [
-        10,
-        12,
-        15,
-        18,
-        20,
-        15
-      ],
-      "hourly_precips": [
-        0,
-        0,
-        0,
-        0.5,
-        0.5,
-        0
-      ],
-      "hourly_pressures": [
-        1013,
-        1012,
-        1011,
-        1010,
-        1010,
-        1011
-      ]
-    },
-    {
-      "day_label": "Giovedì 25 Luglio 2024",
-      "icon": "wi-rain",
-      "temp_max": 23,
-      "temp_min": 20,
-      "precipitation": 20,
-      "wind_max": 50,
-      "wind_gust": 60,
-      "wind_min": 25,
-      "wind_dir": "W",
-      "hourly_labels": [
-        "00",
-        "03",
-        "06",
-        "09",
-        "12",
-        "15",
-        "18",
-        "21"
-      ],
-      "hourly_temps": [
-        21,
-        20,
-        20,
-        21,
-        22,
-        22,
-        21,
-        20
-      ],
-      "hourly_winds": [
-        25,
-        30,
-        35,
-        40,
-        45,
-        50,
-        45,
-        35
-      ],
-      "hourly_precips": [
-        1,
-        2,
-        3,
-        4,
-        4,
-        3,
-        2,
-        1
-      ],
-      "hourly_pressures": [
-        1009,
-        1008,
-        1007,
-        1006,
-        1005,
-        1004,
-        1005,
-        1006
-      ]
-    }
-  ]
-}</pre>
- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
-  // INIETTA DATA DAL NODO Code6 multi-sorgente
-  const DATA = [object Object];
+    // Inietta i dati reali multi-sorgente dal nodo Code6 output DATA
+    const DATA = [object Object];
 
-  function windDirectionName(deg) {
-    const winds = ["N","NE","E","SE","S","SO","O","NO"];
-    const idx = Math.round(((deg % 360) / 45)) % 8;
-    return winds[idx] || "N/D";
-  }
+    function windDirectionName(deg) {
+      const winds = ["N","NE","E","SE","S","SO","O","NO"];
+      const idx = Math.round(((deg % 360) / 45)) % 8;
+      return winds[idx] || "N/D";
+    }
 
-  function renderMiniDays() {
-    let html = "";
-    (DATA.days||[]).forEach((d, i) => {
-      html += `<div class="mini-day${i === selectedDayIndex ? " active" : ""}" onclick="selectDay(${i})">
-          <span class="icon"><i class="wi ${d.icon || 'wi-day-sunny'}"></i></span> ${d.day_label}
-        </div>`;
-    });
-    document.getElementById("miniDaysBox").innerHTML = html;
-  }
+    function renderMiniDays() {
+      let html = "";
+      (DATA.days || []).forEach((d, i) => {
+        html += `<div class="mini-day${i === selectedDayIndex ? " active" : ""}" onclick="selectDay(${i})">
+            <span class="icon"><i class="wi ${d.icon || 'wi-day-sunny'}"></i></span> ${d.day_label}
+          </div>`;
+      });
+      document.getElementById("miniDaysBox").innerHTML = html;
+    }
 
-  let selectedDayIndex = 0;
-  function selectDay(dayIndex) {
-    selectedDayIndex = dayIndex;
+    let selectedDayIndex = 0;
+    function selectDay(dayIndex) {
+      selectedDayIndex = dayIndex;
+      renderAll();
+    }
+
+    function renderWind() {
+      const d = DATA.days[selectedDayIndex] || {};
+      document.getElementById("windbox").innerHTML = `
+        <div class="box-title"><i class="wi wi-strong-wind"></i> Vento</div>
+        <div class="summ"><i class="wi wi-wind-direction wi-from-${d.wind_dir || 0}-deg"></i> ${d.wind_max || '--'} km/h (${windDirectionName(d.wind_dir)})<br>
+        Folata max: ${d.wind_gust || '--'} km/h</div>
+        <button class="det-btn" onclick="toggleDetail('wind-detail')">Dettagli / Grafico</button>
+        <div class="detail-section" id="wind-detail">
+          <canvas id="windchart"></canvas>
+        </div>
+      `;
+      setTimeout(() => {
+        if (d.hourly_winds) {
+          const ctx = document.getElementById('windchart').getContext('2d');
+          new Chart(ctx, {
+            type: 'line',
+            data: {
+              labels: d.hourly_labels,
+              datasets: [
+                {
+                  label: 'Vento (km/h)',
+                  data: d.hourly_winds,
+                  borderColor: '#66E5FF',
+                  backgroundColor: 'rgba(90,184,255,0.09)',
+                  fill: true,
+                  tension: 0.3,
+                  pointRadius: 4,
+                  pointHoverRadius: 7,
+                  pointBackgroundColor: '#66E5FF',
+                  pointBorderColor: '#fff',
+                  pointBorderWidth: 2,
+                  pointHoverBackgroundColor: '#66E5FF',
+                  pointHoverBorderColor: '#fff',
+                  pointHoverBorderWidth: 3
+                }
+              ]
+            },
+            options: {
+              plugins: { legend: { display: false } },
+              scales: { y: { beginAtZero: true } }
+            }
+          });
+        }
+      }, 300);
+    }
+
+    function renderRain() {
+      const d = DATA.days[selectedDayIndex] || {};
+      document.getElementById("rainbox").innerHTML = `
+        <div class="box-title"><i class="wi wi-rain"></i> Pioggia</div>
+        <div class="summ">${d.precipitation || '--'} mm</div>
+        <button class="det-btn" onclick="toggleDetail('rain-detail')">Dettagli / Grafico</button>
+        <div class="detail-section" id="rain-detail">
+          <canvas id="rainchart"></canvas>
+        </div>
+      `;
+      setTimeout(() => {
+        if (d.hourly_precips) {
+          const ctx = document.getElementById('rainchart').getContext('2d');
+          new Chart(ctx, {
+            type: 'bar',
+            data: {
+              labels: d.hourly_labels,
+              datasets: [
+                {
+                  label: 'Precipitazioni (mm)',
+                  data: d.hourly_precips,
+                  backgroundColor: '#52c5f7'
+                }
+              ]
+            },
+            options: {
+              plugins: { legend: { display: false } },
+              scales: { y: { beginAtZero: true } }
+            }
+          });
+        }
+      }, 300);
+    }
+
+    function renderSea() {
+      document.getElementById("seabox").innerHTML = `
+        <div class="box-title"><i class="wi wi-waves"></i> Mare</div>
+        <div class="summ">Dati mare non disponibili</div>
+        <button class="det-btn" onclick="toggleDetail('sea-detail')">Dettagli / Grafico</button>
+        <div class="detail-section" id="sea-detail"></div>
+      `;
+      // Puoi aggiungere dati grafici se disponili mare da AI/data extra
+    }
+
+    function renderPress() {
+      const d = DATA.days[selectedDayIndex] || {};
+      const hourlyPress = d.hourly_pressures || [];
+      const avgPressure = hourlyPress.length ? Math.round(hourlyPress.reduce((a, b) => a + b, 0) / hourlyPress.length) : '--';
+      document.getElementById("pressbox").innerHTML = `
+        <div class="box-title"><i class="wi wi-barometer"></i> Pressione</div>
+        <div class="summ">${avgPressure} hPa</div>
+        <button class="det-btn" onclick="toggleDetail('press-detail')">Dettagli / Grafico</button>
+        <div class="detail-section" id="press-detail">
+          <canvas id="presschart"></canvas>
+        </div>
+      `;
+      setTimeout(() => {
+        if (hourlyPress.length) {
+          const ctx = document.getElementById('presschart').getContext('2d');
+          new Chart(ctx, {
+            type: 'line',
+            data: {
+              labels: d.hourly_labels,
+              datasets: [
+                {
+                  label: 'Pressione (hPa)',
+                  data: hourlyPress,
+                  borderColor: '#ffd472',
+                  backgroundColor: 'rgba(255,240,51,0.10)',
+                  fill: true,
+                  tension: 0.3,
+                  pointRadius: 4,
+                  pointHoverRadius: 7,
+                  pointBackgroundColor: '#ffd472',
+                  pointBorderColor: '#fff',
+                  pointBorderWidth: 2,
+                  pointHoverBackgroundColor: '#ffd472',
+                  pointHoverBorderColor: '#fff',
+                  pointHoverBorderWidth: 3
+                }
+              ]
+            },
+            options: {
+              plugins: { legend: { display: false } },
+              scales: { y: { beginAtZero: false } }
+            }
+          });
+        }
+      }, 300);
+    }
+
+    function toggleDetail(id) {
+      const allDetails = document.querySelectorAll('.detail-section');
+      allDetails.forEach(e => {
+        if (e.id !== id) e.style.display = 'none';
+      });
+      const el = document.getElementById(id);
+      el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+    }
+
+    function renderAll() {
+      renderMiniDays();
+      renderWind();
+      renderRain();
+      renderSea();
+      renderPress();
+    }
+
+    let selectedDayIndex = 0;
     renderAll();
-  }
 
-  function renderWind() {
-    const d = DATA.days[selectedDayIndex] || {};
-    document.getElementById("windbox").innerHTML = `
-      <div class="box-title"><i class="wi wi-strong-wind"></i> Vento</div>
-      <div class="summ"><i class="wi wi-wind-direction wi-from-${d.wind_dir||0}-deg"></i> ${d.wind_max||'--'} km/h (${windDirectionName(d.wind_dir)})<br>
-      Folata max: ${d.wind_gust||'--'} km/h</div>
-      <button class="det-btn" onclick="toggleDetail('wind-detail')">Dettagli / Grafico</button>
-      <div class="detail-section" id="wind-detail" style="display:none;"><canvas id="windchart"></canvas></div>
-    `;
-    setTimeout(()=>{
-      if(d.hourly_winds){
-        const ctx = document.getElementById('windchart').getContext('2d');
-        new Chart(ctx, {
-          type: 'line', data: { labels: d.hourly_labels, datasets:[{label:'Vento (km/h)',data:d.hourly_winds, borderColor:'#66E5FF', backgroundColor:'rgba(90,184,255,0.09)', fill:true}]},
-          options: { plugins: {legend:{display:false}}, scales:{y:{beginAtZero:true}} }
-        });
-      }
-    }, 350);
-  }
-
-  function renderRain() {
-    const d = DATA.days[selectedDayIndex] || {};
-    document.getElementById("rainbox").innerHTML = `
-      <div class="box-title"><i class="wi wi-rain"></i> Pioggia</div>
-      <div class="summ">${d.precipitation||'--'} mm</div>
-      <button class="det-btn" onclick="toggleDetail('rain-detail')">Dettagli / Grafico</button>
-      <div class="detail-section" id="rain-detail" style="display:none;"><canvas id="rainchart"></canvas></div>
-    `;
-    setTimeout(()=>{
-      if(d.hourly_precips){
-        const ctx = document.getElementById('rainchart').getContext('2d');
-        new Chart(ctx, {
-          type: 'bar', data: { labels: d.hourly_labels, datasets:[{label:'Precip. (mm)',data:d.hourly_precips, backgroundColor:'#52c5f7'}]},
-          options: { plugins: {legend:{display:false}}, scales:{y:{beginAtZero:true}} }
-        });
-      }
-    }, 350);
-  }
-
-  function renderSea() {
-    document.getElementById("seabox").innerHTML = `
-      <div class="box-title"><i class="wi wi-waves"></i> Mare</div>
-      <div class="summ">--</div>
-      <button class="det-btn" onclick="toggleDetail('sea-detail')">Dettagli / Grafico</button>
-      <div class="detail-section" id="sea-detail" style="display:none;"><!-- grafico mare qui --></div>
-    `;
-    // Puoi aggiungere grafici/metre info se hai dati
-  }
-
-  function renderPress() {
-    const d = DATA.days[selectedDayIndex] || {};
-    document.getElementById("pressbox").innerHTML = `
-      <div class="box-title"><i class="wi wi-barometer"></i> Pressione</div>
-      <div class="summ">${d.hourly_pressures 
-        ? Math.round(
-            d.hourly_pressures.reduce((a,b)=>a+b,0)/(d.hourly_pressures.length||1)
-          ) 
-        : '--'} hPa</div>
-      <button class="det-btn" onclick="toggleDetail('press-detail')">Dettagli / Grafico</button>
-      <div class="detail-section" id="press-detail" style="display:none;"><canvas id="presschart"></canvas></div>
-    `;
-    setTimeout(()=>{
-      if(d.hourly_pressures){
-        const ctx = document.getElementById('presschart').getContext('2d');
-        new Chart(ctx, {
-          type: 'line', data: { labels: d.hourly_labels, datasets:[{label:'Pressione (hPa)',data:d.hourly_pressures, borderColor:'#ffd472', backgroundColor:'rgba(255,240,51,0.10)', fill:true}]},
-          options: { plugins: {legend:{display:false}}, scales:{y:{beginAtZero:false}} }
-        });
-      }
-    }, 350);
-  }
-
-  function toggleDetail(id) {
-    document.querySelectorAll('.detail-section').forEach(e => {if (e.id!==id) e.style.display='none';});
-    const el = document.getElementById(id);
-    el.style.display = el.style.display==='block' ? 'none' : 'block';
-  }
-
-  function renderAll() {
-    renderMiniDays(); renderWind(); renderRain(); renderSea(); renderPress();
-  }
-  let selectedDayIndex = 0;
-  renderAll();
-
-  document.getElementById('updated_stamp').innerText = new Date().toLocaleString('it-IT',{ dateStyle:'short', timeStyle:'medium' });
+    document.getElementById('updated_stamp').innerText = new Date().toLocaleString('it-IT', {dateStyle:'short', timeStyle:'medium'});
   </script>
 </body>
 </html>
