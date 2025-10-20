@@ -50,7 +50,164 @@
     <section class="box pressione" id="pressbox"></section>
   </div>
   <div class="footer">Powered by n8n + Gemini & fonti meteo • Ultimo aggiornamento: <span id="updated_stamp"></span></div>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <pre>{
+  "days": [
+    {
+      "day_label": "Martedì 23 Luglio 2024",
+      "icon": "wi-day-sunny",
+      "temp_max": 31,
+      "temp_min": 21,
+      "precipitation": 0,
+      "wind_max": 10,
+      "wind_gust": 10,
+      "wind_min": 3,
+      "wind_dir": "NNE",
+      "hourly_labels": [
+        "00",
+        "06",
+        "12",
+        "18"
+      ],
+      "hourly_temps": [
+        22,
+        23,
+        30,
+        27
+      ],
+      "hourly_winds": [
+        5,
+        3,
+        8,
+        7
+      ],
+      "hourly_precips": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "hourly_pressures": [
+        1015,
+        1016,
+        1015,
+        1014
+      ]
+    },
+    {
+      "day_label": "Mercoledì 24 Luglio 2024",
+      "icon": "wi-day-showers",
+      "temp_max": 29,
+      "temp_min": 22,
+      "precipitation": 1,
+      "wind_max": 20,
+      "wind_gust": 35,
+      "wind_min": 10,
+      "wind_dir": "SW",
+      "hourly_labels": [
+        "00",
+        "06",
+        "12",
+        "15",
+        "18",
+        "21"
+      ],
+      "hourly_temps": [
+        23,
+        24,
+        27,
+        28,
+        26,
+        24
+      ],
+      "hourly_winds": [
+        10,
+        12,
+        15,
+        18,
+        20,
+        15
+      ],
+      "hourly_precips": [
+        0,
+        0,
+        0,
+        0.5,
+        0.5,
+        0
+      ],
+      "hourly_pressures": [
+        1013,
+        1012,
+        1011,
+        1010,
+        1010,
+        1011
+      ]
+    },
+    {
+      "day_label": "Giovedì 25 Luglio 2024",
+      "icon": "wi-rain",
+      "temp_max": 23,
+      "temp_min": 20,
+      "precipitation": 20,
+      "wind_max": 50,
+      "wind_gust": 60,
+      "wind_min": 25,
+      "wind_dir": "W",
+      "hourly_labels": [
+        "00",
+        "03",
+        "06",
+        "09",
+        "12",
+        "15",
+        "18",
+        "21"
+      ],
+      "hourly_temps": [
+        21,
+        20,
+        20,
+        21,
+        22,
+        22,
+        21,
+        20
+      ],
+      "hourly_winds": [
+        25,
+        30,
+        35,
+        40,
+        45,
+        50,
+        45,
+        35
+      ],
+      "hourly_precips": [
+        1,
+        2,
+        3,
+        4,
+        4,
+        3,
+        2,
+        1
+      ],
+      "hourly_pressures": [
+        1009,
+        1008,
+        1007,
+        1006,
+        1005,
+        1004,
+        1005,
+        1006
+      ]
+    }
+  ]
+}</pre>
+ <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
   // INIETTA DATA DAL NODO Code6 multi-sorgente
   const DATA = [object Object];
