@@ -13,18 +13,29 @@
     }
 
     :root {
-      --bg-gradient-start: #1c1c1e;
-      --bg-gradient-end: #2c2c2e;
+      /* === COLORI DAL LOGO METEO PROCIDA === */
+      --primary-blue: #012549;
+      --primary-blue-light: #003d6b;
+      --accent-orange: #faa202;
+      --accent-cyan: #08a5e8;
+      
+      /* Gradazioni */
+      --bg-gradient-start: #012549;
+      --bg-gradient-end: #003d6b;
       --card-bg: rgba(255, 255, 255, 0.1);
       --card-border: rgba(255, 255, 255, 0.2);
+      
+      /* Testo */
       --text-primary: #ffffff;
-      --text-secondary: #a0a0a0;
-      --text-tertiary: #636366;
-      --accent-blue: #007aff;
+      --text-secondary: #a0c4d8;
+      --text-tertiary: #6a8da8;
+      
+      /* Accenti semantici */
       --accent-green: #34c759;
-      --accent-orange: #ff9500;
       --accent-red: #ff3b30;
       --accent-yellow: #ffcc00;
+      
+      /* Spacing */
       --spacing-xs: 8px;
       --spacing-sm: 12px;
       --spacing-md: 16px;
@@ -49,7 +60,79 @@
       padding: var(--spacing-md);
     }
 
-    /* === ANIMAZIONI KEYFRAMES === */
+    /* === HEADER con Logo e PDF Button === */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--spacing-lg);
+      padding: var(--spacing-md);
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      border: 1px solid var(--card-border);
+      animation: fadeInUp 0.6s ease-out;
+    }
+
+    .header-logo {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+    }
+
+    .logo-icon {
+      font-size: 2.5rem;
+    }
+
+    .header-title {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header-title h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-orange) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .header-subtitle {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pdf-button {
+      background: linear-gradient(135deg, var(--accent-orange) 0%, #ff8800 100%);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 12px rgba(250, 162, 2, 0.3);
+    }
+
+    .pdf-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(250, 162, 2, 0.5);
+      background: linear-gradient(135deg, #ff8800 0%, var(--accent-orange) 100%);
+    }
+
+    .pdf-button:active {
+      transform: translateY(0);
+    }
+
+    /* === ANIMAZIONI === */
     
     @keyframes fadeInUp {
       from {
@@ -88,29 +171,10 @@
       100% { background-position: 1000px 0; }
     }
 
-    @keyframes rotate {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-
-    /* Classe per elementi animati */
-    .animate-on-load {
-      animation: fadeInUp 0.6s ease-out forwards;
-      opacity: 0;
-    }
-
-    /* Ritardi scaglionati per effetto cascade */
-    .animate-delay-1 { animation-delay: 0.1s; }
-    .animate-delay-2 { animation-delay: 0.2s; }
-    .animate-delay-3 { animation-delay: 0.3s; }
-    .animate-delay-4 { animation-delay: 0.4s; }
-    .animate-delay-5 { animation-delay: 0.5s; }
-    .animate-delay-6 { animation-delay: 0.6s; }
-
     /* === HERO SECTION === */
     
     .hero-card {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue-light) 100%);
       border-radius: 24px;
       padding: var(--spacing-xl);
       margin-bottom: var(--spacing-lg);
@@ -119,13 +183,25 @@
       overflow: hidden;
       min-height: 50vh;
       animation: fadeInUp 0.8s ease-out;
+      border: 1px solid rgba(8, 165, 232, 0.2);
     }
 
-    .hero-card.hot { background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%); }
-    .hero-card.warm { background: linear-gradient(135deg, #ff9500 0%, #ff6348 100%); }
-    .hero-card.mild { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-    .hero-card.cool { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
-    .hero-card.cold { background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); }
+    /* Gradient dinamici temperature con colori logo */
+    .hero-card.hot { 
+      background: linear-gradient(135deg, #ff6b6b 0%, var(--accent-orange) 100%); 
+    }
+    .hero-card.warm { 
+      background: linear-gradient(135deg, var(--accent-orange) 0%, #ff6348 100%); 
+    }
+    .hero-card.mild { 
+      background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue-light) 100%); 
+    }
+    .hero-card.cool { 
+      background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--primary-blue-light) 100%); 
+    }
+    .hero-card.cold { 
+      background: linear-gradient(135deg, #a8edea 0%, var(--accent-cyan) 100%); 
+    }
 
     .hero-header {
       display: flex;
@@ -207,6 +283,73 @@
       animation: slideInLeft 0.8s ease-out;
     }
 
+    /* === AQI WIDGET === */
+    .aqi-widget {
+      background: rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: var(--spacing-md);
+      margin-bottom: var(--spacing-md);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-md);
+      animation: slideInLeft 0.9s ease-out;
+    }
+
+    .aqi-icon {
+      font-size: 3rem;
+      opacity: 0.9;
+    }
+
+    .aqi-content {
+      flex: 1;
+    }
+
+    .aqi-title {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      opacity: 0.8;
+      margin-bottom: 4px;
+    }
+
+    .aqi-value {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .aqi-level {
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+
+    /* Colori AQI standard */
+    .aqi-good { 
+      border-left: 4px solid var(--accent-green);
+      color: var(--accent-green);
+    }
+    .aqi-moderate { 
+      border-left: 4px solid var(--accent-yellow);
+      color: var(--accent-yellow);
+    }
+    .aqi-unhealthy-sensitive { 
+      border-left: 4px solid var(--accent-orange);
+      color: var(--accent-orange);
+    }
+    .aqi-unhealthy { 
+      border-left: 4px solid var(--accent-red);
+      color: var(--accent-red);
+    }
+    .aqi-very-unhealthy { 
+      border-left: 4px solid #8b00ff;
+      color: #8b00ff;
+    }
+    .aqi-hazardous { 
+      border-left: 4px solid #7e0023;
+      color: #7e0023;
+    }
+
     /* === ADVICE PILLS === */
     
     .advice-pills {
@@ -286,7 +429,12 @@
       letter-spacing: 0.5px;
     }
 
-    /* === FASE LUNARE con Unicode Emoji === */
+    /* Colori contestuali con palette logo */
+    .detail-pill.rain-detail i { color: var(--accent-cyan); }
+    .detail-pill.temp-detail i { color: var(--accent-orange); }
+    .detail-pill.wind-detail i { color: var(--text-secondary); }
+
+    /* === MOON PHASE === */
     
     .moon-phase-pill {
       display: flex;
@@ -302,7 +450,7 @@
       filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
     }
 
-    /* === WIND ROSE (Rosa dei Venti) === */
+    /* === WIND ROSE === */
     
     .wind-rose-container {
       position: relative;
@@ -329,7 +477,7 @@
       transform: rotate(15deg);
     }
 
-    /* === TIMELINE PRECIPITAZIONI === */
+    /* === RAIN TIMELINE === */
     
     .rain-timeline {
       background: rgba(0, 0, 0, 0.2);
@@ -337,6 +485,7 @@
       border-radius: 16px;
       padding: var(--spacing-md);
       margin-bottom: var(--spacing-lg);
+      border: 1px solid rgba(8, 165, 232, 0.3);
       animation: fadeInUp 0.6s ease-out;
       animation-delay: 0.2s;
       opacity: 0;
@@ -352,7 +501,7 @@
       text-transform: uppercase;
       letter-spacing: 0.5px;
       margin-bottom: var(--spacing-md);
-      opacity: 0.9;
+      color: var(--accent-cyan);
     }
 
     .timeline-bar {
@@ -385,7 +534,7 @@
     }
 
     .timeline-period.leggera { background: rgba(52, 199, 89, 0.8); }
-    .timeline-period.moderata { background: rgba(255, 149, 0, 0.8); }
+    .timeline-period.moderata { background: rgba(250, 162, 2, 0.8); }
     .timeline-period.forte { background: rgba(255, 59, 48, 0.9); }
 
     .timeline-legend {
@@ -413,7 +562,70 @@
       border-radius: 50%;
     }
 
-    /* === TEMPERATURE SPARKLINE (Grafico 7 giorni) === */
+    /* === PRESSURE CHART === */
+    
+    .pressure-chart-container {
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: var(--spacing-lg);
+      margin-bottom: var(--spacing-lg);
+      animation: fadeInUp 0.6s ease-out;
+      animation-delay: 0.3s;
+      opacity: 0;
+      animation-fill-mode: forwards;
+    }
+
+    .chart-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: var(--spacing-md);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-xs);
+      color: var(--accent-cyan);
+    }
+
+    .pressure-chart {
+      position: relative;
+      height: 150px;
+      margin: var(--spacing-md) 0;
+    }
+
+    .pressure-svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .pressure-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      margin-top: var(--spacing-xs);
+    }
+
+    .pressure-info {
+      display: flex;
+      gap: var(--spacing-lg);
+      justify-content: center;
+      margin-top: var(--spacing-md);
+      flex-wrap: wrap;
+    }
+
+    .pressure-stat {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-xs);
+      font-size: 0.9rem;
+    }
+
+    .pressure-trend-up { color: var(--accent-green); }
+    .pressure-trend-down { color: var(--accent-orange); }
+    .pressure-trend-stable { color: var(--text-secondary); }
+
+    /* === TEMPERATURE CHART === */
     
     .temp-chart-container {
       background: var(--card-bg);
@@ -426,15 +638,6 @@
       animation-delay: 0.4s;
       opacity: 0;
       animation-fill-mode: forwards;
-    }
-
-    .chart-title {
-      font-size: 1.1rem;
-      font-weight: 600;
-      margin-bottom: var(--spacing-md);
-      display: flex;
-      align-items: center;
-      gap: var(--spacing-xs);
     }
 
     .temp-chart {
@@ -456,7 +659,7 @@
 
     .temp-bar-visual {
       width: 100%;
-      background: linear-gradient(180deg, var(--accent-orange), var(--accent-red));
+      background: linear-gradient(180deg, var(--accent-orange), #ff6348);
       border-radius: 8px 8px 0 0;
       transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       position: relative;
@@ -476,7 +679,7 @@
 
     .temp-bar:hover .temp-bar-visual {
       transform: translateY(-4px);
-      box-shadow: 0 4px 12px rgba(255, 149, 0, 0.5);
+      box-shadow: 0 4px 12px rgba(250, 162, 2, 0.5);
     }
 
     .temp-value {
@@ -509,7 +712,14 @@
       text-align: center;
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       cursor: default;
+      opacity: 0;
+      animation: fadeInUp 0.6s ease-out forwards;
     }
+
+    .stat-card:nth-child(1) { animation-delay: 0.5s; }
+    .stat-card:nth-child(2) { animation-delay: 0.6s; }
+    .stat-card:nth-child(3) { animation-delay: 0.7s; }
+    .stat-card:nth-child(4) { animation-delay: 0.8s; }
 
     .stat-card:hover {
       transform: translateY(-4px);
@@ -549,7 +759,7 @@
       animation: slideInLeft 0.6s ease-out;
     }
 
-    /* === COMPACT DAY CARDS === */
+    /* === DAY CARDS === */
     
     .days-grid {
       display: grid;
@@ -568,18 +778,18 @@
       animation: fadeInUp 0.6s ease-out forwards;
     }
 
-    .day-card-compact:nth-child(1) { animation-delay: 0.5s; }
-    .day-card-compact:nth-child(2) { animation-delay: 0.6s; }
-    .day-card-compact:nth-child(3) { animation-delay: 0.7s; }
-    .day-card-compact:nth-child(4) { animation-delay: 0.8s; }
-    .day-card-compact:nth-child(5) { animation-delay: 0.9s; }
-    .day-card-compact:nth-child(6) { animation-delay: 1s; }
+    .day-card-compact:nth-child(1) { animation-delay: 0.9s; }
+    .day-card-compact:nth-child(2) { animation-delay: 1.0s; }
+    .day-card-compact:nth-child(3) { animation-delay: 1.1s; }
+    .day-card-compact:nth-child(4) { animation-delay: 1.2s; }
+    .day-card-compact:nth-child(5) { animation-delay: 1.3s; }
+    .day-card-compact:nth-child(6) { animation-delay: 1.4s; }
 
     .day-card-compact:hover {
       transform: translateY(-6px);
       box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
       background: rgba(255, 255, 255, 0.14);
-      border-color: rgba(255, 255, 255, 0.3);
+      border-color: rgba(8, 165, 232, 0.4);
     }
 
     .day-card-header {
@@ -596,7 +806,7 @@
     }
 
     .day-card-compact:hover .day-name {
-      color: var(--accent-blue);
+      color: var(--accent-cyan);
     }
 
     .day-temps-compact {
@@ -670,7 +880,7 @@
       opacity: 0.7;
     }
 
-    /* === ALERTS con Pulse Animation === */
+    /* === ALERTS === */
     
     .alerts {
       background: rgba(255, 59, 48, 0.15);
@@ -699,11 +909,9 @@
       padding: var(--spacing-lg);
       color: var(--text-secondary);
       font-size: 0.85rem;
-      opacity: 0.7;
-      animation: fadeIn 1s ease-out;
-      animation-delay: 1.2s;
       opacity: 0;
-      animation-fill-mode: forwards;
+      animation: fadeIn 1s ease-out forwards;
+      animation-delay: 1.5s;
     }
 
     footer p {
@@ -725,6 +933,21 @@
     @media (max-width: 768px) {
       .container {
         padding: var(--spacing-sm);
+      }
+
+      header {
+        flex-direction: column;
+        gap: var(--spacing-md);
+        text-align: center;
+      }
+
+      .header-logo {
+        flex-direction: column;
+      }
+
+      .pdf-button {
+        width: 100%;
+        justify-content: center;
       }
 
       .hero-card {
@@ -760,8 +983,13 @@
         font-size: 1.1rem;
       }
 
-      .temp-chart {
+      .temp-chart, .pressure-chart {
         height: 100px;
+      }
+
+      .aqi-widget {
+        flex-direction: column;
+        text-align: center;
       }
     }
 
@@ -775,20 +1003,82 @@
       }
     }
 
-    /* Rimuovi transizioni da elementi specifici per performance */
+    /* === CSS PRINT STYLES per Export PDF === */
+    
+    @media print {
+      body {
+        background: white;
+        color: black;
+      }
+
+      header, .pdf-button, footer {
+        display: none;
+      }
+
+      .container {
+        max-width: 100%;
+        padding: 20px;
+      }
+
+      .hero-card, .day-card-compact, .stat-card {
+        page-break-inside: avoid;
+        box-shadow: none;
+        border: 1px solid #ddd;
+      }
+
+      .hero-card {
+        min-height: auto;
+      }
+
+      .section-title {
+        page-break-after: avoid;
+      }
+
+      .rain-timeline, .pressure-chart-container, .temp-chart-container {
+        page-break-inside: avoid;
+      }
+
+      * {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+    }
+
+    /* Performance optimizations */
     .timeline-period,
-    .temp-bar-visual {
+    .temp-bar-visual,
+    .wind-rose-svg {
       will-change: transform;
     }
   </style>
 </head>
 <body>
   <div class="container">
+    <!-- HEADER con Logo e PDF Button -->
+    <header>
+      <div class="header-logo">
+        <div class="logo-icon">🌊</div>
+        <div class="header-title">
+          <h1>Meteo Procida</h1>
+          <div class="header-subtitle">
+            <i class="wi wi-day-sunny"></i>
+            <span>Previsioni 7 giorni - Analisi AI Multi-Fonte</span>
+          </div>
+        </div>
+      </div>
+      <button class="pdf-button" onclick="exportToPDF()">
+        📥 Scarica PDF
+      </button>
+    </header>
+
     <!-- HERO CARD - OGGI -->
     <div id="hero-container"></div>
 
     <!-- TIMELINE PRECIPITAZIONI -->
     <div id="rain-timeline-container"></div>
+
+    <!-- GRAFICO PRESSIONE ATMOSFERICA -->
+    <div id="pressure-chart-container"></div>
 
     <!-- GRAFICO TEMPERATURE 7 GIORNI -->
     <div id="temp-chart-container"></div>
@@ -811,7 +1101,12 @@
     // IMPORTANTE: In n8n, usa questa sintassi per iniettare i dati
     const weatherData = {"location":"Procida, Italia","generatedAt":"2024-05-20T10:30:00Z","days":[{"date":"2024-05-21","temp":{"min":17.5,"max":19.3,"feels_like":18.6},"rain":{"probability":85,"total_mm":8,"periods":[{"start":"08:30","end":"11:30","intensity":"leggera"},{"start":"14:30","end":"16:30","intensity":"leggera"}]},"wind":{"periods":[{"start":"00:00","end":"09:00","speed_kmh":12,"gusts_kmh":20,"direction":"NW","intensity":"leggero"},{"start":"09:00","end":"23:59","speed_kmh":32,"gusts_kmh":48,"direction":"S-SW","intensity":"moderato"}]},"pressure":{"value_hPa":1011,"trend":"in calo"},"sea":{"condition":"mosso","wave_height_m":1.8,"swell_direction":"S-SW"},"humidity":87,"uv_index":3,"sunrise":"05:43","sunset":"19:54","moon_phase":"Luna crescente","summary":"La giornata di martedì 21 maggio a Procida si aprirà con cielo nuvoloso e venti leggeri da Nord-Ovest, mantenendo il mare inizialmente poco mosso. Le prime precipitazioni, di intensità leggera, sono attese a partire dalle 08:30 e si protrarranno fino a metà mattinata. Intorno alle 09:00, assisteremo a un deciso cambio delle condizioni: il vento rinforzerà significativamente provenendo da Sud-Sud-Ovest, assumendo carattere moderato ma con raffiche che potranno toccare i 48 km/h. Questa evoluzione renderà il mare mosso, con onde che potranno raggiungere 1.8 metri. Nel pomeriggio, le piogge si ripresenteranno con intensità leggera tra le 14:30 e le 16:30. Pressione in calo per tutto il giorno, umidità elevata e temperature miti.","advice":["Prepararsi a piogge intermittenti per gran parte della giornata; un ombrello o un impermeabile saranno indispensabili.","Le attività nautiche sono sconsigliate a partire dalla tarda mattinata a causa del mare mosso e delle forti raffiche di vento da S-SW.","Assicurare oggetti esposti su balconi e terrazzi per prevenire danni dovuti al vento in rinforzo."],"alerts":["Allerta per vento forte e mare mosso a partire dalla mattinata, con raffiche superiori ai 45 km/h e onde oltre 1.5 metri."]},{"date":"2024-05-22","temp":{"min":17.8,"max":19.5,"feels_like":18.8},"rain":{"probability":95,"total_mm":18.5,"periods":[{"start":"02:00","end":"08:00","intensity":"moderata"},{"start":"10:00","end":"13:00","intensity":"leggera"},{"start":"16:00","end":"19:00","intensity":"forte"}]},"wind":{"periods":[{"start":"00:00","end":"15:00","speed_kmh":40,"gusts_kmh":65,"direction":"S-SE","intensity":"forte"},{"start":"15:00","end":"23:59","speed_kmh":28,"gusts_kmh":45,"direction":"SW","intensity":"moderato"}]},"pressure":{"value_hPa":1005,"trend":"stazionario"},"sea":{"condition":"molto mosso","wave_height_m":2.5,"swell_direction":"S-SE"},"humidity":92,"uv_index":2,"sunrise":"05:42","sunset":"19:55","moon_phase":"Luna crescente","summary":"Mercoledì 22 sarà una giornata fortemente perturbata su Procida. Le piogge inizieranno già nella notte con intensità moderata, proseguendo a tratti deboli al mattino. Il clou delle precipitazioni si avrà nel tardo pomeriggio con un'ondata di piogge intense, accompagnate da venti di Libeccio (S-SE) molto forti, con raffiche che potranno superare i 65 km/h per gran parte della giornata. Il mare sarà molto mosso, con onde che raggiungeranno i 2.5 metri e mareggiate lungo le coste esposte. Le temperature si manterranno simili al giorno precedente. Pressione atmosferica bassa e stazionaria, umidità molto elevata. La visibilità sarà ridotta durante le fasi di pioggia più intensa.","advice":["Si raccomanda di rimanere a casa o limitare gli spostamenti allo stretto necessario, soprattutto nel pomeriggio a causa delle piogge forti e del vento molto intenso.","Evitare categoricamente qualsiasi attività marittima o balneare. Il mare sarà molto agitato e pericoloso.","Verificare lo stato di chiusure o limitazioni ai collegamenti marittimi, che potrebbero essere interrotti per gran parte della giornata."],"alerts":["Allerta meteo arancione per vento molto forte e mare molto mosso/agitato. Raffiche oltre 60 km/h e onde fino a 2.5 metri.","Allerta per piogge intense e rischio idrogeologico localizzato nel tardo pomeriggio."]},{"date":"2024-05-23","temp":{"min":16,"max":18.5,"feels_like":17},"rain":{"probability":60,"total_mm":6,"periods":[{"start":"00:00","end":"04:00","intensity":"leggera"},{"start":"07:00","end":"09:00","intensity":"leggera"}]},"wind":{"periods":[{"start":"00:00","end":"10:00","speed_kmh":25,"gusts_kmh":40,"direction":"SW","intensity":"moderato"},{"start":"10:00","end":"23:59","speed_kmh":18,"gusts_kmh":28,"direction":"W-NW","intensity":"leggero"}]},"pressure":{"value_hPa":1010,"trend":"in aumento"},"sea":{"condition":"mosso","wave_height_m":1.5,"swell_direction":"SW"},"humidity":80,"uv_index":4,"sunrise":"05:41","sunset":"19:56","moon_phase":"Luna crescente","summary":"La giornata di giovedì 23 maggio vedrà un graduale miglioramento delle condizioni meteo. La notte e le prime ore del mattino saranno ancora interessate da piogge leggere e residue, ma con tendenza a esaurirsi entro le 09:00. Il vento, pur rimanendo moderato da Sud-Ovest con raffiche fino a 40 km/h nella prima parte della giornata, diminuirà di intensità nel corso della mattinata, ruotando da Ovest-Nord-Ovest e diventando leggero. Di conseguenza, anche il mare, inizialmente mosso con onde di 1.5 metri per effetto della mareggiata precedente, tenderà a placarsi nel pomeriggio, diventando poco mosso in serata. Le temperature subiranno un lieve calo. Pressione in risalita, segnale di un miglioramento generale.","advice":["Prestare attenzione ai residui venti e mareggiate in mattinata, specialmente se si effettuano spostamenti via mare.","Considerare un abbigliamento a strati, data la leggera diminuzione delle temperature e il cambio di vento.","Monitorare l'evolvere delle condizioni del mare prima di riprendere le attività nautiche, anche se in miglioramento."],"alerts":[]},{"date":"2024-05-24","temp":{"min":14.5,"max":17,"feels_like":15.5},"rain":{"probability":10,"total_mm":0,"periods":[]},"wind":{"periods":[{"start":"00:00","end":"23:59","speed_kmh":15,"gusts_kmh":25,"direction":"N-NW","intensity":"leggero"}]},"pressure":{"value_hPa":1018,"trend":"stazionario"},"sea":{"condition":"poco mosso","wave_height_m":0.8,"swell_direction":"NW"},"humidity":70,"uv_index":5,"sunrise":"05:40","sunset":"19:57","moon_phase":"Luna crescente","summary":"Venerdì 24 maggio sarà una giornata all'insegna del bel tempo su Procida. Il cielo si presenterà sereno o poco nuvoloso per tutto il giorno, con assenza di precipitazioni. Il vento sarà leggero, proveniente dai quadranti settentrionali (Nord-Nord-Ovest), con raffiche massime intorno ai 25 km/h. Questo contribuirà a rendere il mare poco mosso, con onde che non supereranno gli 0.8 metri, e moto ondoso in ulteriore calo verso sera. Le temperature subiranno un ulteriore lieve calo, attestandosi su valori gradevoli per il periodo. La pressione atmosferica sarà alta e stabile, garantendo un'atmosfera asciutta e una buona visibilità. Ottima giornata per godere delle bellezze dell'isola.","advice":["Approfittare della giornata di sole e vento leggero per attività all'aperto e gite in mare.","Considerare di indossare una giacca leggera, soprattutto nelle ore più fresche del mattino e della sera.","Ideale per la navigazione e la balneazione, con mare calmo e vento favorevole."],"alerts":[]},{"date":"2024-05-25","temp":{"min":14,"max":17.5,"feels_like":15.8},"rain":{"probability":5,"total_mm":0,"periods":[]},"wind":{"periods":[{"start":"00:00","end":"23:59","speed_kmh":10,"gusts_kmh":18,"direction":"N","intensity":"leggero"}]},"pressure":{"value_hPa":1020,"trend":"stazionario"},"sea":{"condition":"calmo","wave_height_m":0.4,"swell_direction":"N"},"humidity":65,"uv_index":6,"sunrise":"05:39","sunset":"19:58","moon_phase":"Luna crescente","summary":"Sabato 25 maggio si preannuncia una giornata splendida e serena su Procida. Il cielo sarà limpido e soleggiato dalla mattina alla sera, senza alcuna probabilità di precipitazioni. I venti saranno molto leggeri, principalmente di direzione settentrionale, con intensità non superiori ai 10 km/h e raffiche minime. Queste condizioni contribuiranno a un mare calmo o quasi calmo per l'intera giornata, con onde inferiori al mezzo metro. Le temperature si manterranno fresche al mattino ma gradevoli durante le ore centrali del giorno, con una lieve risalita rispetto al giorno precedente. La pressione atmosferica rimarrà alta, garantendo stabilità e un'ottima visibilità. Ottime condizioni per attività all'aperto e balneari.","advice":["Approfittare del clima ideale per escursioni, passeggiate e attività in spiaggia.","Data l'alta irradiazione solare e l'UV index elevato, è consigliabile l'uso di protezione solare, soprattutto nelle ore centrali del giorno.","Il mare sarà perfetto per nuoto, snorkeling e gite in barca, condizioni ideali per tutte le attività acquatiche."],"alerts":[]},{"date":"2024-05-26","temp":{"min":15,"max":18,"feels_like":16.5},"rain":{"probability":5,"total_mm":0,"periods":[]},"wind":{"periods":[{"start":"00:00","end":"12:00","speed_kmh":8,"gusts_kmh":15,"direction":"variabile","intensity":"leggero"},{"start":"12:00","end":"23:59","speed_kmh":12,"gusts_kmh":20,"direction":"NE","intensity":"leggero"}]},"pressure":{"value_hPa":1019,"trend":"in lieve calo"},"sea":{"condition":"calmo","wave_height_m":0.3,"swell_direction":"Variabile"},"humidity":68,"uv_index":7,"sunrise":"05:39","sunset":"19:59","moon_phase":"Luna crescente","summary":"Domenica 26 maggio si prospetta un'altra giornata di bel tempo su Procida. Il cielo sarà sereno o al più poco nuvoloso, con temperature in leggero aumento e massime che potranno raggiungere i 18°C, rendendo l'atmosfera molto piacevole. I venti saranno deboli e variabili al mattino, per poi stabilizzarsi da Nord-Est nel pomeriggio con intensità leggerissima. Di conseguenza, il mare rimarrà calmo per l'intera giornata, con onde quasi assenti, condizioni ideali per godere appieno delle spiagge e del mare procidano. La pressione atmosferica, pur mostrando una lieve tendenza alla diminuzione, si manterrà su valori alti, garantendo stabilità. L'indice UV sarà elevato, indicando la necessità di proteggersi dal sole.","advice":["Approfittare della giornata ideale per attività balneari, relax in spiaggia e gite in barca.","Indossare cappello, occhiali da sole e applicare crema solare con fattore di protezione alto, dato l'elevato indice UV.","Idratarsi frequentemente, specialmente se si trascorre molto tempo all'aria aperta sotto il sole."],"alerts":[]},{"date":"2024-05-27","temp":{"min":15.5,"max":18.2,"feels_like":16.8},"rain":{"probability":25,"total_mm":1,"periods":[{"start":"22:00","end":"23:59","intensity":"leggera"}]},"wind":{"periods":[{"start":"00:00","end":"18:00","speed_kmh":10,"gusts_kmh":18,"direction":"SE","intensity":"leggero"},{"start":"18:00","end":"23:59","speed_kmh":20,"gusts_kmh":30,"direction":"S","intensity":"moderato"}]},"pressure":{"value_hPa":1016,"trend":"in calo"},"sea":{"condition":"poco mosso","wave_height_m":0.7,"swell_direction":"S"},"humidity":75,"uv_index":6,"sunrise":"05:38","sunset":"20:00","moon_phase":"Luna crescente","summary":"Lunedì 27 maggio vedrà un graduale cambiamento delle condizioni meteo su Procida. La mattinata si presenterà con cielo parzialmente nuvoloso, ma senza precipitazioni. I venti saranno leggeri da Sud-Est. Nel corso del pomeriggio, la nuvolosità aumenterà progressivamente, e i venti rinforzeranno, ruotando da Sud e diventando moderati, con raffiche fino a 30 km/h in serata. Questa rotazione del vento renderà il mare da calmo a poco mosso. Le temperature si manterranno gradevoli, simili ai giorni precedenti. La pressione atmosferica sarà in calo, indicando un potenziale peggioramento. È prevista una leggera pioggia in tarda serata, con un accumulo minimo, preludio a condizioni più instabili per i giorni successivi.","advice":["Essere preparati a un aumento della nuvolosità e un rinforzo del vento nel pomeriggio, specialmente se si prevedono attività all'aperto prolungate.","Le condizioni del mare resteranno buone per la mattinata, ma tenderanno a peggiorare leggermente in serata con vento da Sud.","Considerare la possibilità di qualche goccia di pioggia in tarda serata, utile avere un ombrello a portata di mano."],"alerts":[]}],"processedAt":"2025-10-21T16:46:39.804Z","totalDays":7,"weekStats":{"maxTemp":19.5,"minTemp":14,"avgTemp":"18.3","rainyDays":4}};
 
-    // === FUNZIONI HELPER ===
+    // === EXPORT PDF FUNCTION ===
+    function exportToPDF() {
+      window.print();
+    }
+
+    // === HELPER FUNCTIONS ===
     
     function formatDate(dateStr) {
       const date = new Date(dateStr);
@@ -852,7 +1147,6 @@
       return ((hours * 60 + minutes) / 1440) * 100;
     }
 
-    // === NUOVA FUNZIONE: Moon Phase Emoji ===
     function getMoonPhaseEmoji(phaseText) {
       if (!phaseText) return '🌕';
       const phase = phaseText.toLowerCase();
@@ -866,10 +1160,9 @@
       if (phase.includes('calante') && phase.includes('ultimo')) return '🌗';
       if (phase.includes('calante')) return '🌘';
       
-      return '🌕'; // default full moon
+      return '🌕';
     }
 
-    // === NUOVA FUNZIONE: Wind Rose SVG ===
     function createWindRoseSVG(direction, speed) {
       const angle = getWindAngle(direction);
       
@@ -879,16 +1172,14 @@
           <circle cx="50" cy="50" r="35" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
           <circle cx="50" cy="50" r="22" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
           
-          <!-- Punti cardinali -->
           <text x="50" y="12" text-anchor="middle" fill="rgba(255,255,255,0.6)" font-size="10" font-weight="600">N</text>
           <text x="88" y="55" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="8">E</text>
           <text x="50" y="92" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="8">S</text>
           <text x="12" y="55" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="8">O</text>
           
-          <!-- Freccia indicatore vento -->
-          <path d="M 50 20 L 55 40 L 50 35 L 45 40 Z" fill="#007aff" opacity="0.9"/>
-          <path d="M 50 35 L 50 70" stroke="#007aff" stroke-width="3" stroke-linecap="round"/>
-          <circle cx="50" cy="50" r="5" fill="#007aff"/>
+          <path d="M 50 20 L 55 40 L 50 35 L 45 40 Z" fill="#08a5e8" opacity="0.9"/>
+          <path d="M 50 35 L 50 70" stroke="#08a5e8" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="50" cy="50" r="5" fill="#08a5e8"/>
         </svg>
       `;
     }
@@ -905,6 +1196,35 @@
       return directions[direction?.toUpperCase()] || 0;
     }
 
+    // === AQI FUNCTIONS ===
+    
+    function getAQIClass(aqi) {
+      if (aqi <= 50) return 'aqi-good';
+      if (aqi <= 100) return 'aqi-moderate';
+      if (aqi <= 150) return 'aqi-unhealthy-sensitive';
+      if (aqi <= 200) return 'aqi-unhealthy';
+      if (aqi <= 300) return 'aqi-very-unhealthy';
+      return 'aqi-hazardous';
+    }
+
+    function getAQILevel(aqi) {
+      if (aqi <= 50) return 'Buona';
+      if (aqi <= 100) return 'Moderata';
+      if (aqi <= 150) return 'Malsana per sensibili';
+      if (aqi <= 200) return 'Malsana';
+      if (aqi <= 300) return 'Molto malsana';
+      return 'Pericolosa';
+    }
+
+    function getAQIIcon(aqi) {
+      if (aqi <= 50) return '😊';
+      if (aqi <= 100) return '😐';
+      if (aqi <= 150) return '😷';
+      if (aqi <= 200) return '😨';
+      if (aqi <= 300) return '☠️';
+      return '💀';
+    }
+
     // === RENDER HERO CARD ===
     
     function renderHero() {
@@ -914,6 +1234,26 @@
       const tempClass = getTempClass(today.temp?.max || 20);
       const weatherIcon = getWeatherIcon(today.summary);
       const moonEmoji = getMoonPhaseEmoji(today.moon_phase);
+      
+      // AQI Widget (se disponibile)
+      let aqiWidget = '';
+      if (today.air_quality && today.air_quality.aqi) {
+        const aqi = today.air_quality.aqi;
+        const aqiClass = getAQIClass(aqi);
+        const aqiLevel = getAQILevel(aqi);
+        const aqiIcon = getAQIIcon(aqi);
+        
+        aqiWidget = `
+          <div class="aqi-widget ${aqiClass}">
+            <div class="aqi-icon">${aqiIcon}</div>
+            <div class="aqi-content">
+              <div class="aqi-title">Qualità dell'Aria</div>
+              <div class="aqi-value">${aqi}</div>
+              <div class="aqi-level">${aqiLevel}</div>
+            </div>
+          </div>
+        `;
+      }
       
       const html = `
         <div class="hero-card ${tempClass}">
@@ -951,6 +1291,8 @@
             </div>
           ` : ''}
 
+          ${aqiWidget}
+
           ${today.advice && today.advice.length > 0 ? `
             <div class="advice-pills">
               ${today.advice.map(a => `
@@ -970,7 +1312,7 @@
 
           <div class="details-pills">
             ${today.rain && today.rain.probability > 0 ? `
-              <div class="detail-pill">
+              <div class="detail-pill rain-detail">
                 <i class="wi wi-raindrop"></i>
                 <span class="value">${today.rain.probability}%</span>
                 <span class="label">Pioggia</span>
@@ -978,7 +1320,7 @@
             ` : ''}
             
             ${today.wind && today.wind.periods && today.wind.periods[0] ? `
-              <div class="detail-pill">
+              <div class="detail-pill wind-detail">
                 <div class="wind-rose-container">
                   ${createWindRoseSVG(today.wind.periods[0].direction, today.wind.periods[0].speed_kmh)}
                 </div>
@@ -996,7 +1338,7 @@
             ` : ''}
 
             ${today.uv_index ? `
-              <div class="detail-pill">
+              <div class="detail-pill temp-detail">
                 <i class="wi wi-day-sunny"></i>
                 <span class="value">${today.uv_index}</span>
                 <span class="label">UV</span>
@@ -1012,7 +1354,7 @@
             ` : ''}
 
             ${today.sea ? `
-              <div class="detail-pill">
+              <div class="detail-pill rain-detail">
                 <i class="wi wi-tsunami"></i>
                 <span class="value">${today.sea.wave_height_m}m</span>
                 <span class="label">${today.sea.condition}</span>
@@ -1020,7 +1362,7 @@
             ` : ''}
 
             ${today.sunrise ? `
-              <div class="detail-pill">
+              <div class="detail-pill temp-detail">
                 <i class="wi wi-sunrise"></i>
                 <span class="value">${today.sunrise}</span>
                 <span class="label">Alba</span>
@@ -1028,7 +1370,7 @@
             ` : ''}
 
             ${today.sunset ? `
-              <div class="detail-pill">
+              <div class="detail-pill temp-detail">
                 <i class="wi wi-sunset"></i>
                 <span class="value">${today.sunset}</span>
                 <span class="label">Tramonto</span>
@@ -1096,7 +1438,7 @@
               <span>Leggera</span>
             </div>
             <div class="legend-item">
-              <div class="legend-dot" style="background: rgba(255, 149, 0, 0.8);"></div>
+              <div class="legend-dot" style="background: rgba(250, 162, 2, 0.8);"></div>
               <span>Moderata</span>
             </div>
             <div class="legend-item">
@@ -1110,7 +1452,118 @@
       document.getElementById('rain-timeline-container').innerHTML = html;
     }
 
-    // === NUOVA FUNZIONE: Temperature Chart ===
+    // === RENDER PRESSURE CHART ===
+    
+    function renderPressureChart() {
+      if (!weatherData || !weatherData.days || weatherData.days.length === 0) return;
+
+      const pressures = weatherData.days
+        .filter(d => d.pressure && d.pressure.value_hPa)
+        .map(d => ({
+          date: d.date,
+          value: d.pressure.value_hPa,
+          trend: d.pressure.trend
+        }));
+
+      if (pressures.length === 0) return;
+
+      const values = pressures.map(p => p.value);
+      const maxPressure = Math.max(...values);
+      const minPressure = Math.min(...values);
+      const range = maxPressure - minPressure || 10;
+      
+      const chartWidth = 100;
+      const chartHeight = 100;
+      const pointsPerDay = chartWidth / pressures.length;
+
+      // Genera punti SVG
+      const points = pressures.map((p, i) => {
+        const x = (i * pointsPerDay) + (pointsPerDay / 2);
+        const y = chartHeight - (((p.value - minPressure) / range) * 80 + 10);
+        return `${x},${y}`;
+      }).join(' ');
+
+      // Trend globale
+      const firstPressure = pressures[0].value;
+      const lastPressure = pressures[pressures.length - 1].value;
+      const trendDiff = lastPressure - firstPressure;
+      let trendClass = 'pressure-trend-stable';
+      let trendText = 'Stabile';
+      let trendIcon = '➡️';
+      
+      if (trendDiff > 3) {
+        trendClass = 'pressure-trend-up';
+        trendText = 'In salita';
+        trendIcon = '↗️';
+      } else if (trendDiff < -3) {
+        trendClass = 'pressure-trend-down';
+        trendText = 'In discesa';
+        trendIcon = '↘️';
+      }
+
+      const html = `
+        <div class="pressure-chart-container">
+          <div class="chart-title">
+            <i class="wi wi-barometer"></i>
+            Pressione Atmosferica - 7 Giorni
+          </div>
+          
+          <div class="pressure-chart">
+            <svg class="pressure-svg" viewBox="0 0 ${chartWidth} ${chartHeight}" preserveAspectRatio="none">
+              <!-- Threshold line 1013 hPa -->
+              <line x1="0" y1="${chartHeight - (((1013 - minPressure) / range) * 80 + 10)}" 
+                    x2="${chartWidth}" y2="${chartHeight - (((1013 - minPressure) / range) * 80 + 10)}"
+                    stroke="rgba(255,255,255,0.2)" stroke-width="0.5" stroke-dasharray="2,2"/>
+              
+              <!-- Area sotto la linea -->
+              <polygon points="0,${chartHeight} ${points} ${chartWidth},${chartHeight}"
+                       fill="url(#pressureGradient)" opacity="0.3"/>
+              
+              <!-- Linea pressione -->
+              <polyline points="${points}"
+                        fill="none" stroke="#08a5e8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              
+              <!-- Punti -->
+              ${pressures.map((p, i) => {
+                const x = (i * pointsPerDay) + (pointsPerDay / 2);
+                const y = chartHeight - (((p.value - minPressure) / range) * 80 + 10);
+                return `<circle cx="${x}" cy="${y}" r="1.5" fill="#08a5e8"/>`;
+              }).join('')}
+              
+              <defs>
+                <linearGradient id="pressureGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" style="stop-color:#08a5e8;stop-opacity:0.6"/>
+                  <stop offset="100%" style="stop-color:#08a5e8;stop-opacity:0"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+
+          <div class="pressure-labels">
+            ${pressures.map(p => `<span>${getShortDate(p.date)}</span>`).join('')}
+          </div>
+
+          <div class="pressure-info">
+            <div class="pressure-stat">
+              <i class="wi wi-direction-up"></i>
+              <span>Max: ${maxPressure} hPa</span>
+            </div>
+            <div class="pressure-stat">
+              <i class="wi wi-direction-down"></i>
+              <span>Min: ${minPressure} hPa</span>
+            </div>
+            <div class="pressure-stat ${trendClass}">
+              <span>${trendIcon} ${trendText}</span>
+            </div>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('pressure-chart-container').innerHTML = html;
+    }
+
+    // === RENDER TEMPERATURE CHART ===
+    
     function renderTempChart() {
       if (!weatherData || !weatherData.days || weatherData.days.length === 0) return;
 
@@ -1155,23 +1608,23 @@
       
       const html = `
         <div class="stats-grid">
-          <div class="stat-card animate-on-load animate-delay-1">
+          <div class="stat-card">
             <i class="wi wi-thermometer" style="color: var(--accent-orange);"></i>
             <div class="stat-value">${stats.maxTemp}°C</div>
             <div class="stat-label">Max Settimana</div>
           </div>
-          <div class="stat-card animate-on-load animate-delay-2">
-            <i class="wi wi-thermometer-exterior" style="color: var(--accent-blue);"></i>
+          <div class="stat-card">
+            <i class="wi wi-thermometer-exterior" style="color: var(--accent-cyan);"></i>
             <div class="stat-value">${stats.minTemp}°C</div>
             <div class="stat-label">Min Settimana</div>
           </div>
-          <div class="stat-card animate-on-load animate-delay-3">
+          <div class="stat-card">
             <i class="wi wi-thermometer" style="color: var(--accent-green);"></i>
             <div class="stat-value">${stats.avgTemp}°C</div>
             <div class="stat-label">Media</div>
           </div>
-          <div class="stat-card animate-on-load animate-delay-4">
-            <i class="wi wi-rain" style="color: var(--accent-blue);"></i>
+          <div class="stat-card">
+            <i class="wi wi-rain" style="color: var(--accent-cyan);"></i>
             <div class="stat-value">${stats.rainyDays}</div>
             <div class="stat-label">Giorni Pioggia</div>
           </div>
@@ -1231,7 +1684,7 @@
           <div class="day-details-row">
             ${day.rain && day.rain.probability > 0 ? `
               <div class="detail-compact">
-                <i class="wi wi-raindrop"></i>
+                <i class="wi wi-raindrop" style="color: var(--accent-cyan);"></i>
                 <div class="value">${day.rain.probability}%</div>
                 <div class="label">${day.rain.total_mm}mm</div>
               </div>
@@ -1249,7 +1702,7 @@
 
             ${day.sea ? `
               <div class="detail-compact">
-                <i class="wi wi-tsunami"></i>
+                <i class="wi wi-tsunami" style="color: var(--accent-cyan);"></i>
                 <div class="value">${day.sea.wave_height_m}m</div>
                 <div class="label">${day.sea.condition}</div>
               </div>
@@ -1265,7 +1718,7 @@
 
             ${day.uv_index ? `
               <div class="detail-compact">
-                <i class="wi wi-day-sunny"></i>
+                <i class="wi wi-day-sunny" style="color: var(--accent-orange);"></i>
                 <div class="value">${day.uv_index}</div>
                 <div class="label">UV Index</div>
               </div>
@@ -1306,6 +1759,7 @@
     
     renderHero();
     renderRainTimeline();
+    renderPressureChart();
     renderTempChart();
     renderStats();
     renderForecast();
