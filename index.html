@@ -125,20 +125,26 @@
     .header-logo {
       display: flex;
       align-items: center;
-      gap: var(--spacing-sm);
+      gap: var(--spacing-md);
     }
 
-    .logo-icon {
-      font-size: 2.5rem;
+    /* MODIFICA: Logo immagine al posto dell'emoji */
+    .logo-img {
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+      border-radius: 12px;
+      background: white;
+      padding: 4px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     }
 
+    /* MODIFICA: Titolo più grande, grassetto e azzurro */
     .header-title h1 {
-      font-size: 1.8rem;
-      font-weight: 700;
-      background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-orange) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--accent-cyan);
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
 
     .header-subtitle {
@@ -310,52 +316,6 @@
       animation: slideInLeft 0.8s ease-out;
     }
 
-    /* === AQI WIDGET === */
-    .aqi-widget {
-      background: rgba(0, 0, 0, 0.3);
-      backdrop-filter: blur(10px);
-      border-radius: 16px;
-      padding: var(--spacing-md);
-      margin-bottom: var(--spacing-md);
-      display: flex;
-      align-items: center;
-      gap: var(--spacing-md);
-      animation: slideInLeft 0.9s ease-out;
-    }
-
-    .aqi-icon {
-      font-size: 3rem;
-      opacity: 0.9;
-    }
-
-    .aqi-content {
-      flex: 1;
-    }
-
-    .aqi-title {
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      opacity: 0.8;
-      margin-bottom: 4px;
-    }
-
-    .aqi-value {
-      font-size: 2rem;
-      font-weight: 700;
-      margin-bottom: 4px;
-    }
-
-    .aqi-level {
-      font-size: 0.95rem;
-      font-weight: 500;
-    }
-
-    .aqi-good { border-left: 4px solid var(--accent-green); color: var(--accent-green); }
-    .aqi-moderate { border-left: 4px solid var(--accent-yellow); color: var(--accent-yellow); }
-    .aqi-unhealthy-sensitive { border-left: 4px solid var(--accent-orange); color: var(--accent-orange); }
-    .aqi-unhealthy { border-left: 4px solid var(--accent-red); color: var(--accent-red); }
-
     /* === ADVICE PILLS === */
     .advice-pills {
       display: flex;
@@ -433,6 +393,16 @@
 
     .detail-pill.rain-detail i { color: var(--accent-cyan); }
     .detail-pill.temp-detail i { color: var(--accent-orange); }
+    
+    /* MODIFICA: AQI come minicard con colori dinamici */
+    .detail-pill.aqi-pill {
+      cursor: default;
+    }
+    
+    .detail-pill.aqi-pill.good i { color: var(--accent-green); }
+    .detail-pill.aqi-pill.moderate i { color: var(--accent-yellow); }
+    .detail-pill.aqi-pill.unhealthy i { color: var(--accent-orange); }
+    .detail-pill.aqi-pill.bad i { color: var(--accent-red); }
 
     /* === MOON PHASE === */
     .moon-phase-pill {
@@ -731,6 +701,8 @@
       header { flex-direction: column; gap: var(--spacing-md); }
       .header-actions { width: 100%; }
       .action-button { flex: 1; justify-content: center; }
+      .logo-img { width: 50px; height: 50px; }
+      .header-title h1 { font-size: 1.8rem; }
       .hero-card { padding: var(--spacing-lg); min-height: 60vh; }
       .hero-temp { font-size: 72px; }
       .hero-condition { font-size: 1.3rem; }
@@ -762,10 +734,10 @@
   </div>
 
   <div class="container">
-    <!-- HEADER -->
+    <!-- HEADER con Logo Immagine -->
     <header>
       <div class="header-logo">
-        <div class="logo-icon">🌊</div>
+        <img src="apple-touch-icon.png" alt="Meteo Procida Logo" class="logo-img">
         <div>
           <h1>Meteo Procida</h1>
           <div class="header-subtitle">
@@ -804,7 +776,7 @@
       <canvas id="pressureWindChart" class="chart-canvas"></canvas>
     </div>
 
-    <!-- NUOVA SEZIONE: GRAFICI CONDIZIONI MARINE -->
+    <!-- SEZIONE: GRAFICI CONDIZIONI MARINE -->
     <div class="charts-section">
       <div class="chart-title">
         <i class="wi wi-tsunami"></i>
@@ -837,13 +809,12 @@
     // === GLOBALS ===
     let notificationsEnabled = false;
 
-    // === HELPER FUNCTIONS (AGGIORNATE PER FIX DATA/GIORNO) ===
+    // === HELPER FUNCTIONS ===
     function formatDate(dateStr) {
       const date = new Date(dateStr);
       const giorni = ['Domenica', 'Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'];
       const mesi = ['Gen', 'Feb', 'Mar', 'Apr', 'Mag', 'Giu', 'Lug', 'Ago', 'Set', 'Ott', 'Nov', 'Dic'];
       
-      // Fix: verifica che la data sia valida
       if (isNaN(date.getTime())) {
         console.error('Data non valida:', dateStr);
         return 'Data non valida';
@@ -856,7 +827,6 @@
       const date = new Date(dateStr);
       const giorni = ['Dom', 'Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab'];
       
-      // Fix: verifica che la data sia valida
       if (isNaN(date.getTime())) {
         console.error('Data non valida:', dateStr);
         return '---';
@@ -886,17 +856,40 @@
       return 'cold';
     }
 
+    // MODIFICA: Mapping migliorato fasi lunari
     function getMoonPhaseEmoji(phaseText) {
       if (!phaseText) return '🌕';
       const phase = phaseText.toLowerCase();
-      if (phase.includes('nuova')) return '🌑';
-      if (phase.includes('crescente') && phase.includes('primo')) return '🌓';
+      
+      // Luna nuova
+      if (phase.includes('nuova') || phase.includes('new moon')) return '🌑';
+      
+      // Crescente
+      if (phase.includes('primo quarto') || phase.includes('first quarter')) return '🌓';
       if (phase.includes('crescente')) return '🌒';
-      if (phase.includes('gibbosa') && phase.includes('crescente')) return '🌔';
-      if (phase.includes('piena')) return '🌕';
-      if (phase.includes('gibbosa') && phase.includes('calante')) return '🌖';
-      if (phase.includes('calante') && phase.includes('ultimo')) return '🌗';
+      if (phase.includes('gibbosa crescente') || phase.includes('waxing gibbous')) return '🌔';
+      
+      // Luna piena
+      if (phase.includes('piena') || phase.includes('full moon')) return '🌕';
+      
+      // Calante
+      if (phase.includes('gibbosa calante') || phase.includes('waning gibbous')) return '🌖';
+      if (phase.includes('ultimo quarto') || phase.includes('last quarter')) return '🌗';
       if (phase.includes('calante')) return '🌘';
+      
+      // Fallback basato su percentuale illuminazione (se presente nel testo)
+      if (phase.match(/\d+%/)) {
+        const percentage = parseInt(phase.match(/\d+/)[0]);
+        if (percentage < 10) return '🌑';
+        if (percentage < 40) return '🌒';
+        if (percentage < 60) return '🌓';
+        if (percentage < 90) return '🌔';
+        if (percentage < 110) return '🌕';
+        if (percentage < 140) return '🌖';
+        if (percentage < 160) return '🌗';
+        return '🌘';
+      }
+      
       return '🌕';
     }
 
@@ -923,21 +916,22 @@
       return directions[direction?.toUpperCase()] || 0;
     }
 
+    // MODIFICA: Funzioni AQI per minicard
     function getAQIClass(aqi) {
-      if (aqi <= 50) return 'aqi-good';
-      if (aqi <= 100) return 'aqi-moderate';
-      if (aqi <= 150) return 'aqi-unhealthy-sensitive';
-      return 'aqi-unhealthy';
+      if (aqi <= 50) return 'good';
+      if (aqi <= 100) return 'moderate';
+      if (aqi <= 150) return 'unhealthy';
+      return 'bad';
     }
 
     function getAQILevel(aqi) {
       if (aqi <= 50) return 'Buona';
       if (aqi <= 100) return 'Moderata';
-      if (aqi <= 150) return 'Malsana per sensibili';
+      if (aqi <= 150) return 'Sensibili';
       return 'Malsana';
     }
 
-    function getAQIIcon(aqi) {
+    function getAQIEmoji(aqi) {
       if (aqi <= 50) return '😊';
       if (aqi <= 100) return '😐';
       if (aqi <= 150) return '😷';
@@ -1045,25 +1039,6 @@
       const weatherIcon = getWeatherIcon(today.summary);
       const moonEmoji = getMoonPhaseEmoji(today.moon_phase);
       
-      let aqiWidget = '';
-      if (today.air_quality && today.air_quality.aqi) {
-        const aqi = today.air_quality.aqi;
-        const aqiClass = getAQIClass(aqi);
-        const aqiLevel = getAQILevel(aqi);
-        const aqiIcon = getAQIIcon(aqi);
-        
-        aqiWidget = `
-          <div class="aqi-widget ${aqiClass}">
-            <div class="aqi-icon">${aqiIcon}</div>
-            <div class="aqi-content">
-              <div class="aqi-title">Qualità dell'Aria</div>
-              <div class="aqi-value">${aqi}</div>
-              <div class="aqi-level">${aqiLevel}</div>
-            </div>
-          </div>
-        `;
-      }
-      
       const html = `
         <div class="hero-card ${tempClass}">
           <div class="hero-header">
@@ -1087,7 +1062,6 @@
           </div>
 
           ${today.summary ? `<div class="hero-summary">${today.summary}</div>` : ''}
-          ${aqiWidget}
 
           ${today.advice && today.advice.length > 0 ? `
             <div class="advice-pills">
@@ -1175,6 +1149,14 @@
                 <span class="label">${today.moon_phase}</span>
               </div>
             ` : ''}
+
+            ${today.air_quality && today.air_quality.aqi ? `
+              <div class="detail-pill aqi-pill ${getAQIClass(today.air_quality.aqi)}">
+                <i class="wi wi-dust"></i>
+                <span class="value">${today.air_quality.aqi}</span>
+                <span class="label">${getAQILevel(today.air_quality.aqi)}</span>
+              </div>
+            ` : ''}
           </div>
         </div>
       `;
@@ -1191,7 +1173,7 @@
       return 'Variabile';
     }
 
-    // === CHART.JS GRAFICI CORRETTI + NUOVO GRAFICO MARE ===
+    // === CHART.JS GRAFICI ===
     function renderCharts() {
       if (!weatherData || !weatherData.days || weatherData.days.length === 0) {
         console.warn('❌ Dati meteo non disponibili per i grafici');
@@ -1199,7 +1181,6 @@
       }
 
       console.log('🎨 Creazione grafici...', weatherData.days.length, 'giorni');
-      console.log('📊 Dati temperature:', weatherData.days.map(d => d.temp?.max));
 
       const labels = weatherData.days.map(d => getShortDate(d.date));
       const temps = weatherData.days.map(d => d.temp?.max || 20);
@@ -1207,20 +1188,14 @@
       const rains = weatherData.days.map(d => d.rain?.total_mm || 0);
       const pressures = weatherData.days.map(d => d.pressure?.value_hPa || 1013);
       const winds = weatherData.days.map(d => d.wind?.periods?.[0]?.speed_kmh || 0);
-      
-      // NUOVI DATI MARE
       const waveHeights = weatherData.days.map(d => d.sea?.wave_height_m || 0);
       const seaTemps = weatherData.days.map(d => d.sea?.temperature_c || 18);
 
       try {
         // Grafico 1: Temperature & Precipitazioni
         const ctx1 = document.getElementById('weatherChart');
-        if (!ctx1) {
-          console.error('❌ Canvas weatherChart non trovato!');
-          return;
-        }
+        if (!ctx1) return;
         
-        console.log('✅ Canvas weatherChart trovato');
         new Chart(ctx1.getContext('2d'), {
           type: 'line',
           data: {
@@ -1263,9 +1238,7 @@
             responsive: true,
             maintainAspectRatio: false,
             plugins: {
-              legend: {
-                labels: { color: '#a0c4d8', font: { size: 12 } }
-              },
+              legend: { labels: { color: '#a0c4d8', font: { size: 12 } } },
               tooltip: {
                 backgroundColor: 'rgba(1, 37, 73, 0.9)',
                 titleColor: '#fff',
@@ -1304,12 +1277,8 @@
       try {
         // Grafico 2: Pressione & Vento
         const ctx2 = document.getElementById('pressureWindChart');
-        if (!ctx2) {
-          console.error('❌ Canvas pressureWindChart non trovato!');
-          return;
-        }
+        if (!ctx2) return;
         
-        console.log('✅ Canvas pressureWindChart trovato');
         new Chart(ctx2.getContext('2d'), {
           type: 'line',
           data: {
@@ -1344,9 +1313,7 @@
             responsive: true,
             maintainAspectRatio: false,
             plugins: {
-              legend: {
-                labels: { color: '#a0c4d8', font: { size: 12 } }
-              },
+              legend: { labels: { color: '#a0c4d8', font: { size: 12 } } },
               tooltip: {
                 backgroundColor: 'rgba(1, 37, 73, 0.9)',
                 titleColor: '#fff',
@@ -1380,14 +1347,10 @@
       }
 
       try {
-        // NUOVO GRAFICO 3: Condizioni Meteomarine
+        // Grafico 3: Condizioni Meteomarine
         const ctx3 = document.getElementById('marineChart');
-        if (!ctx3) {
-          console.error('❌ Canvas marineChart non trovato!');
-          return;
-        }
+        if (!ctx3) return;
         
-        console.log('✅ Canvas marineChart trovato');
         new Chart(ctx3.getContext('2d'), {
           type: 'line',
           data: {
@@ -1422,9 +1385,7 @@
             responsive: true,
             maintainAspectRatio: false,
             plugins: {
-              legend: {
-                labels: { color: '#a0c4d8', font: { size: 12 } }
-              },
+              legend: { labels: { color: '#a0c4d8', font: { size: 12 } } },
               tooltip: {
                 backgroundColor: 'rgba(1, 37, 73, 0.9)',
                 titleColor: '#fff',
@@ -1437,11 +1398,7 @@
               y: {
                 ticks: { color: '#08a5e8' },
                 grid: { color: 'rgba(255, 255, 255, 0.1)' },
-                title: {
-                  display: true,
-                  text: 'Altezza Onde (m)',
-                  color: '#08a5e8'
-                }
+                title: { display: true, text: 'Altezza Onde (m)', color: '#08a5e8' }
               },
               y1: {
                 type: 'linear',
@@ -1449,11 +1406,7 @@
                 position: 'right',
                 ticks: { color: '#faa202' },
                 grid: { drawOnChartArea: false },
-                title: {
-                  display: true,
-                  text: 'Temperatura (°C)',
-                  color: '#faa202'
-                }
+                title: { display: true, text: 'Temperatura (°C)', color: '#faa202' }
               },
               x: {
                 ticks: { color: '#a0c4d8' },
@@ -1616,15 +1569,13 @@
 
     // === INIZIALIZZAZIONE ===
     renderHero();
-    renderCharts(); // ← INCLUDE TUTTI E 3 I GRAFICI
+    renderCharts();
     renderStats();
     renderForecast();
     updateTimestamp();
     
-    // Check alerts
     setTimeout(checkWeatherAlerts, 2000);
 
-    // Register Service Worker per PWA
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('service-worker.js')
         .then(reg => console.log('Service Worker registrato'))
