@@ -41,6 +41,10 @@
   </style>
 </head>
 <body>
+  <pre id="debug" style="background:#0009;color:#0f0;padding:10px;"></pre>
+<script>
+  document.getElementById('debug').innerText = JSON.stringify($json, null, 2);
+</script>
   <div class="header">PREVISIONI METEO PROCIDA <i class="wi wi-day-sunny"></i> MultiFonte & AI</div>
   
   <!-- Mini cards giorni -->
