@@ -616,9 +616,15 @@
     }
 
     .rain-stat-icon {
-      font-size: 2rem;
-      margin-bottom: var(--spacing-xs);
-      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+      width: 2.5rem;
+      height: 2.5rem;
+      margin: 0 auto var(--spacing-xs);
+      opacity: 0.9;
+      transition: transform 0.3s ease;
+    }
+
+    .rain-stat:hover .rain-stat-icon {
+      transform: scale(1.1) rotate(5deg);
     }
 
     .rain-stat-value {
@@ -1001,7 +1007,7 @@
     <div class="modal-content" onclick="event.stopPropagation()">
       <div class="modal-header">
         <div class="modal-icon" style="color: #08a5e8;">
-          💧
+          <img src="https://raw.githubusercontent.com/Micheledv74/previsioni/main/icons/meteocons/raindrops.svg" style="width: 28px; height: 28px;">
         </div>
         <h3>Pioggia Oggi - <span id="rainModalDate"></span></h3>
         <button class="modal-close" onclick="closeRainModal()" aria-label="Chiudi">×</button>
@@ -1010,36 +1016,75 @@
         <canvas id="rainChart" style="max-height: 300px;"></canvas>
         
         <div class="rain-stats">
-  <div class="rain-stat">
-    <img src="https://raw.githubusercontent.com/Micheledv74/previsioni/main/icons/meteocons/raindrops.svg" class="rain-stat-icon" alt="Totale">
-    <div class="rain-stat-value" id="rainTotalValue">--</div>
-    <div class="rain-stat-label">Totale mm</div>
+          <div class="rain-stat">
+            <img src="https://raw.githubusercontent.com/Micheledv74/previsioni/main/icons/meteocons/raindrops.svg" class="rain-stat-icon" alt="Totale">
+            <div class="rain-stat-value" id="rainTotalValue">--</div>
+            <div class="rain-stat-label">Totale mm</div>
+          </div>
+          <div class="rain-stat">
+            <img src="https://raw.githubusercontent.com/Micheledv74/previsioni/main/icons/meteocons/raindrop-measure.svg" class="rain-stat-icon" alt="Picco">
+            <div class="rain-stat-value" id="rainPeakValue">--</div>
+            <div class="rain-stat-label">Picco mm/h</div>
+          </div>
+          <div class="rain-stat">
+            "<img src="https://raw.githubusercontent.com/Micheledv74/previsioni/main/icons/meteocons/wi-time-2.svg" class="rain-stat-icon alt="Durata">
+            <div class="rain-stat-value" id="rainDurationValue">--</div>
+            <div class="rain-stat-label">Durata ore</div>
+          </div>
+          <div class="rain-stat">
+            <img src="https://raw.githubusercontent.com/Micheledv74/previsioni/main/icons/meteocons/barometer.svg" class="rain-stat-icon" alt="Probabilità">
+            <div class="rain-stat-value" id="rainProbValue">--</div>
+            <div class="rain-stat-label">Probabilità</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="rain-stat">
-    <img src="https://raw.githubusercontent.com/Micheledv74/previsioni/main/icons/meteocons/raindrop-measure.svg" class="rain-stat-icon" alt="Picco">
-    <div class="rain-stat-value" id="rainPeakValue">--</div>
-    <div class="rain-stat-label">Picco mm/h</div>
-  </div>
-  <div class="rain-stat">
-    <img src="https://raw.githubusercontent.com/Micheledv74/previsioni/main/icons/meteocons/wi-time-2.svg" class="rain-stat-icon" alt="Durata">
-    <div class="rain-stat-value" id="rainDurationValue">--</div>
-    <div class="rain-stat-label">Durata ore</div>
-  </div>
-  <div class="rain-stat">
-    <img src="https://raw.githubusercontent.com/Micheledv74/previsioni/main/icons/meteocons/barometer.svg" class="rain-stat-icon" alt="Probabilità">
-    <div class="rain-stat-value" id="rainProbValue">--</div>
-    <div class="rain-stat-label">Probabilità</div>
-  </div>
-</div>
-  
+
+  <!-- MODAL VENTO -->
+  <div class="modal-overlay" id="windModal" onclick="closeWindModal()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <div class="modal-icon" style="color: #08a5e8;">
+          <img src="https://raw.githubusercontent.com/Micheledv74/previsioni/main/icons/meteocons/wind.svg" style="width: 28px; height: 28px;">
+        </div>
+        <h3>Vento Oggi - <span id="windModalDate"></span></h3>
+        <button class="modal-close" onclick="closeWindModal()" aria-label="Chiudi">×</button>
+      </div>
+      <div class="modal-body">
+        <canvas id="windChart" style="max-height: 300px;"></canvas>
+        
+        <div class="rain-stats">
+          <div class="rain-stat">
+            <img src="https://raw.githubusercontent.com/Micheledv74/previsioni/main/icons/meteocons/wind.svg" class="rain-stat-icon" alt="Media">
+            <div class="rain-stat-value" id="windAvgValue">--</div>
+            <div class="rain-stat-label">Media Km/h</div>
+          </div>
+          <div class="rain-stat">
+            <img src="https://raw.githubusercontent.com/Micheledv74/previsioni/main/icons/meteocons/wind-beaufort-12.svg" class="rain-stat-icon" alt="Max">
+            <div class="rain-stat-value" id="windMaxValue">--</div>
+            <div class="rain-stat-label">Raffica Max</div>
+          </div>
+          <div class="rain-stat">
+            <img src="https://raw.githubusercontent.com/Micheledv74/previsioni/main/icons/meteocons/compass.svg" class="rain-stat-icon" alt="Beaufort">
+            <div class="rain-stat-value" id="windBeaufortValue">--</div>
+            <div class="rain-stat-label">Beaufort Max</div>
+          </div>
+          <div class="rain-stat">
+            <img src="https://raw.githubusercontent.com/Micheledv74/previsioni/main/icons/meteocons/wind.svg" class="rain-stat-icon" alt="Dir">
+            <div class="rain-stat-value" id="windDirValue">--</div>
+            <div class="rain-stat-label">Direzione</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
   <script>
-    const weatherData = {"location":"Procida, Italia","generatedAt":"2025-10-22T17:43:22.883Z","totalDays":7,"weekStats":{"maxTemp":22,"minTemp":14,"avgTemp":"19.9","rainyDays":4},"days":[{"date":"2025-10-22","temp":{"min":17,"max":20,"feels_like":18},"rain":{"probability":70,"total_mm":8.5,"periods":[{"start":"08:00","end":"11:00","intensity":"moderata"},{"start":"16:00","end":"18:00","intensity":"leggera"}]},"wind":{"periods":[{"start":"00:00","end":"12:00","speed_kmh":20,"gusts_kmh":35,"direction":"SE","intensity":"moderato"},{"start":"12:00","end":"23:59","speed_kmh":35,"gusts_kmh":50,"direction":"S","intensity":"forte"}]},"pressure":{"value_hPa":1010,"trend":"in calo"},"sea":{"condition":"mosso","wave_height_m":1.5,"swell_direction":"Sud","temperature_c":19.2},"humidity":85,"uv_index":3,"sunrise":"07:23","sunset":"18:13","moon_phase":"Luna calante","air_quality":{"aqi":150,"level":"Malsana per sensibili","pm25":35,"pm10":60,"no2":45,"o3":70},"summary":"Giornata nuvolosa con piogge moderate al mattino (8-11h) e leggere in serata. Il vento si rinforzerà nel pomeriggio da Sud, raggiungendo raffiche di 50 km/h, rendendo il mare mosso con onde fino a 1.5 metri. La qualità dell'aria è classificata come malsana per i gruppi sensibili. Le temperature si manterranno tra i 17 e i 20 gradi Celsius.","advice":["Si raccomanda di portare ombrello o impermeabile per le piogge intermittenti.","Le attività nautiche sono sconsigliate a causa del mare mosso e del vento forte.","I soggetti sensibili (anziani, bambini, persone con problemi respiratori) dovrebbero limitare le attività all'aperto."],"alerts":["Allerta vento forte da Sud dalle 12:00, con raffiche fino a 50 km/h.","Allerta mare mosso, navigazione difficile per piccole imbarcazioni."]},{"date":"2025-10-23","temp":{"min":16,"max":19,"feels_like":17},"rain":{"probability":20,"total_mm":0.5,"periods":[{"start":"03:00","end":"05:00","intensity":"leggera"}]},"wind":{"periods":[{"start":"00:00","end":"06:00","speed_kmh":30,"gusts_kmh":45,"direction":"S","intensity":"forte"},{"start":"06:00","end":"23:59","speed_kmh":20,"gusts_kmh":30,"direction":"SW","intensity":"moderato"}]},"pressure":{"value_hPa":1012,"trend":"in aumento"},"sea":{"condition":"mosso","wave_height_m":1.2,"swell_direction":"Sud-Ovest","temperature_c":19.1},"humidity":80,"uv_index":3,"sunrise":"07:24","sunset":"18:12","moon_phase":"Luna calante","summary":"Miglioramento delle condizioni meteo con residui venti forti al mattino, che tenderanno a calare nel corso della giornata da Sud-Ovest. Possibilità di piogge leggere e isolate nelle prime ore del giorno. Temperature stazionarie. Mare mosso, ma in graduale attenuazione.","advice":["Il vento diminuisce, ma il mare rimane mosso: prudenza in mare aperto.","Le temperature saranno miti, ma vestirsi a strati per le escursioni termiche.","Considerare attività all'aperto nel pomeriggio quando il vento sarà più debole."],"alerts":[]},{"date":"2025-10-24","temp":{"min":16,"max":20,"feels_like":18},"rain":{"probability":10,"total_mm":0,"periods":[]},"wind":{"periods":[{"start":"00:00","end":"23:59","speed_kmh":15,"gusts_kmh":25,"direction":"SW","intensity":"leggero"}]},"pressure":{"value_hPa":1015,"trend":"stabile"},"sea":{"condition":"poco mosso","wave_height_m":0.8,"swell_direction":"Ovest","temperature_c":19},"humidity":75,"uv_index":4,"sunrise":"07:25","sunset":"18:11","moon_phase":"Luna calante","summary":"Giornata prevalentemente soleggiata con cieli sereni o poco nuvolosi. Venti deboli o moderati da Sud-Ovest. Mare poco mosso, ideale per gite in barca o attività balneari. Temperature gradevoli con massime attorno ai 20°C. Condizioni ottimali per godere delle bellezze dell'isola.","advice":["Ottima giornata per escursioni e attività all'aperto, non dimenticare la protezione solare.","Mare poco mosso, favorevole per uscite in barca o snorkeling.","Godetevi il bel tempo, raro in questo periodo."],"alerts":[]},{"date":"2025-10-25","temp":{"min":17,"max":21,"feels_like":19},"rain":{"probability":15,"total_mm":0,"periods":[]},"wind":{"periods":[{"start":"00:00","end":"12:00","speed_kmh":10,"gusts_kmh":20,"direction":"W","intensity":"leggero"},{"start":"12:00","end":"23:59","speed_kmh":20,"gusts_kmh":30,"direction":"NW","intensity":"moderato"}]},"pressure":{"value_hPa":1014,"trend":"stabile"},"sea":{"condition":"poco mosso","wave_height_m":0.7,"swell_direction":"Nord-Ovest","temperature_c":19},"humidity":70,"uv_index":4,"sunrise":"07:26","sunset":"18:10","moon_phase":"Ultimo quarto","summary":"Prosegue il bel tempo su Procida, con cieli sereni o leggermente velati. Venti deboli al mattino, in leggera intensificazione nel pomeriggio da Nord-Ovest. Temperature massime in lieve aumento, percepite come molto gradevoli. Mare poco mosso, quasi calmo al mattino, poi in leggero aumento del moto ondoso.","advice":["Condizioni perfette per passeggiate lungo la costa e visite turistiche.","Nonostante il sole, una leggera brezza pomeridiana potrebbe rendere utile una giacca leggera.","Approfittare del mare ancora calmo per attività acquatiche leggere."],"alerts":[]},{"date":"2025-10-26","temp":{"min":15,"max":22,"feels_like":20},"rain":{"probability":5,"total_mm":0,"periods":[]},"wind":{"periods":[{"start":"00:00","end":"23:59","speed_kmh":15,"gusts_kmh":25,"direction":"N","intensity":"leggero"}]},"pressure":{"value_hPa":1016,"trend":"in aumento"},"sea":{"condition":"calmo","wave_height_m":0.4,"swell_direction":"Nord","temperature_c":18.9},"humidity":65,"uv_index":4,"sunrise":"07:27","sunset":"18:09","moon_phase":"Luna calante","summary":"Giornata caratterizzata da tempo stabile e soleggiato. Venti deboli provenienti da Nord per tutto l'arco della giornata. Le temperature massime raggiungeranno i 22°C, con un'ottima sensazione di tepore. Il mare si presenterà calmo, offrendo condizioni ideali per qualsiasi attività marittima. Si prevede una notte fresca.","advice":["Un'altra splendida giornata per esplorare Procida e le sue spiagge.","Il mare sarà calmo: ottimo per bagni fuori stagione, kayak o stand-up paddle.","Portare un maglione per la sera, le temperature caleranno significativamente dopo il tramonto."],"alerts":[]},{"date":"2025-10-27","temp":{"min":14,"max":18,"feels_like":15},"rain":{"probability":80,"total_mm":15,"periods":[{"start":"07:00","end":"12:00","intensity":"forte"},{"start":"17:00","end":"20:00","intensity":"moderata"}]},"wind":{"periods":[{"start":"00:00","end":"06:00","speed_kmh":10,"gusts_kmh":20,"direction":"N","intensity":"leggero"},{"start":"06:00","end":"23:59","speed_kmh":30,"gusts_kmh":40,"direction":"NE","intensity":"forte"}]},"pressure":{"value_hPa":1005,"trend":"in forte calo"},"sea":{"condition":"mosso","wave_height_m":1.8,"swell_direction":"Nord-Est","temperature_c":18.7},"humidity":90,"uv_index":2,"sunrise":"07:28","sunset":"18:08","moon_phase":"Luna crescente","summary":"Marcato peggioramento delle condizioni meteo. Previste piogge forti al mattino, con un accumulo significativo di millimetri, e piogge moderate nel tardo pomeriggio. Il vento si intensificherà notevolmente da Nord-Est, diventando forte, e le temperature scenderanno. Il mare sarà mosso, sconsigliata la navigazione. Si consiglia prudenza.","advice":["Prepararsi a una giornata di pioggia intensa e vento forte: limitare gli spostamenti non essenziali.","Evitare qualsiasi attività in mare a causa delle condizioni avverse.","Assicurarsi che oggetti esterni siano al sicuro per evitare danni causati dal vento forte."],"alerts":["Allerta meteo per piogge forti e temporali al mattino.","Allerta vento forte da Nord-Est e mare mosso per tutto il giorno."]},{"date":"2025-10-28","temp":{"min":15,"max":19,"feels_like":16},"rain":{"probability":40,"total_mm":3,"periods":[{"start":"00:00","end":"03:00","intensity":"leggera"},{"start":"08:00","end":"10:00","intensity":"leggera"}]},"wind":{"periods":[{"start":"00:00","end":"12:00","speed_kmh":25,"gusts_kmh":35,"direction":"NE","intensity":"moderato"},{"start":"12:00","end":"23:59","speed_kmh":15,"gusts_kmh":25,"direction":"N","intensity":"leggero"}]},"pressure":{"value_hPa":1010,"trend":"in aumento"},"sea":{"condition":"mosso","wave_height_m":1.1,"swell_direction":"Nord-Est","temperature_c":18.6},"humidity":88,"uv_index":2,"sunrise":"07:29","sunset":"18:07","moon_phase":"Luna crescente","summary":"Il maltempo si attenua gradualmente, ma la giornata inizia ancora con piogge leggere e vento moderato da Nord-Est. Nel corso della giornata è previsto un miglioramento con schiarite e un calo dell'intensità del vento. Le temperature rimarranno fresche. Il mare, sebbene in attenuazione, resterà mosso per gran parte della giornata.","advice":["Ancora qualche residua pioggia al mattino, tenere a portata di mano l'ombrello.","Le condizioni del mare miglioreranno lentamente, ma la prudenza è d'obbligo.","Le temperature fresche richiedono un abbigliamento più pesante, soprattutto al mattino."],"alerts":[]}],"processedAt":"2025-10-22T17:43:22.883Z"};
+    const weatherData = {"location":"Procida, Italia","generatedAt":"2025-10-22T17:57:36.844Z","totalDays":7,"weekStats":{"maxTemp":22,"minTemp":14,"avgTemp":"19.9","rainyDays":4},"days":[{"date":"2025-10-22","temp":{"min":17,"max":20,"feels_like":18},"rain":{"probability":70,"total_mm":8.5,"periods":[{"start":"08:00","end":"11:00","intensity":"moderata"},{"start":"16:00","end":"18:00","intensity":"leggera"}]},"wind":{"periods":[{"start":"00:00","end":"12:00","speed_kmh":20,"gusts_kmh":35,"direction":"SE","intensity":"moderato"},{"start":"12:00","end":"23:59","speed_kmh":35,"gusts_kmh":50,"direction":"S","intensity":"forte"}]},"pressure":{"value_hPa":1010,"trend":"in calo"},"sea":{"condition":"mosso","wave_height_m":1.5,"swell_direction":"Sud","temperature_c":19.2},"humidity":85,"uv_index":3,"sunrise":"07:23","sunset":"18:13","moon_phase":"Luna calante","air_quality":{"aqi":150,"level":"Malsana per sensibili","pm25":35,"pm10":60,"no2":45,"o3":70},"summary":"Giornata nuvolosa con piogge moderate al mattino (8-11h) e leggere in serata. Il vento si rinforzerà nel pomeriggio da Sud, raggiungendo raffiche di 50 km/h, rendendo il mare mosso con onde fino a 1.5 metri. La qualità dell'aria è classificata come malsana per i gruppi sensibili. Le temperature si manterranno tra i 17 e i 20 gradi Celsius.","advice":["Si raccomanda di portare ombrello o impermeabile per le piogge intermittenti.","Le attività nautiche sono sconsigliate a causa del mare mosso e del vento forte.","I soggetti sensibili (anziani, bambini, persone con problemi respiratori) dovrebbero limitare le attività all'aperto."],"alerts":["Allerta vento forte da Sud dalle 12:00, con raffiche fino a 50 km/h.","Allerta mare mosso, navigazione difficile per piccole imbarcazioni."]},{"date":"2025-10-23","temp":{"min":16,"max":19,"feels_like":17},"rain":{"probability":20,"total_mm":0.5,"periods":[{"start":"03:00","end":"05:00","intensity":"leggera"}]},"wind":{"periods":[{"start":"00:00","end":"06:00","speed_kmh":30,"gusts_kmh":45,"direction":"S","intensity":"forte"},{"start":"06:00","end":"23:59","speed_kmh":20,"gusts_kmh":30,"direction":"SW","intensity":"moderato"}]},"pressure":{"value_hPa":1012,"trend":"in aumento"},"sea":{"condition":"mosso","wave_height_m":1.2,"swell_direction":"Sud-Ovest","temperature_c":19.1},"humidity":80,"uv_index":3,"sunrise":"07:24","sunset":"18:12","moon_phase":"Luna calante","summary":"Miglioramento delle condizioni meteo con residui venti forti al mattino, che tenderanno a calare nel corso della giornata da Sud-Ovest. Possibilità di piogge leggere e isolate nelle prime ore del giorno. Temperature stazionarie. Mare mosso, ma in graduale attenuazione.","advice":["Il vento diminuisce, ma il mare rimane mosso: prudenza in mare aperto.","Le temperature saranno miti, ma vestirsi a strati per le escursioni termiche.","Considerare attività all'aperto nel pomeriggio quando il vento sarà più debole."],"alerts":[]},{"date":"2025-10-24","temp":{"min":16,"max":20,"feels_like":18},"rain":{"probability":10,"total_mm":0,"periods":[]},"wind":{"periods":[{"start":"00:00","end":"23:59","speed_kmh":15,"gusts_kmh":25,"direction":"SW","intensity":"leggero"}]},"pressure":{"value_hPa":1015,"trend":"stabile"},"sea":{"condition":"poco mosso","wave_height_m":0.8,"swell_direction":"Ovest","temperature_c":19},"humidity":75,"uv_index":4,"sunrise":"07:25","sunset":"18:11","moon_phase":"Luna calante","summary":"Giornata prevalentemente soleggiata con cieli sereni o poco nuvolosi. Venti deboli o moderati da Sud-Ovest. Mare poco mosso, ideale per gite in barca o attività balneari. Temperature gradevoli con massime attorno ai 20°C. Condizioni ottimali per godere delle bellezze dell'isola.","advice":["Ottima giornata per escursioni e attività all'aperto, non dimenticare la protezione solare.","Mare poco mosso, favorevole per uscite in barca o snorkeling.","Godetevi il bel tempo, raro in questo periodo."],"alerts":[]},{"date":"2025-10-25","temp":{"min":17,"max":21,"feels_like":19},"rain":{"probability":15,"total_mm":0,"periods":[]},"wind":{"periods":[{"start":"00:00","end":"12:00","speed_kmh":10,"gusts_kmh":20,"direction":"W","intensity":"leggero"},{"start":"12:00","end":"23:59","speed_kmh":20,"gusts_kmh":30,"direction":"NW","intensity":"moderato"}]},"pressure":{"value_hPa":1014,"trend":"stabile"},"sea":{"condition":"poco mosso","wave_height_m":0.7,"swell_direction":"Nord-Ovest","temperature_c":19},"humidity":70,"uv_index":4,"sunrise":"07:26","sunset":"18:10","moon_phase":"Ultimo quarto","summary":"Prosegue il bel tempo su Procida, con cieli sereni o leggermente velati. Venti deboli al mattino, in leggera intensificazione nel pomeriggio da Nord-Ovest. Temperature massime in lieve aumento, percepite come molto gradevoli. Mare poco mosso, quasi calmo al mattino, poi in leggero aumento del moto ondoso.","advice":["Condizioni perfette per passeggiate lungo la costa e visite turistiche.","Nonostante il sole, una leggera brezza pomeridiana potrebbe rendere utile una giacca leggera.","Approfittare del mare ancora calmo per attività acquatiche leggere."],"alerts":[]},{"date":"2025-10-26","temp":{"min":15,"max":22,"feels_like":20},"rain":{"probability":5,"total_mm":0,"periods":[]},"wind":{"periods":[{"start":"00:00","end":"23:59","speed_kmh":15,"gusts_kmh":25,"direction":"N","intensity":"leggero"}]},"pressure":{"value_hPa":1016,"trend":"in aumento"},"sea":{"condition":"calmo","wave_height_m":0.4,"swell_direction":"Nord","temperature_c":18.9},"humidity":65,"uv_index":4,"sunrise":"07:27","sunset":"18:09","moon_phase":"Luna calante","summary":"Giornata caratterizzata da tempo stabile e soleggiato. Venti deboli provenienti da Nord per tutto l'arco della giornata. Le temperature massime raggiungeranno i 22°C, con un'ottima sensazione di tepore. Il mare si presenterà calmo, offrendo condizioni ideali per qualsiasi attività marittima. Si prevede una notte fresca.","advice":["Un'altra splendida giornata per esplorare Procida e le sue spiagge.","Il mare sarà calmo: ottimo per bagni fuori stagione, kayak o stand-up paddle.","Portare un maglione per la sera, le temperature caleranno significativamente dopo il tramonto."],"alerts":[]},{"date":"2025-10-27","temp":{"min":14,"max":18,"feels_like":15},"rain":{"probability":80,"total_mm":15,"periods":[{"start":"07:00","end":"12:00","intensity":"forte"},{"start":"17:00","end":"20:00","intensity":"moderata"}]},"wind":{"periods":[{"start":"00:00","end":"06:00","speed_kmh":10,"gusts_kmh":20,"direction":"N","intensity":"leggero"},{"start":"06:00","end":"23:59","speed_kmh":30,"gusts_kmh":40,"direction":"NE","intensity":"forte"}]},"pressure":{"value_hPa":1005,"trend":"in forte calo"},"sea":{"condition":"mosso","wave_height_m":1.8,"swell_direction":"Nord-Est","temperature_c":18.7},"humidity":90,"uv_index":2,"sunrise":"07:28","sunset":"18:08","moon_phase":"Luna crescente","summary":"Marcato peggioramento delle condizioni meteo. Previste piogge forti al mattino, con un accumulo significativo di millimetri, e piogge moderate nel tardo pomeriggio. Il vento si intensificherà notevolmente da Nord-Est, diventando forte, e le temperature scenderanno. Il mare sarà mosso, sconsigliata la navigazione. Si consiglia prudenza.","advice":["Prepararsi a una giornata di pioggia intensa e vento forte: limitare gli spostamenti non essenziali.","Evitare qualsiasi attività in mare a causa delle condizioni avverse.","Assicurarsi che oggetti esterni siano al sicuro per evitare danni causati dal vento forte."],"alerts":["Allerta meteo per piogge forti e temporali al mattino.","Allerta vento forte da Nord-Est e mare mosso per tutto il giorno."]},{"date":"2025-10-28","temp":{"min":15,"max":19,"feels_like":16},"rain":{"probability":40,"total_mm":3,"periods":[{"start":"00:00","end":"03:00","intensity":"leggera"},{"start":"08:00","end":"10:00","intensity":"leggera"}]},"wind":{"periods":[{"start":"00:00","end":"12:00","speed_kmh":25,"gusts_kmh":35,"direction":"NE","intensity":"moderato"},{"start":"12:00","end":"23:59","speed_kmh":15,"gusts_kmh":25,"direction":"N","intensity":"leggero"}]},"pressure":{"value_hPa":1010,"trend":"in aumento"},"sea":{"condition":"mosso","wave_height_m":1.1,"swell_direction":"Nord-Est","temperature_c":18.6},"humidity":88,"uv_index":2,"sunrise":"07:29","sunset":"18:07","moon_phase":"Luna crescente","summary":"Il maltempo si attenua gradualmente, ma la giornata inizia ancora con piogge leggere e vento moderato da Nord-Est. Nel corso della giornata è previsto un miglioramento con schiarite e un calo dell'intensità del vento. Le temperature rimarranno fresche. Il mare, sebbene in attenuazione, resterà mosso per gran parte della giornata.","advice":["Ancora qualche residua pioggia al mattino, tenere a portata di mano l'ombrello.","Le condizioni del mare miglioreranno lentamente, ma la prudenza è d'obbligo.","Le temperature fresche richiedono un abbigliamento più pesante, soprattutto al mattino."],"alerts":[]}],"processedAt":"2025-10-22T17:57:36.844Z"};
     let notificationsEnabled = false;
     let rainChartInstance = null;
+    let windChartInstance = null;
 
     const METEOCONS_CDN = 'https://raw.githubusercontent.com/Micheledv74/previsioni/main/icons/meteocons';
 
@@ -1088,6 +1133,22 @@
       if (speed_kmh < 103) return 'wind-beaufort-10.svg';
       if (speed_kmh < 118) return 'wind-beaufort-11.svg';
       return 'wind-beaufort-12.svg';
+    }
+
+    function getBeaufortClass(speed) {
+      if (speed < 2) return 0;
+      if (speed < 6) return 1;
+      if (speed < 12) return 2;
+      if (speed < 20) return 3;
+      if (speed < 29) return 4;
+      if (speed < 39) return 5;
+      if (speed < 50) return 6;
+      if (speed < 62) return 7;
+      if (speed < 75) return 8;
+      if (speed < 89) return 9;
+      if (speed < 103) return 10;
+      if (speed < 118) return 11;
+      return 12;
     }
 
     function getUVIcon(uvIndex) {
@@ -1192,13 +1253,8 @@
       const modal = document.getElementById('rainModal');
       document.getElementById('rainModalDate').textContent = formatDate(today.date);
       
-      // Genera dati orari per il grafico
       const hourlyData = generateHourlyRainData(rainData);
-      
-      // Crea grafico
       renderRainChart(hourlyData);
-      
-      // Aggiorna statistiche
       updateRainStats(rainData, hourlyData);
       
       modal.classList.add('active');
@@ -1221,7 +1277,6 @@
       };
       
       const hourlyIntensity = hours.map(hour => {
-        // Controlla se l'ora è in un periodo di pioggia
         if (!rainData.periods || rainData.periods.length === 0) return 0;
         
         for (const period of rainData.periods) {
@@ -1242,7 +1297,6 @@
     function renderRainChart(hourlyData) {
       const ctx = document.getElementById('rainChart');
       
-      // Distruggi grafico precedente se esiste
       if (rainChartInstance) {
         rainChartInstance.destroy();
       }
@@ -1337,10 +1391,135 @@
       document.getElementById('rainDurationValue').textContent = rainHours + 'h';
     }
 
+    function openWindModal() {
+      if (!weatherData || !weatherData.days || weatherData.days.length === 0) return;
+      
+      const today = weatherData.days[0];
+      const windData = today.wind;
+      
+      if (!windData || !windData.periods || windData.periods.length === 0) {
+        alert('Nessun dato orario sul vento disponibile.');
+        return;
+      }
+
+      document.getElementById('windModalDate').textContent = formatDate(today.date);
+      const hours = Array.from({length: 24}, (_, i) => i);
+
+      const hourlySpeeds = hours.map(hour => {
+        const period = windData.periods.find(p => {
+          const pHour = p.time ? parseInt(p.time.split(':')[0]) : hour;
+          return pHour === hour;
+        });
+        return period ? period.speed_kmh : 0;
+      });
+
+      const hourlyDirs = hours.map(hour => {
+        const period = windData.periods.find(p => {
+          const pHour = p.time ? parseInt(p.time.split(':')[0]) : hour;
+          return pHour === hour;
+        });
+        return period ? period.direction : null;
+      });
+
+      renderWindChart(hours, hourlySpeeds);
+      updateWindStats(hourlySpeeds, hourlyDirs);
+
+      document.getElementById('windModal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeWindModal() {
+      document.getElementById('windModal').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function renderWindChart(hours, data) {
+      const ctx = document.getElementById('windChart');
+      if (windChartInstance) windChartInstance.destroy();
+      
+      const hourLabels = hours.map(h => `${h.toString().padStart(2,'0')}:00`);
+      
+      windChartInstance = new Chart(ctx.getContext('2d'), {
+        type: 'bar',
+        data: {
+          labels: hourLabels,
+          datasets: [{
+            label: 'Vento (km/h)',
+            data: data,
+            backgroundColor: data.map(v => v >= 40 ? '#0891c7' : v >= 20 ? 'rgba(8,165,232,0.8)' : 'rgba(8,165,232,0.5)'),
+            borderColor: '#08a5e8',
+            borderWidth: 1.5,
+            borderRadius: 4,
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: 'rgba(1, 37, 73, 0.95)',
+              titleColor: '#fff',
+              bodyColor: '#a0c4d8',
+              borderColor: '#08a5e8',
+              borderWidth: 1,
+              callbacks: {
+                label: function(context) {
+                  const v = context.parsed.y;
+                  if (v === 0) return 'Assente';
+                  return `${v} km/h`;
+                }
+              }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: Math.max(...data, 50) + 5,
+              ticks: { color: '#08a5e8', font: { size: 12 }, callback: v => v+' km/h' },
+              grid: { color: 'rgba(8, 165, 232, 0.1)' },
+              title: {
+                display: true, text: 'Velocità (km/h)', color: '#08a5e8', font: {size:13,weight:'bold'}
+              }
+            },
+            x: {
+              ticks: { color: '#a0c4d8', font: { size: 10 }, maxRotation: 45, minRotation: 45 },
+              grid: { color: 'rgba(255,255,255,0.05)' }
+            }
+          }
+        }
+      });
+    }
+
+    function updateWindStats(data, dirs) {
+      const activeValues = data.filter(v => v > 0);
+      const avg = activeValues.length ? (activeValues.reduce((a,b) => a+b,0) / activeValues.length) : 0;
+      document.getElementById('windAvgValue').textContent = avg.toFixed(1)+' km/h';
+
+      let max = 0, ora = '--';
+      data.forEach((v, i) => { if (v > max) { max = v; ora = (i < 10 ? '0':'')+i+':00'; } });
+      document.getElementById('windMaxValue').textContent = max.toFixed(1)+' ('+ora+')';
+
+      const beaufort = getBeaufortClass(max);
+      document.getElementById('windBeaufortValue').textContent = beaufort+' Bft';
+
+      const dominantDir = getDominantDirection(dirs);
+      document.getElementById('windDirValue').textContent = dominantDir;
+    }
+
+    function getDominantDirection(array) {
+      const counts = {};
+      for (const v of array) if (v) counts[v] = (counts[v]||0)+1;
+      let maxCount = 0, dominant = '--';
+      for (const [k,v] of Object.entries(counts)) if (v > maxCount) { maxCount = v; dominant = k; }
+      return dominant;
+    }
+
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         closeModal();
         closeRainModal();
+        closeWindModal();
       }
     });
 
@@ -1463,7 +1642,7 @@
             ` : ''}
             
             ${today.wind && today.wind.periods && today.wind.periods[0] ? `
-              <div class="detail-pill">
+              <div class="detail-pill wind-detail clickable" onclick="openWindModal()" title="Clicca per grafico vento">
                 <img src="${METEOCONS_CDN}/${getBeaufortIcon(today.wind.periods[0].speed_kmh)}" alt="Vento">
                 <span class="value">${today.wind.periods[0].speed_kmh} km/h</span>
                 <span class="label">${getWindDegrees(today.wind.periods[0].direction)}° ${today.wind.periods[0].direction}</span>
