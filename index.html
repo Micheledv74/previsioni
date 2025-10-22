@@ -68,28 +68,46 @@
       position: fixed;
       bottom: var(--spacing-lg);
       right: var(--spacing-lg);
-      background: linear-gradient(135deg, var(--accent-cyan) 0%, #0077cc 100%);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
+      backdrop-filter: blur(10px);
       width: 60px;
       height: 60px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 16px rgba(8, 165, 232, 0.4);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
       cursor: pointer;
       z-index: 999;
       transition: all 0.3s ease;
-      font-size: 1.5rem;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .notification-toggle svg {
+      width: 28px;
+      height: 28px;
+      fill: var(--text-primary);
+      transition: all 0.3s ease;
     }
 
     .notification-toggle:hover {
       transform: scale(1.1);
-      box-shadow: 0 6px 20px rgba(8, 165, 232, 0.6);
+      box-shadow: 0 6px 20px rgba(8, 165, 232, 0.4);
+      border-color: var(--accent-cyan);
+    }
+
+    .notification-toggle:hover svg {
+      fill: var(--accent-cyan);
     }
 
     .notification-toggle.active {
       background: linear-gradient(135deg, var(--accent-green) 0%, #2ea043 100%);
       animation: pulse 2s infinite;
+      border-color: var(--accent-green);
+    }
+
+    .notification-toggle.active svg {
+      fill: white;
     }
 
     header {
@@ -142,33 +160,46 @@
     }
 
     .action-button {
-      background: linear-gradient(135deg, var(--accent-orange) 0%, #ff8800 100%);
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
       color: white;
-      border: none;
-      padding: 12px 24px;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      width: 48px;
+      height: 48px;
       border-radius: 12px;
-      font-size: 0.95rem;
-      font-weight: 600;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 8px;
+      justify-content: center;
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      box-shadow: 0 4px 12px rgba(250, 162, 2, 0.3);
+    }
+
+    .action-button svg {
+      width: 22px;
+      height: 22px;
+      fill: white;
+      transition: all 0.3s ease;
     }
 
     .action-button:hover {
       transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(250, 162, 2, 0.5);
+      box-shadow: 0 6px 20px rgba(255, 255, 255, 0.2);
+      border-color: var(--accent-cyan);
+      background: rgba(8, 165, 232, 0.2);
     }
 
-    .action-button.secondary {
-      background: linear-gradient(135deg, var(--accent-cyan) 0%, #0077cc 100%);
-      box-shadow: 0 4px 12px rgba(8, 165, 232, 0.3);
+    .action-button:hover svg {
+      fill: var(--accent-cyan);
+      transform: scale(1.1);
     }
 
     .action-button.secondary:hover {
-      box-shadow: 0 6px 20px rgba(8, 165, 232, 0.5);
+      border-color: var(--accent-orange);
+      background: rgba(250, 162, 2, 0.2);
+    }
+
+    .action-button.secondary:hover svg {
+      fill: var(--accent-orange);
     }
 
     @keyframes fadeInUp {
@@ -844,8 +875,7 @@
     @media (max-width: 768px) {
       .container { padding: var(--spacing-sm); }
       header { flex-direction: column; gap: var(--spacing-md); }
-      .header-actions { width: 100%; }
-      .action-button { flex: 1; justify-content: center; }
+      .header-actions { width: 100%; justify-content: center; }
       .logo-img { width: 50px; height: 50px; }
       .header-title h1 { font-size: 1.8rem; }
       .hero-card { padding: var(--spacing-lg); min-height: 60vh; }
@@ -856,7 +886,7 @@
       .details-pills { grid-template-columns: repeat(3, 1fr); }
       .info-pills { grid-template-columns: repeat(3, 1fr); }
       .day-details-row { grid-template-columns: repeat(2, 1fr); }
-      .notification-toggle { bottom: 100px; }
+      .notification-toggle { bottom: 80px; right: var(--spacing-md); }
       .modal-content { max-height: 90vh; margin: var(--spacing-sm); }
     }
 
@@ -876,8 +906,11 @@
   </style>
 </head>
 <body>
-  <div class="notification-toggle" id="notificationToggle" onclick="toggleNotifications()" title="Attiva notifiche meteo">
-    🔔
+  <!-- NOTIFICATION TOGGLE con icone personalizzate -->
+  <div class="notification-toggle" id="notificationToggle" onclick="toggleNotifications()" title="Gestisci notifiche meteo">
+    <svg id="notifIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+      <path d="M440.08,341.31c-1.66-2-3.29-4-4.89-5.93-22-26.61-35.31-42.67-35.31-118,0-39-9.33-71-27.72-95-13.56-17.73-31.89-31.18-56.05-41.12a3,3,0,0,1-.82-.67C306.6,51.49,282.82,32,256,32s-50.59,19.49-59.28,48.56a3.13,3.13,0,0,1-.81.65c-56.38,23.21-83.78,67.74-83.78,136.14,0,75.36-13.29,91.42-35.31,118-1.6,1.93-3.23,3.89-4.89,5.93a35.16,35.16,0,0,0-4.65,37.62c6.17,13,19.32,21.07,34.33,21.07H410.5c14.94,0,28-8.06,34.19-21a35.17,35.17,0,0,0-4.61-37.66ZM256,480a80.06,80.06,0,0,0,70.44-42.13,4,4,0,0,0-3.54-5.87H189.12a4,4,0,0,0-3.55,5.87A80.06,80.06,0,0,0,256,480Z"/>
+    </svg>
   </div>
 
   <div class="container">
@@ -893,11 +926,16 @@
         </div>
       </div>
       <div class="header-actions">
-        <button class="action-button secondary" onclick="shareWeather()">
-          📤 Condividi
+        <button class="action-button secondary" onclick="shareWeather()" title="Condividi previsioni">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+            <path d="M391.6,25.6C356.8,25.6,328,54.4,328,89.2c0,7.6,1.6,14.8,3.6,21.6l-105.2,70c-14-11.6-32-18.8-51.6-18.8c-34.8,0-63.6,28.8-63.6,63.6s28.8,63.6,63.6,63.6c19.6,0,37.6-7.2,51.6-18.8l105.2,70c-2,6.8-3.6,14-3.6,21.6c0,34.8,28.8,63.6,63.6,63.6s63.6-28.8,63.6-63.6s-28.8-63.6-63.6-63.6c-19.6,0-37.6,7.2-51.6,18.8l-105.2-70c2-6.8,3.6-14,3.6-21.6s-1.6-14.8-3.6-21.6l105.2-70c14,11.6,32,18.8,51.6,18.8c34.8,0,63.6-28.8,63.6-63.6S426.4,25.6,391.6,25.6z"/>
+          </svg>
         </button>
-        <button class="action-button" onclick="exportToPDF()">
-          📥 PDF
+        <button class="action-button" onclick="exportToPDF()" title="Esporta PDF">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+            <path d="M428,224H288a48,48,0,0,1-48-48V36a4,4,0,0,0-4-4H144A64,64,0,0,0,80,96V416a64,64,0,0,0,64,64H368a64,64,0,0,0,64-64V228A4,4,0,0,0,428,224ZM336,384H176a16,16,0,0,1,0-32H336a16,16,0,0,1,0,32Zm0-80H176a16,16,0,0,1,0-32H336a16,16,0,0,1,0,32Z"/>
+            <path d="M419.22,188.59,275.41,44.78a2,2,0,0,0-3.41,1.41V176a16,16,0,0,0,16,16H417.81A2,2,0,0,0,419.22,188.59Z"/>
+          </svg>
         </button>
       </div>
     </header>
@@ -956,8 +994,21 @@
   </div>
 
   <script>
-    const weatherData = null;
+    const weatherData = {"location":"Procida, Italia","generatedAt":"2025-10-22T13:12:28.066Z","totalDays":7,"weekStats":{"maxTemp":22,"minTemp":13,"avgTemp":"19.6","rainyDays":3},"days":[{"date":"2025-10-22","temp":{"min":17,"max":20,"feels_like":18},"rain":{"probability":70,"total_mm":8.5,"periods":[{"start":"08:00","end":"11:00","intensity":"moderata"},{"start":"16:00","end":"18:00","intensity":"leggera"}]},"wind":{"periods":[{"start":"00:00","end":"12:00","speed_kmh":20,"gusts_kmh":35,"direction":"SE","intensity":"moderato"},{"start":"12:00","end":"23:59","speed_kmh":35,"gusts_kmh":50,"direction":"S","intensity":"forte"}]},"pressure":{"value_hPa":1010,"trend":"in calo"},"sea":{"condition":"mosso","wave_height_m":1.5,"swell_direction":"Sud","temperature_c":19.2},"humidity":85,"uv_index":3,"sunrise":"07:23","sunset":"18:13","moon_phase":"Luna calante","air_quality":{"aqi":150,"level":"Malsana per sensibili","pm25":35,"pm10":60,"no2":45,"o3":70},"summary":"Giornata nuvolosa con piogge moderate al mattino (8-11h) e leggere in serata. Il vento, inizialmente moderato, rinforzerà da Sud dalle 12:00 con raffiche fino a 50 km/h. Il mare sarà mosso, con onde fino a 1.5 metri, rendendo la navigazione sconsigliata. La qualità dell'aria è malsana per le persone sensibili, in particolare PM2.5 e PM10 elevati.","advice":["Prepara l'ombrello e un impermeabile per le piogge intermittenti.","Evita attività nautiche, il mare sarà mosso e la navigazione sconsigliata. Presta attenzione a raffiche di vento.","Le persone sensibili limitino le attività all'aperto a causa della qualità dell'aria (AQI 150)."],"alerts":["Vento forte da Sud con raffiche fino a 50 km/h dalle 12:00.","Mare mosso con onde fino a 1.5 metri.","Qualità dell'aria (AQI 150) malsana per sensibili, attenzione se si soffre di problemi respiratori."]},{"date":"2025-10-23","temp":{"min":16,"max":22,"feels_like":20},"rain":{"probability":10,"total_mm":0,"periods":[]},"wind":{"periods":[{"start":"00:00","end":"06:00","speed_kmh":25,"gusts_kmh":40,"direction":"S","intensity":"moderato"},{"start":"06:00","end":"23:59","speed_kmh":15,"gusts_kmh":25,"direction":"NW","intensity":"leggero"}]},"pressure":{"value_hPa":1015,"trend":"in aumento"},"sea":{"condition":"poco mosso","wave_height_m":0.7,"swell_direction":"Nord-Ovest","temperature_c":19.2},"humidity":70,"uv_index":4,"sunrise":"07:24","sunset":"18:12","moon_phase":"Primo quarto","summary":"Tempo in miglioramento con cielo sereno o poco nuvoloso per gran parte della giornata. Il vento, inizialmente moderato da Sud, girerà a Nord-Ovest e calerà d'intensità nel corso della mattinata. Il mare sarà poco mosso, rendendo le condizioni favorevoli per attività all'aperto. Le temperature massime raggiungeranno i 22°C, con una sensazione piacevole.","advice":["Approfitta della giornata soleggiata per passeggiate o escursioni all'aperto sull'isola.","Il vento si attenuerà, ideale per gite in barca con cautela fino al mattino quando le raffiche saranno più forti."],"alerts":[]},{"date":"2025-10-24","temp":{"min":17,"max":20,"feels_like":19},"rain":{"probability":40,"total_mm":2,"periods":[{"start":"19:00","end":"23:00","intensity":"leggera"}]},"wind":{"periods":[{"start":"00:00","end":"23:59","speed_kmh":10,"gusts_kmh":20,"direction":"NE","intensity":"leggero"}]},"pressure":{"value_hPa":1012,"trend":"in calo"},"sea":{"condition":"poco mosso","wave_height_m":0.6,"swell_direction":"Nord-Est","temperature_c":19.2},"humidity":75,"uv_index":3,"sunrise":"07:25","sunset":"18:11","moon_phase":"Primo quarto","summary":"Giornata prevalentemente nuvolosa con schiarite nel pomeriggio. Sono previste deboli piogge in serata, specialmente dopo le 19:00. Il vento sarà leggero da Nord-Est e il mare rimarrà poco mosso, con onde intorno ai 0.6 metri. Le temperature rimarranno miti e gradevoli, con massime di 20°C.","advice":["Porta un ombrello se prevedi di stare fuori la sera a causa della leggera pioggia intermittente.","Condizioni marine buone per brevi escursioni costiere, ma il cielo sarà prevalentemente nuvoloso."],"alerts":["Piogge leggere previste in serata dalle 19:00 alle 23:00."]},{"date":"2025-10-25","temp":{"min":15,"max":21,"feels_like":19},"rain":{"probability":0,"total_mm":0,"periods":[]},"wind":{"periods":[{"start":"00:00","end":"23:59","speed_kmh":5,"gusts_kmh":10,"direction":"N","intensity":"leggero"}]},"pressure":{"value_hPa":1018,"trend":"in aumento"},"sea":{"condition":"calmo","wave_height_m":0.4,"swell_direction":"Nord","temperature_c":19.2},"humidity":65,"uv_index":4,"sunrise":"07:26","sunset":"18:10","moon_phase":"Primo quarto","summary":"Splendida giornata di sole con cielo sereno e temperature miti. Il vento sarà quasi assente da Nord e il mare calmo, con onde inferiori a 0.5 metri, ideale per qualsiasi attività all'aperto o in mare. Le condizioni saranno perfette per godersi appieno l'isola di Procida, con un'ottima visibilità e temperature massime piacevoli intorno ai 21°C.","advice":["Giornata perfetta per esplorare l'isola, fare una nuotata o prendere il sole.","Le condizioni del mare sono ideali per escursioni in barca o attività acquatiche."],"alerts":[]},{"date":"2025-10-26","temp":{"min":14,"max":19,"feels_like":17},"rain":{"probability":20,"total_mm":0,"periods":[]},"wind":{"periods":[{"start":"00:00","end":"23:59","speed_kmh":25,"gusts_kmh":40,"direction":"N","intensity":"moderato"}]},"pressure":{"value_hPa":1016,"trend":"in lieve calo"},"sea":{"condition":"poco mosso","wave_height_m":1,"swell_direction":"Nord","temperature_c":19.2},"humidity":70,"uv_index":3,"sunrise":"07:27","sunset":"18:09","moon_phase":"Ultimo quarto","summary":"Inizio di giornata con cielo poco nuvoloso, ma tendenza ad aumento della nuvolosità nel corso del pomeriggio. Vento moderato da Nord per tutto il giorno, con raffiche possibili fino a 40 km/h. Il mare, inizialmente poco mosso, tenderà a diventare mosso per l'intensificarsi del vento. Le temperature saranno più fresche rispetto ai giorni precedenti.","advice":["Presta attenzione al vento moderato da Nord, soprattutto se prevedi attività in mare o in luoghi esposti.","Il mare sarà poco mosso o mosso, valutare con attenzione attività nautiche, specialmente con imbarcazioni di piccole dimensioni."],"alerts":["Vento moderato da Nord con raffiche fino a 40 km/h per tutta la giornata."]},{"date":"2025-10-27","temp":{"min":15,"max":18,"feels_like":16},"rain":{"probability":60,"total_mm":4,"periods":[{"start":"09:00","end":"12:00","intensity":"leggera"},{"start":"15:00","end":"17:00","intensity":"leggera"}]},"wind":{"periods":[{"start":"00:00","end":"23:59","speed_kmh":18,"gusts_kmh":30,"direction":"NW","intensity":"leggero"}]},"pressure":{"value_hPa":1014,"trend":"stabile"},"sea":{"condition":"poco mosso","wave_height_m":0.9,"swell_direction":"Nord-Ovest","temperature_c":19.2},"humidity":90,"uv_index":2,"sunrise":"07:28","sunset":"18:08","moon_phase":"Ultimo quarto","summary":"Giornata grigia con cielo molto nuvoloso o coperto. Sono previste piogge leggere intermittenti, in particolare al mattino e nel pomeriggio, con un totale stimato di 4mm. Il vento sarà leggero-moderato da Nord-Ovest e il mare resterà poco mosso. L'umidità sarà elevata, contribuendo a una sensazione di freddo nonostante le temperature non estreme.","advice":["Porta con te un ombrello o un impermeabile per le piogge occasionali.","Le condizioni non sono ideali per attività all'aperto prolungate o in mare aperto a causa della pioggia e dell'umidità."],"alerts":["Piogge leggere intermittenti previste per gran parte della giornata."]},{"date":"2025-10-28","temp":{"min":13,"max":17,"feels_like":14},"rain":{"probability":10,"total_mm":0,"periods":[]},"wind":{"periods":[{"start":"00:00","end":"23:59","speed_kmh":20,"gusts_kmh":35,"direction":"N","intensity":"moderato"}]},"pressure":{"value_hPa":1017,"trend":"in aumento"},"sea":{"condition":"poco mosso","wave_height_m":1.1,"swell_direction":"Nord","temperature_c":19.2},"humidity":80,"uv_index":3,"sunrise":"07:29","sunset":"18:07","moon_phase":"Luna nuova","summary":"La settimana si conclude con un miglioramento delle condizioni: cielo sereno o poco nuvoloso per gran parte della giornata. Le temperature subiranno un calo significativo, specialmente al mattino e la sera, con minime intorno ai 13°C. Il vento sarà moderato da Nord e il mare poco mosso, tendente a mosso. Sarà necessario indossare abiti più pesanti a causa del freddo percepito.","advice":["Vestiti a strati, le temperature saranno decisamente più fresche, soprattutto al mattino e la sera.","Il vento moderato da Nord potrebbe rendere le passeggiate costiere più fresche; goditi comunque il cielo chiaro."],"alerts":[]}],"processedAt":"2025-10-22T13:12:28.066Z"};
     let notificationsEnabled = false;
+
+    // === SVG ICONS ===
+    const ICONS = {
+      summary: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M408,112H184a72,72,0,0,0,0,144H408a72,72,0,0,0,0-144Zm0,112H184a40,40,0,0,1,0-80H408a40,40,0,0,1,0,80Z"/><path d="M329.65,352H184a72,72,0,0,0,0,144H329.65a72,72,0,0,0,0-144Zm0,112H184a40,40,0,0,1,0-80H329.65a40,40,0,0,1,0,80Z"/><path d="M464,192a24,24,0,0,0,0-48H416a24,24,0,0,0,0,48Z"/><path d="M96,240H88a24,24,0,0,0,0,48h8a24,24,0,0,0,0-48Z"/><path d="M104,384H56a24,24,0,0,0,0,48h48a24,24,0,0,0,0-48Z"/><path d="M408,432H400a24,24,0,0,0,0,48h8a24,24,0,0,0,0-48Z"/><path d="M152,112h-40a24,24,0,0,0,0,48h40a24,24,0,0,0,0-48Z"/></svg>`,
+      
+      advice: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,160c-52.9,0-96,43.1-96,96s43.1,96,96,96s96-43.1,96-96S308.9,160,256,160z M256,320c-35.3,0-64-28.7-64-64s28.7-64,64-64s64,28.7,64,64S291.3,320,256,320z"/><path d="M256,112c8.8,0,16-7.2,16-16V64c0-8.8-7.2-16-16-16s-16,7.2-16,16v32C240,104.8,247.2,112,256,112z"/><path d="M256,400c-8.8,0-16,7.2-16,16v32c0,8.8,7.2,16,16,16s16-7.2,16-16v-32C272,407.2,264.8,400,256,400z"/><path d="M380.4,131.6c6.2-6.2,6.2-16.4,0-22.6l-22.6-22.6c-6.2-6.2-16.4-6.2-22.6,0c-6.2,6.2-6.2,16.4,0,22.6l22.6,22.6C364,137.8,374.2,137.8,380.4,131.6z"/><path d="M176.8,380.4c-6.2-6.2-16.4-6.2-22.6,0l-22.6,22.6c-6.2,6.2-6.2,16.4,0,22.6c6.2,6.2,16.4,6.2,22.6,0l22.6-22.6C182.9,396.8,182.9,386.5,176.8,380.4z"/><path d="M112,256c0-8.8-7.2-16-16-16H64c-8.8,0-16,7.2-16,16s7.2,16,16,16h32C104.8,272,112,264.8,112,256z"/><path d="M448,240h-32c-8.8,0-16,7.2-16,16s7.2,16,16,16h32c8.8,0,16-7.2,16-16S456.8,240,448,240z"/><path d="M131.6,131.6c6.2,6.2,16.4,6.2,22.6,0c6.2-6.2,6.2-16.4,0-22.6l-22.6-22.6c-6.2-6.2-16.4-6.2-22.6,0c-6.2,6.2-6.2,16.4,0,22.6L131.6,131.6z"/><path d="M357.8,380.4c-6.2,6.2-6.2,16.4,0,22.6l22.6,22.6c6.2,6.2,16.4,6.2,22.6,0c6.2-6.2,6.2-16.4,0-22.6l-22.6-22.6C374.2,374.2,364,374.2,357.8,380.4z"/></svg>`,
+      
+      alert: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M448,256c0-106-86-192-192-192S64,150,64,256s86,192,192,192S448,362,448,256Z" style="fill:none;stroke:currentColor;stroke-miterlimit:10;stroke-width:32px"/><path d="M250.26,166.05,256,288l5.73-121.95a5.74,5.74,0,0,0-5.79-6h0A5.74,5.74,0,0,0,250.26,166.05Z" style="fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"/><path d="M256,367.91a20,20,0,1,1,20-20A20,20,0,0,1,256,367.91Z"/></svg>`,
+      
+      notifOff: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M440.08,341.31c-1.66-2-3.29-4-4.89-5.93-22-26.61-35.31-42.67-35.31-118,0-39-9.33-71-27.72-95-13.56-17.73-31.89-31.18-56.05-41.12a3,3,0,0,1-.82-.67C306.6,51.49,282.82,32,256,32s-50.59,19.49-59.28,48.56a3.13,3.13,0,0,1-.81.65c-56.38,23.21-83.78,67.74-83.78,136.14,0,75.36-13.29,91.42-35.31,118-1.6,1.93-3.23,3.89-4.89,5.93a35.16,35.16,0,0,0-4.65,37.62c6.17,13,19.32,21.07,34.33,21.07H410.5c14.94,0,28-8.06,34.19-21a35.17,35.17,0,0,0-4.61-37.66ZM256,480a80.06,80.06,0,0,0,70.44-42.13,4,4,0,0,0-3.54-5.87H189.12a4,4,0,0,0-3.55,5.87A80.06,80.06,0,0,0,256,480Z"/><line x1="0" y1="512" x2="512" y2="0" style="fill:none;stroke:currentColor;stroke-linecap:round;stroke-miterlimit:10;stroke-width:48px"/></svg>`,
+      
+      notifOn: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M440.08,341.31c-1.66-2-3.29-4-4.89-5.93-22-26.61-35.31-42.67-35.31-118,0-39-9.33-71-27.72-95-13.56-17.73-31.89-31.18-56.05-41.12a3,3,0,0,1-.82-.67C306.6,51.49,282.82,32,256,32s-50.59,19.49-59.28,48.56a3.13,3.13,0,0,1-.81.65c-56.38,23.21-83.78,67.74-83.78,136.14,0,75.36-13.29,91.42-35.31,118-1.6,1.93-3.23,3.89-4.89,5.93a35.16,35.16,0,0,0-4.65,37.62c6.17,13,19.32,21.07,34.33,21.07H410.5c14.94,0,28-8.06,34.19-21a35.17,35.17,0,0,0-4.61-37.66ZM256,480a80.06,80.06,0,0,0,70.44-42.13,4,4,0,0,0-3.54-5.87H189.12a4,4,0,0,0-3.55,5.87A80.06,80.06,0,0,0,256,480Z"/></svg>`
+    };
 
     // === HELPER FUNCTIONS ===
     function formatDate(dateStr) {
@@ -1074,7 +1125,6 @@
       document.body.style.overflow = '';
     }
 
-    // ESC per chiudere
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') closeModal();
     });
@@ -1131,15 +1181,16 @@
 
     function updateNotificationUI() {
       const toggle = document.getElementById('notificationToggle');
+      const icon = document.getElementById('notifIcon');
       const status = document.getElementById('notification-status');
       
       if (notificationsEnabled) {
         toggle.classList.add('active');
-        toggle.innerHTML = '🔔';
+        icon.outerHTML = ICONS.notifOn.replace('<svg', '<svg id="notifIcon"');
         status.textContent = 'Notifiche: Attive ✓';
       } else {
         toggle.classList.remove('active');
-        toggle.innerHTML = '🔕';
+        icon.outerHTML = ICONS.notifOff.replace('<svg', '<svg id="notifIcon"');
         status.textContent = 'Notifiche: Disattivate';
       }
     }
@@ -1164,13 +1215,6 @@
       const tempClass = getTempClass(today.temp?.max || 20);
       const weatherIcon = getWeatherIcon(today.summary);
       const moonEmoji = getMoonPhaseEmoji(today.moon_phase);
-      
-      // SVG Icons inline
-      const summaryIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M152,196h256V148a36,36,0,0,0-36-36H188a36,36,0,0,0-36,36Zm-28,0h28V148a64,64,0,0,1,64-64H372a64,64,0,0,1,64,64v48h28a48,48,0,0,1,48,48V412a48,48,0,0,1-48,48H180a48,48,0,0,1-48-48V244A48,48,0,0,1,124,196Zm28,0h20v48H172V196Zm48,0h20v48H220V196Zm-48,76h20v48H172V272Zm48,0h20v48H220V272Zm48-76h20v48H268V196Zm0,76h20v48H268V272Zm48-76h20v48H316V196Zm0,76h20v48H316V272Z"/></svg>`;
-      
-      const adviceIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,80A176,176,0,1,0,432,256,176,176,0,0,0,256,80Zm0,320A144,144,0,1,1,400,256,144,144,0,0,1,256,400Zm16-208V168a16,16,0,0,0-32,0v24a16,16,0,0,0,32,0Zm0,48v80a16,16,0,0,0-32,0V240a16,16,0,0,0,32,0Z"/></svg>`;
-      
-      const alertIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,432a176,176,0,1,1,176-176A176,176,0,0,1,256,432Zm0-320A144,144,0,1,0,400,256,144,144,0,0,0,256,112Zm16,64v96a16,16,0,0,1-32,0V176a16,16,0,0,1,32,0Zm0,160v-16a16,16,0,0,1-32,0v16a16,16,0,0,1,32,0Z"/></svg>`;
       
       const html = `
         <div class="hero-card ${tempClass}">
@@ -1280,17 +1324,17 @@
           <div class="info-section-title">Informazioni Dettagliate</div>
           <div class="info-pills">
             <div class="info-pill summary-pill" onclick="openSummaryModal()">
-              ${summaryIcon}
+              ${ICONS.summary}
               <div class="label">Riepilogo</div>
             </div>
             
             <div class="info-pill advice-pill" onclick="openAdviceModal()">
-              ${adviceIcon}
+              ${ICONS.advice}
               <div class="label">Consigli</div>
             </div>
             
             <div class="info-pill alert-pill ${today.alerts && today.alerts.length > 0 ? 'has-alerts' : ''}" onclick="openAlertModal()">
-              ${alertIcon}
+              ${ICONS.alert}
               ${today.alerts && today.alerts.length > 0 ? `<div class="alert-badge">${today.alerts.length}</div>` : ''}
               <div class="label">Allerte</div>
             </div>
@@ -1314,15 +1358,13 @@
     function openSummaryModal() {
       if (!weatherData || !weatherData.days || weatherData.days.length === 0) return;
       const today = weatherData.days[0];
-      const summaryIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="fill: #08a5e8"><path d="M152,196h256V148a36,36,0,0,0-36-36H188a36,36,0,0,0-36,36Zm-28,0h28V148a64,64,0,0,1,64-64H372a64,64,0,0,1,64,64v48h28a48,48,0,0,1,48,48V412a48,48,0,0,1-48,48H180a48,48,0,0,1-48-48V244A48,48,0,0,1,124,196Z"/></svg>`;
       const content = `<p>${today.summary || 'Nessun riepilogo disponibile per oggi.'}</p>`;
-      openModal('summary', 'Riepilogo Giornata', summaryIcon, content);
+      openModal('summary', 'Riepilogo Giornata', `<div style="color: #08a5e8">${ICONS.summary}</div>`, content);
     }
 
     function openAdviceModal() {
       if (!weatherData || !weatherData.days || weatherData.days.length === 0) return;
       const today = weatherData.days[0];
-      const adviceIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="fill: #faa202"><path d="M256,80A176,176,0,1,0,432,256,176,176,0,0,0,256,80Zm0,320A144,144,0,1,1,400,256,144,144,0,0,1,256,400Zm16-208V168a16,16,0,0,0-32,0v24a16,16,0,0,0,32,0Zm0,48v80a16,16,0,0,0-32,0V240a16,16,0,0,0,32,0Z"/></svg>`;
       
       let content = '';
       if (today.advice && today.advice.length > 0) {
@@ -1335,13 +1377,12 @@
         content = '<p>Nessun consiglio particolare per oggi.</p>';
       }
       
-      openModal('advice', 'Consigli del Giorno', adviceIcon, content);
+      openModal('advice', 'Consigli del Giorno', `<div style="color: #faa202">${ICONS.advice}</div>`, content);
     }
 
     function openAlertModal() {
       if (!weatherData || !weatherData.days || weatherData.days.length === 0) return;
       const today = weatherData.days[0];
-      const alertIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="fill: #ff3b30"><path d="M256,432a176,176,0,1,1,176-176A176,176,0,0,1,256,432Zm0-320A144,144,0,1,0,400,256,144,144,0,0,0,256,112Zm16,64v96a16,16,0,0,1-32,0V176a16,16,0,0,1,32,0Zm0,160v-16a16,16,0,0,1-32,0v16a16,16,0,0,1,32,0Z"/></svg>`;
       
       let content = '';
       if (today.alerts && today.alerts.length > 0) {
@@ -1354,7 +1395,7 @@
         content = '<p style="color: var(--accent-green);">✅ Nessuna allerta meteo attiva per oggi.</p>';
       }
       
-      openModal('alert', 'Allerte Meteo', alertIcon, content);
+      openModal('alert', 'Allerte Meteo', `<div style="color: #ff3b30">${ICONS.alert}</div>`, content);
     }
 
     // === CHARTS ===
