@@ -313,6 +313,17 @@
       cursor: default;
     }
 
+    .detail-pill.clickable {
+      cursor: pointer;
+    }
+
+    .detail-pill.clickable:hover {
+      background: rgba(8, 165, 232, 0.3);
+      transform: translateY(-6px) scale(1.05);
+      box-shadow: 0 8px 24px rgba(8, 165, 232, 0.4);
+      border: 1px solid var(--accent-cyan);
+    }
+
     .detail-pill:hover {
       background: rgba(0, 0, 0, 0.3);
       transform: translateY(-4px);
@@ -463,7 +474,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(1, 37, 73, 0.9);
+      background: rgba(1, 37, 73, 0.95);
       backdrop-filter: blur(8px);
       z-index: 1000;
       animation: fadeIn 0.3s ease-out;
@@ -481,9 +492,9 @@
       background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue-light) 100%);
       border-radius: 20px;
       padding: 0;
-      max-width: 600px;
+      max-width: 700px;
       width: 100%;
-      max-height: 80vh;
+      max-height: 85vh;
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
       animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       border: 1px solid rgba(8, 165, 232, 0.3);
@@ -587,6 +598,41 @@
     .modal-body.alert-body li:before {
       color: var(--accent-red);
       content: '⚠';
+    }
+
+    .rain-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: var(--spacing-md);
+      margin-top: var(--spacing-lg);
+    }
+
+    .rain-stat {
+      background: rgba(8, 165, 232, 0.1);
+      border: 1px solid rgba(8, 165, 232, 0.3);
+      border-radius: 12px;
+      padding: var(--spacing-md);
+      text-align: center;
+    }
+
+    .rain-stat-icon {
+      font-size: 2rem;
+      margin-bottom: var(--spacing-xs);
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+    }
+
+    .rain-stat-value {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--accent-cyan);
+      margin-bottom: 4px;
+    }
+
+    .rain-stat-label {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
     .charts-section {
@@ -853,6 +899,7 @@
       .day-details-row { grid-template-columns: repeat(2, 1fr); }
       .notification-toggle { bottom: 80px; right: var(--spacing-md); }
       .modal-content { max-height: 90vh; margin: var(--spacing-sm); }
+      .rain-stats { grid-template-columns: repeat(2, 1fr); }
     }
 
     @media (max-width: 390px) {
@@ -937,6 +984,7 @@
     </footer>
   </div>
 
+  <!-- MODAL RIEPILOGO/CONSIGLI/ALLERTE -->
   <div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
     <div class="modal-content" onclick="event.stopPropagation()">
       <div class="modal-header">
@@ -948,9 +996,49 @@
     </div>
   </div>
 
+  <!-- MODAL PIOGGIA -->
+  <div class="modal-overlay" id="rainModal" onclick="closeRainModal()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <div class="modal-icon" style="color: #08a5e8;">
+          💧
+        </div>
+        <h3>Pioggia Oggi - <span id="rainModalDate"></span></h3>
+        <button class="modal-close" onclick="closeRainModal()" aria-label="Chiudi">×</button>
+      </div>
+      <div class="modal-body">
+        <canvas id="rainChart" style="max-height: 300px;"></canvas>
+        
+        <div class="rain-stats">
+          <div class="rain-stat">
+            <div class="rain-stat-icon">💧</div>
+            <div class="rain-stat-value" id="rainTotalValue">--</div>
+            <div class="rain-stat-label">Totale mm</div>
+          </div>
+          <div class="rain-stat">
+            <div class="rain-stat-icon">⚡</div>
+            <div class="rain-stat-value" id="rainPeakValue">--</div>
+            <div class="rain-stat-label">Picco mm/h</div>
+          </div>
+          <div class="rain-stat">
+            <div class="rain-stat-icon">⏱️</div>
+            <div class="rain-stat-value" id="rainDurationValue">--</div>
+            <div class="rain-stat-label">Durata ore</div>
+          </div>
+          <div class="rain-stat">
+            <div class="rain-stat-icon">📊</div>
+            <div class="rain-stat-value" id="rainProbValue">--</div>
+            <div class="rain-stat-label">Probabilità</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
-    const weatherData = {"location":"Procida, Italia","generatedAt":"2025-10-22T16:03:51.573Z","totalDays":7,"weekStats":{"maxTemp":22,"minTemp":15,"avgTemp":"20.1","rainyDays":4},"days":[{"date":"2025-10-22","temp":{"min":17,"max":20,"feels_like":18},"rain":{"probability":70,"total_mm":8.5,"periods":[{"start":"08:00","end":"11:00","intensity":"moderata"},{"start":"16:00","end":"18:00","intensity":"leggera"}]},"wind":{"periods":[{"start":"00:00","end":"12:00","speed_kmh":20,"gusts_kmh":35,"direction":"SE","intensity":"moderato"},{"start":"12:00","end":"23:59","speed_kmh":35,"gusts_kmh":50,"direction":"S","intensity":"forte"}]},"pressure":{"value_hPa":1010,"trend":"in calo"},"sea":{"condition":"mosso","wave_height_m":1.5,"swell_direction":"Sud","temperature_c":19.2},"humidity":85,"uv_index":3,"sunrise":"07:23","sunset":"18:13","moon_phase":"Luna calante","air_quality":{"aqi":150,"level":"Malsana per sensibili","pm25":35,"pm10":60,"no2":45,"o3":70},"summary":"La giornata odierna a Procida sarà caratterizzata da tempo instabile con nuvolosità diffusa e precipitazioni. Le piogge, moderate al mattino tra le 8:00 e le 11:00, si attenueranno nel pomeriggio per ripresentarsi in forma leggera in serata. Il vento, inizialmente moderato da Sud-Est, rinforzerà significativamente dal pomeriggio diventando forte da Sud con raffiche che potranno toccare i 50 km/h, rendendo il mare mosso. La qualità dell'aria è valutata come malsana per le categorie più sensibili.","advice":["È consigliabile portare un ombrello o un impermeabile per le piogge intermittenti.","Si raccomanda cautela o di evitare attività nautiche a causa del mare mosso e del vento forte.","Le persone sensibili alla qualità dell'aria dovrebbero limitare le attività all'aperto, specialmente nelle ore di punta del traffico."],"alerts":["Allerta Vento forte da Sud dalle ore 12:00, con raffiche fino a 50 km/h."]},{"date":"2025-10-23","temp":{"min":16,"max":19,"feels_like":17},"rain":{"probability":60,"total_mm":4,"periods":[{"start":"09:00","end":"13:00","intensity":"leggera"}]},"wind":{"periods":[{"start":"00:00","end":"23:59","speed_kmh":30,"gusts_kmh":45,"direction":"Sud","intensity":"forte"}]},"pressure":{"value_hPa":1008,"trend":"stabile"},"sea":{"condition":"mosso","wave_height_m":1.8,"swell_direction":"Sud","temperature_c":19.1},"humidity":88,"uv_index":2,"sunrise":"07:24","sunset":"18:12","moon_phase":"Luna calante","summary":"Domani persisterà un tempo instabile con cielo nuvoloso e possibili piogge leggere intermittenti, concentrate principalmente tra le 9:00 e le 13:00. Il vento si manterrà forte da Sud per l'intera giornata, con raffiche fino a 45 km/h, mantenendo il mare mosso con onde che potranno raggiungere 1.8 metri. Le temperature rimarranno miti, ma la sensazione sarà di fresco a causa del vento e dell'umidità elevata. La pressione atmosferica si prevede stabile.","advice":["Prevedi abbigliamento a strati e un antivento per proteggerti dal forte vento.","Sii consapevole delle condizioni del mare, che sarà ancora mosso, e valuta con attenzione eventuali spostamenti via mare.","Evita zone esposte al vento, specialmente se in prossimità del litorale."],"alerts":["Persistenza Vento forte da Sud per tutta la giornata, raffiche fino a 45 km/h."]},{"date":"2025-10-24","temp":{"min":15,"max":18,"feels_like":16},"rain":{"probability":90,"total_mm":15,"periods":[{"start":"02:00","end":"06:00","intensity":"forte"}]},"wind":{"periods":[{"start":"00:00","end":"12:00","speed_kmh":40,"gusts_kmh":60,"direction":"Sud-Ovest","intensity":"molto forte"},{"start":"12:00","end":"23:59","speed_kmh":25,"gusts_kmh":40,"direction":"Ovest","intensity":"forte"}]},"pressure":{"value_hPa":1005,"trend":"in calo"},"sea":{"condition":"molto mosso","wave_height_m":2.5,"swell_direction":"Sud-Ovest","temperature_c":19},"humidity":90,"uv_index":1,"sunrise":"07:25","sunset":"18:11","moon_phase":"Luna calante","summary":"Giovedì sarà una giornata perturbata con piogge intense nelle prime ore del mattino (2:00-6:00) e un vento molto forte da Sud-Ovest che raggiungerà raffiche di 60 km/h, rendendo il mare molto mosso. La pressione atmosferica sarà in ulteriore calo, indicando un persistente maltempo. Nel corso del pomeriggio si assisterà a un'attenuazione delle precipitazioni, ma il vento rimarrà forte. Si prevedono temperature fresche e un'alta umidità.","advice":["Si raccomanda di prestare massima attenzione a causa del forte vento e del mare agitato; limitare gli spostamenti non essenziali.","Evitare assolutamente attività in mare e sulla costa, dove le onde saranno elevate.","Assicurati che oggetti esterni siano ben fissati per prevenire danni causati dal vento."],"alerts":["Allerta Maltempo con piogge forti al mattino e vento molto forte da Sud-Ovest, raffiche fino a 60 km/h.","Allerta Mare molto mosso con onde fino a 2.5 metri."]},{"date":"2025-10-25","temp":{"min":15,"max":19,"feels_like":17},"rain":{"probability":10,"total_mm":0,"periods":[]},"wind":{"periods":[{"start":"00:00","end":"18:00","speed_kmh":25,"gusts_kmh":40,"direction":"Ovest","intensity":"forte"},{"start":"18:00","end":"23:59","speed_kmh":15,"gusts_kmh":25,"direction":"Ovest","intensity":"moderato"}]},"pressure":{"value_hPa":1008,"trend":"in aumento"},"sea":{"condition":"mosso","wave_height_m":1.2,"swell_direction":"Ovest","temperature_c":18.9},"humidity":75,"uv_index":3,"sunrise":"07:26","sunset":"18:10","moon_phase":"Ultimo quarto","summary":"Venerdì segnerà un miglioramento delle condizioni meteo. Non sono previste piogge e il cielo tenderà a schiarire. Il vento, pur rimanendo forte da Ovest nella prima parte della giornata con raffiche fino a 40 km/h, diminuirà di intensità in serata. La pressione atmosferica sarà in aumento, indicando un progressivo ristabilimento del bel tempo. Le temperature saranno simili al giorno precedente, ma con una sensazione termica leggermente più gradevole.","advice":["Nonostante il miglioramento, il mare sarà ancora mosso, quindi si consiglia prudenza per le attività costiere.","Approfitta delle ore pomeridiane per attività all'aperto, quando il vento sarà in attenuazione.","Verifica l'ancoraggio di piccole imbarcazioni, in quanto il vento residuo potrebbe ancora farsi sentire."],"alerts":[]},{"date":"2025-10-26","temp":{"min":16,"max":21,"feels_like":19},"rain":{"probability":5,"total_mm":0,"periods":[]},"wind":{"periods":[{"start":"00:00","end":"23:59","speed_kmh":15,"gusts_kmh":25,"direction":"Nord-Ovest","intensity":"moderato"}]},"pressure":{"value_hPa":1012,"trend":"in aumento"},"sea":{"condition":"poco mosso","wave_height_m":0.7,"swell_direction":"Nord-Ovest","temperature_c":18.8},"humidity":70,"uv_index":4,"sunrise":"07:27","sunset":"18:09","moon_phase":"Luna calante","summary":"Il weekend si aprirà con una giornata di tempo stabile e prevalentemente soleggiato. Non sono attese precipitazioni. Il vento sarà moderato da Nord-Ovest, con raffiche contenute entro i 25 km/h, favorendo un mare poco mosso, ideale per le attività costiere. Le temperature saranno in aumento, raggiungendo massime piacevoli fino a 21°C, e la pressione atmosferica continuerà la sua ascesa, garantendo condizioni di bel tempo durature. L'umidità sarà in calo.","advice":["Ottime condizioni per attività all'aperto e passeggiate lungo la costa.","Il mare poco mosso rende la giornata adatta per brevi escursioni in barca o sport acquatici leggeri.","Non dimenticare la protezione solare, l'indice UV sarà moderato."],"alerts":[]},{"date":"2025-10-27","temp":{"min":17,"max":22,"feels_like":20},"rain":{"probability":0,"total_mm":0,"periods":[]},"wind":{"periods":[{"start":"00:00","end":"23:59","speed_kmh":10,"gusts_kmh":20,"direction":"Nord","intensity":"leggero"}]},"pressure":{"value_hPa":1015,"trend":"stabile"},"sea":{"condition":"calmo","wave_height_m":0.4,"swell_direction":"Nord","temperature_c":18.7},"humidity":65,"uv_index":4,"sunrise":"07:28","sunset":"18:08","moon_phase":"Luna calante","summary":"Domenica si preannuncia una giornata ideale con sole pieno e assenza totale di precipitazioni. Il vento sarà leggero, proveniente da Nord, e le raffiche non supereranno i 20 km/h, contribuendo a un mare calmo o quasi calmo. Le temperature raggiungeranno il picco della settimana con massime di 22°C, rendendo l'aria molto gradevole. La pressione atmosferica sarà stabile e elevata, confermando le ottime condizioni meteo per godere appieno dell'isola.","advice":["Perfetto per una giornata in spiaggia, nuotate o gite in barca con mare calmo.","Si consiglia di idratarsi bene e utilizzare creme solari, l'indice UV sarà ancora elevato.","Pianifica attività all'aperto, come escursioni o pic-nic, per godere del bel tempo."],"alerts":[]},{"date":"2025-10-28","temp":{"min":17,"max":22,"feels_like":20},"rain":{"probability":30,"total_mm":2,"periods":[{"start":"15:00","end":"17:00","intensity":"leggera"}]},"wind":{"periods":[{"start":"00:00","end":"23:59","speed_kmh":20,"gusts_kmh":30,"direction":"Nord-Est","intensity":"moderato"}]},"pressure":{"value_hPa":1014,"trend":"stabile"},"sea":{"condition":"poco mosso","wave_height_m":0.6,"swell_direction":"Nord-Est","temperature_c":18.6},"humidity":70,"uv_index":3,"sunrise":"07:29","sunset":"18:07","moon_phase":"Luna nuova","summary":"L'inizio della prossima settimana vedrà ancora bel tempo con ampi spazi di sereno. Tuttavia, nel pomeriggio, tra le 15:00 e le 17:00, potrebbero verificarsi isolati e brevi rovesci di pioggia leggera. Il vento si presenterà moderato da Nord-Est, mantenendo il mare poco mosso. Le temperature massime rimarranno elevate, sui 22°C, ma con un leggero aumento dell'umidità rispetto al giorno precedente. La pressione atmosferica sarà stabile, pur con un lieve calo rispetto alla giornata precedente.","advice":["Porta con te un ombrello leggero o un k-way per i possibili brevi acquazzoni pomeridiani.","Le condizioni del mare restano buone per la navigazione e le attività costiere, ma con maggiore attenzione al pomeriggio.","Goditi le ore mattutine per le attività all'aperto, quando il cielo sarà più sereno."],"alerts":[]}],"processedAt":"2025-10-22T16:03:51.573Z"};
+    const weatherData = {"location":"Procida, Italia","generatedAt":"2025-10-22T16:25:09.287Z","totalDays":7,"weekStats":{"maxTemp":22,"minTemp":16,"avgTemp":"20.0","rainyDays":3},"days":[{"date":"2025-10-22","temp":{"min":17,"max":20,"feels_like":18},"rain":{"probability":70,"total_mm":8.5,"periods":[{"start":"08:00","end":"11:00","intensity":"moderata"},{"start":"16:00","end":"18:00","intensity":"leggera"}]},"wind":{"periods":[{"start":"00:00","end":"12:00","speed_kmh":20,"gusts_kmh":35,"direction":"SE","intensity":"moderato"},{"start":"12:00","end":"23:59","speed_kmh":35,"gusts_kmh":50,"direction":"S","intensity":"forte"}]},"pressure":{"value_hPa":1010,"trend":"in calo"},"sea":{"condition":"mosso","wave_height_m":1.5,"swell_direction":"Sud","temperature_c":19.2},"humidity":85,"uv_index":3,"sunrise":"07:23","sunset":"18:13","moon_phase":"Luna calante","air_quality":{"aqi":150,"level":"Malsana per sensibili","pm25":35,"pm10":60,"no2":45,"o3":70},"summary":"La giornata si presenta nuvolosa con piogge intermittenti: moderate al mattino, tra le 8 e le 11, e più leggere nel tardo pomeriggio, dalle 16 alle 18. Il vento, inizialmente moderato da Sud-Est, rinforzerà significativamente da Sud nel pomeriggio, con raffiche che potranno raggiungere i 50 km/h. Il mare risulterà mosso, con onde fino a 1.5 metri. La qualità dell'aria è valutata come malsana per i gruppi sensibili.","advice":["Si consiglia di avere un ombrello a portata di mano per le piogge previste.","Le attività nautiche sono sconsigliate a causa del mare mosso e del vento forte.","I soggetti sensibili (anziani, bambini, persone con malattie respiratorie) limitino le attività all'aperto."],"alerts":["Vento forte da Sud dalle 12:00, con raffiche fino a 50 km/h. Mare mosso."]},{"date":"2025-10-23","temp":{"min":16,"max":19,"feels_like":17},"rain":{"probability":30,"total_mm":2,"periods":[{"start":"03:00","end":"05:00","intensity":"leggera"}]},"wind":{"periods":[{"start":"00:00","end":"23:59","speed_kmh":40,"gusts_kmh":60,"direction":"S","intensity":"molto forte"}]},"pressure":{"value_hPa":1008,"trend":"in calo"},"sea":{"condition":"molto mosso","wave_height_m":1.8,"swell_direction":"Sud-Est","temperature_c":19.1},"humidity":80,"uv_index":2,"sunrise":"07:24","sunset":"18:12","moon_phase":"Luna calante","summary":"Giornata caratterizzata da vento molto forte da Sud per tutta la giornata, con raffiche che supereranno i 50 km/h, rendendo il clima più fresco nonostante le temperature non eccessivamente basse. Possibili piogge leggere nella notte fonda. Il mare sarà molto mosso, con altezza d'onda che potrà raggiungere 1.8 metri, e tenderà ad agitarsi ulteriormente.","advice":["Si raccomanda massima prudenza in caso di spostamenti, in particolare sui traghetti.","Abbigliamento adeguato per proteggersi dal vento freddo e forte.","Evitare qualsiasi attività in mare aperto a causa delle condizioni marine proibitive."],"alerts":["Allerta vento molto forte (raffiche >60 km/h) e mare molto mosso/agitato per l'intera giornata."]},{"date":"2025-10-24","temp":{"min":16,"max":18,"feels_like":16},"rain":{"probability":10,"total_mm":0,"periods":[]},"wind":{"periods":[{"start":"00:00","end":"23:59","speed_kmh":25,"gusts_kmh":40,"direction":"S-W","intensity":"moderato"}]},"pressure":{"value_hPa":1012,"trend":"in aumento"},"sea":{"condition":"poco mosso","wave_height_m":0.8,"swell_direction":"Sud-Ovest","temperature_c":19},"humidity":75,"uv_index":3,"sunrise":"07:25","sunset":"18:11","moon_phase":"Luna calante","summary":"Il tempo inizia a migliorare con una diminuzione del vento, che si manterrà moderato da Sud-Ovest. Le temperature rimangono fresche. Il cielo sarà più sereno, senza previsioni di pioggia significative. Le condizioni del mare miglioreranno progressivamente, passando da mosso a poco mosso, con onde che si ridurranno sotto il metro.","advice":["Ideale per passeggiate all'aperto, godendo dell'attenuazione del vento.","Le condizioni marine permettono una ripresa graduale delle attività costiere e della navigazione di piccolo cabotaggio.","Nonostante il miglioramento, è consigliabile consultare sempre gli orari dei traghetti."],"alerts":[]},{"date":"2025-10-25","temp":{"min":17,"max":20,"feels_like":19},"rain":{"probability":0,"total_mm":0,"periods":[]},"wind":{"periods":[{"start":"00:00","end":"23:59","speed_kmh":15,"gusts_kmh":25,"direction":"O","intensity":"leggero"}]},"pressure":{"value_hPa":1015,"trend":"stabile"},"sea":{"condition":"poco mosso","wave_height_m":0.6,"swell_direction":"Ovest","temperature_c":18.9},"humidity":70,"uv_index":4,"sunrise":"07:26","sunset":"18:10","moon_phase":"Luna nuova","summary":"Procida godrà di una giornata serena e gradevole, con temperature in aumento e un clima mite. Il vento sarà leggero da Ovest, rendendo l'aria piacevole. Il sole splenderà senza interruzioni, e non sono previste precipitazioni. Il mare si presenterà poco mosso, con onde contenute, offrendo condizioni ideali per tutte le attività marittime e all'aperto.","advice":["Approfittate di questa splendida giornata per esplorare l'isola o fare una gita in barca.","Nonostante il clima mite, l'indice UV è moderato: applicare protezione solare e indossare occhiali da sole.","Condizioni perfette per il traghetto, nessuna interruzione o ritardo previsto."],"alerts":[]},{"date":"2025-10-26","temp":{"min":18,"max":22,"feels_like":21},"rain":{"probability":0,"total_mm":0,"periods":[]},"wind":{"periods":[{"start":"00:00","end":"23:59","speed_kmh":10,"gusts_kmh":20,"direction":"N-E","intensity":"leggero"}]},"pressure":{"value_hPa":1016,"trend":"stabile"},"sea":{"condition":"calmo","wave_height_m":0.3,"swell_direction":"Nord-Est","temperature_c":18.8},"humidity":65,"uv_index":4,"sunrise":"07:27","sunset":"18:09","moon_phase":"Luna nuova","summary":"Prosegue la fase di bel tempo con un ulteriore aumento delle temperature massime, rendendo questo il giorno più caldo della settimana. Il cielo sarà limpido e il vento quasi assente, con una leggera brezza da Nord-Est. Il mare si presenterà calmo, offrendo condizioni eccezionali per ogni tipo di attività acquatica. Sarà una giornata ideale per godere appieno delle bellezze naturali di Procida.","advice":["Questa è la giornata ideale per una giornata in spiaggia o per un tuffo in mare.","Idratarsi regolarmente e proteggersi dal sole, l'indice UV è ancora moderato.","Perfetto per escursioni in barca, kayak o paddleboard."],"alerts":[]},{"date":"2025-10-27","temp":{"min":19,"max":21,"feels_like":20},"rain":{"probability":10,"total_mm":0,"periods":[]},"wind":{"periods":[{"start":"00:00","end":"23:59","speed_kmh":20,"gusts_kmh":30,"direction":"N-W","intensity":"moderato"}]},"pressure":{"value_hPa":1014,"trend":"in lieve calo"},"sea":{"condition":"poco mosso","wave_height_m":0.7,"swell_direction":"Nord-Ovest","temperature_c":18.7},"humidity":70,"uv_index":3,"sunrise":"07:28","sunset":"18:08","moon_phase":"Luna crescente","summary":"Le temperature rimarranno miti, con un leggero calo rispetto al picco del giorno precedente, e il vento tornerà a essere moderato da Nord-Ovest. Il cielo si manterrà prevalentemente sereno, senza previsioni di pioggia. Il mare sarà poco mosso, indicando condizioni ancora favorevoli per la maggior parte delle attività acquatiche, ma con un po' più di movimento rispetto al giorno precedente.","advice":["Il vento moderato potrebbe essere ideale per gli amanti degli sport velici.","Vestirsi a strati per adattarsi alle leggere variazioni termiche e alla brezza marina.","Le condizioni rimangono buone per i collegamenti marittimi, ma con un leggero moto ondoso."],"alerts":[]},{"date":"2025-10-28","temp":{"min":18,"max":20,"feels_like":19},"rain":{"probability":40,"total_mm":3,"periods":[{"start":"19:00","end":"22:00","intensity":"leggera"}]},"wind":{"periods":[{"start":"00:00","end":"23:59","speed_kmh":25,"gusts_kmh":40,"direction":"S","intensity":"moderato"}]},"pressure":{"value_hPa":1012,"trend":"in calo"},"sea":{"condition":"mosso","wave_height_m":1.2,"swell_direction":"Sud","temperature_c":18.6},"humidity":75,"uv_index":2,"sunrise":"07:29","sunset":"18:07","moon_phase":"Luna crescente","summary":"La settimana si chiude con un peggioramento delle condizioni meteo. Il cielo sarà nuvoloso e sono previste piogge leggere in serata, tra le 19 e le 22. Il vento tornerà a soffiare moderato da Sud. Le temperature si manterranno nella media stagionale. Il mare risulterà mosso, con un'altezza d'onda che potrà superare il metro, suggerendo una maggiore cautela per chi si appresta a navigare.","advice":["Si raccomanda di consultare gli orari dei traghetti e di essere preparati a possibili mareggiate.","Portare un ombrello se si prevede di uscire in serata.","Ideale per attività al chiuso nel tardo pomeriggio e sera, data la pioggia prevista."],"alerts":[]}],"processedAt":"2025-10-22T16:25:09.287Z"};
     let notificationsEnabled = false;
+    let rainChartInstance = null;
 
     const METEOCONS_CDN = 'https://raw.githubusercontent.com/Micheledv74/previsioni/main/icons/meteocons';
 
@@ -1089,8 +1177,170 @@
       document.body.style.overflow = '';
     }
 
+    function openRainModal() {
+      if (!weatherData || !weatherData.days || weatherData.days.length === 0) return;
+      
+      const today = weatherData.days[0];
+      const rainData = today.rain;
+      
+      if (!rainData || rainData.probability === 0) {
+        alert('Nessuna pioggia prevista per oggi! ☀️');
+        return;
+      }
+
+      const modal = document.getElementById('rainModal');
+      document.getElementById('rainModalDate').textContent = formatDate(today.date);
+      
+      // Genera dati orari per il grafico
+      const hourlyData = generateHourlyRainData(rainData);
+      
+      // Crea grafico
+      renderRainChart(hourlyData);
+      
+      // Aggiorna statistiche
+      updateRainStats(rainData, hourlyData);
+      
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeRainModal() {
+      const modal = document.getElementById('rainModal');
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function generateHourlyRainData(rainData) {
+      const hours = Array.from({length: 24}, (_, i) => i);
+      const intensityMap = {
+        'leggera': 2,
+        'moderata': 5,
+        'forte': 10,
+        'intensa': 15
+      };
+      
+      const hourlyIntensity = hours.map(hour => {
+        // Controlla se l'ora è in un periodo di pioggia
+        if (!rainData.periods || rainData.periods.length === 0) return 0;
+        
+        for (const period of rainData.periods) {
+          const startHour = parseInt(period.start.split(':')[0]);
+          const endHour = parseInt(period.end.split(':')[0]);
+          
+          if (hour >= startHour && hour < endHour) {
+            return intensityMap[period.intensity] || 2;
+          }
+        }
+        
+        return 0;
+      });
+      
+      return hourlyIntensity;
+    }
+
+    function renderRainChart(hourlyData) {
+      const ctx = document.getElementById('rainChart');
+      
+      // Distruggi grafico precedente se esiste
+      if (rainChartInstance) {
+        rainChartInstance.destroy();
+      }
+      
+      const labels = Array.from({length: 24}, (_, i) => `${i.toString().padStart(2, '0')}:00`);
+      
+      rainChartInstance = new Chart(ctx.getContext('2d'), {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Intensità Pioggia (mm/h)',
+            data: hourlyData,
+            backgroundColor: hourlyData.map(val => {
+              if (val === 0) return 'rgba(8, 165, 232, 0)';
+              if (val <= 3) return 'rgba(8, 165, 232, 0.6)';
+              if (val <= 7) return 'rgba(8, 165, 232, 0.8)';
+              return 'rgba(8, 145, 199, 1)';
+            }),
+            borderColor: '#08a5e8',
+            borderWidth: 1,
+            borderRadius: 4,
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false
+            },
+            tooltip: {
+              backgroundColor: 'rgba(1, 37, 73, 0.95)',
+              titleColor: '#fff',
+              bodyColor: '#a0c4d8',
+              borderColor: '#08a5e8',
+              borderWidth: 1,
+              callbacks: {
+                label: function(context) {
+                  const value = context.parsed.y;
+                  if (value === 0) return 'Nessuna pioggia';
+                  return `${value} mm/h`;
+                }
+              }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: Math.max(...hourlyData, 10) + 2,
+              ticks: {
+                color: '#08a5e8',
+                font: { size: 11 },
+                callback: function(value) {
+                  return value + ' mm';
+                }
+              },
+              grid: {
+                color: 'rgba(8, 165, 232, 0.1)'
+              },
+              title: {
+                display: true,
+                text: 'Intensità (mm/h)',
+                color: '#08a5e8',
+                font: { size: 13, weight: 'bold' }
+              }
+            },
+            x: {
+              ticks: {
+                color: '#a0c4d8',
+                font: { size: 10 },
+                maxRotation: 45,
+                minRotation: 45
+              },
+              grid: {
+                color: 'rgba(255, 255, 255, 0.05)'
+              }
+            }
+          }
+        }
+      });
+    }
+
+    function updateRainStats(rainData, hourlyData) {
+      document.getElementById('rainTotalValue').textContent = rainData.total_mm + 'mm';
+      document.getElementById('rainProbValue').textContent = rainData.probability + '%';
+      
+      const peakIntensity = Math.max(...hourlyData);
+      document.getElementById('rainPeakValue').textContent = peakIntensity.toFixed(1) + 'mm/h';
+      
+      const rainHours = hourlyData.filter(val => val > 0).length;
+      document.getElementById('rainDurationValue').textContent = rainHours + 'h';
+    }
+
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeModal();
+      if (e.key === 'Escape') {
+        closeModal();
+        closeRainModal();
+      }
     });
 
     function exportToPDF() {
@@ -1204,7 +1454,7 @@
 
           <div class="details-pills">
             ${today.rain && today.rain.probability > 0 ? `
-              <div class="detail-pill rain-detail">
+              <div class="detail-pill rain-detail clickable" onclick="openRainModal()" title="Clicca per dettagli orari">
                 <img src="${METEOCONS_CDN}/raindrops.svg" alt="Pioggia">
                 <span class="value">${today.rain.probability}%</span>
                 <span class="label">Pioggia</span>
