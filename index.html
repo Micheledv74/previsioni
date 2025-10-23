@@ -1116,19 +1116,39 @@
 
   <script>
    // FIX universale per ARRAY o OGGETTO:
-let weatherDataRaw = {"ai":{"summary":"Prevalgono condizioni di cielo nuvoloso con locali e deboli piogge. Venti moderati e temperature miti per la stagione, umidità elevata.","advice":["Prepara un ombrello o un impermeabile leggero per le piogge sparse.","Considera l'elevata umidità nell'abbigliamento e nella gestione degli spazi.","Resta aggiornato sugli sviluppi meteo, soprattutto per le prossime ore."],"alerts":[]}};
+let weatherDataRaw = undefined;
+/ FIX: Gestione corretta dell'input
 let weatherData;
-if (Array.isArray(weatherDataRaw)) {
-  weatherData = weatherDataRaw[0];
-} else if (typeof weatherDataRaw === 'string') {
-  try {
-    const parsed = JSON.parse(weatherDataRaw);
-    weatherData = Array.isArray(parsed) ? parsed[0] : parsed;
-  } catch(e) {
-    weatherData = null;
+
+try {
+  // Se $json è già un oggetto con weatherData
+  if (typeof $json === 'object' && $json.weatherData) {
+    weatherData = $json.weatherData;
+  } 
+  // Se è una stringa JSON, parsala
+  else if (typeof $json === 'string') {
+    const parsed = JSON.parse($json);
+    weatherData = parsed.weatherData || parsed;
   }
-} else {
-  weatherData = weatherDataRaw;
+  // Altrimenti usa direttamente $json
+  else {
+    weatherData = $json;
+  }
+  
+  // Validazione dati
+  if (!weatherData || !weatherData.days || weatherData.days.length === 0) {
+    throw new Error('Struttura dati non valida');
+  }
+  
+} catch(error) {
+  console.error('Errore parsing dati meteo:', error);
+  document.getElementById('hero-container').innerHTML = `
+    <div class="error-message">
+      <h2>⚠️ Errore nel caricamento dei dati</h2>
+      <p>Dettagli: ${error.message}</p>
+    </div>
+  `;
+  weatherData = null;
 }
 
     let notificationsEnabled = false;
@@ -1833,7 +1853,27 @@ if (Array.isArray(weatherDataRaw)) {
       
       openModal('alert', 'Allerte Meteo', `<div style="color: #ff3b30">${ICONS.alert}</div>`, content);
     }
-
+function openAdviceModal() {
+  if (!weatherData || !weatherData.days || weatherData.days.length === 0) return;
+  const today = weatherData.days[0];
+  const advice = (weatherData.ai && Array.isArray(weatherData.ai.advice)) 
+    ? weatherData.ai.advice 
+    : (today.advice || []);
+  
+  let content = '';
+  if (advice.length > 0) {
+    content = '<ul>';
+    advice.forEach(tip => {
+      content += `<li>${tip}</li>`;
+    });
+    content += '</ul>';
+  } else {
+    content = '<p>Nessun consiglio disponibile per oggi.</p>';
+  }
+  
+  openModal('advice', 'Consigli del Giorno', 
+    `<div style="color: #faa202">${ICONS.advice}</div>`, content);
+}
     function renderCharts() {
       if (!weatherData || !weatherData.days || weatherData.days.length === 0) return;
 
