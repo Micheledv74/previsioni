@@ -1,5 +1,5 @@
 // ===================================================================
-// NODO HTML - SOLUZIONE FINALE CHE FUNZIONA
+// NODO HTML - SOLUZIONE CON BASE64 (FUNZIONA SEMPRE!)
 // ===================================================================
 
 const inputData = $json;
@@ -11,13 +11,9 @@ if (!meteoData || !meteoData.days) {
 
 console.log('Dati meteo:', meteoData.days.length, 'giorni');
 
-// ✅ STRINGIFICA E ESCAPE
-const weatherDataStr = JSON.stringify(meteoData)
-  .replace(/\\/g, '\\\\')
-  .replace(/`/g, '\\`')
-  .replace(/\$/g, '\\$');
+// ✅ CODIFICA IN BASE64 (nessun problema di escape!)
+const weatherDataBase64 = Buffer.from(JSON.stringify(meteoData)).toString('base64');
 
-// ✅ USA TEMPLATE LITERAL MA CON \$ per evitare interpolazione
 const html = `<!DOCTYPE html>
 <html lang="it">
 <head>
@@ -44,7 +40,9 @@ const html = `<!DOCTYPE html>
     <div id="app">Caricamento...</div>
   </div>
   <script>
-    const weatherData = ${weatherDataStr};
+    // ✅ DECODIFICA BASE64
+    const weatherDataBase64 = '${weatherDataBase64}';
+    const weatherData = JSON.parse(atob(weatherDataBase64));
     
     console.log('Weather data:', weatherData);
     
