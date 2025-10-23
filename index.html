@@ -1,5 +1,5 @@
 // ===================================================================
-// NODO HTML - SOLUZIONE FINALE CHE FUNZIONA DAVVERO!
+// NODO HTML - FIX DOPPIA INTERPOLAZIONE N8N
 // ===================================================================
 
 const inputData = $json;
@@ -11,10 +11,9 @@ if (!meteoData || !meteoData.days) {
 
 console.log('Dati meteo:', meteoData.days.length, 'giorni');
 
-// ✅ METODO FINALE: Usa un tag script con id
 const weatherDataJSON = JSON.stringify(meteoData);
 
-// Usa template literal MA senza ${} per il JSON - lo mettiamo in un attributo!
+// ⚠️ USA \$ invece di $ per evitare che n8n interpreti il template!
 const html = `<!DOCTYPE html>
 <html lang="it">
 <head>
@@ -36,7 +35,6 @@ const html = `<!DOCTYPE html>
   </style>
 </head>
 <body>
-  <!-- ✅ DATI METEO IN SCRIPT TAG TIPO APPLICATION/JSON -->
   <script type="application/json" id="weatherData">
 ${weatherDataJSON}
   </script>
@@ -47,7 +45,6 @@ ${weatherDataJSON}
   </div>
   
   <script>
-    // ✅ LEGGI DAL TAG SCRIPT
     const weatherData = JSON.parse(document.getElementById('weatherData').textContent);
     
     console.log('Weather data:', weatherData);
