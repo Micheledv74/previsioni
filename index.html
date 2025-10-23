@@ -1,27 +1,61 @@
-    // Initialize
-    console.log('🔍 Step 1: Script loaded');
-    console.log('🔍 Step 2: weatherData:', weatherData);
-    console.log('🔍 Step 3: weatherData.days:', weatherData?.days);
+// ===================================================================
+// NODO HTML - FIX FINALE INJECTION
+// ===================================================================
+
+const inputData = $json;
+const meteoData = Array.isArray(inputData) ? inputData[0] : inputData;
+
+if (!meteoData || !meteoData.days) {
+  throw new Error('❌ Dati meteo mancanti!');
+}
+
+console.log('✅ Dati meteo:', meteoData.days.length, 'giorni');
+
+// ⚠️ NON usare template literal per l'HTML! Usa concatenazione!
+const weatherDataJSON = JSON.stringify(meteoData);
+
+const htmlBefore = `<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meteo Procida</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #012549 0%, #003d6b 100%);
+      color: #ffffff;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .container { max-width: 1200px; margin: 0 auto; }
+    h1 { text-align: center; margin: 30px 0; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Meteo Procida ⛅</h1>
+    <div id="app">Caricamento...</div>
+  </div>
+  <script>
+    const weatherData = `;
+
+const htmlAfter = `;
     
-    if (!weatherData) {
-      console.error('❌ weatherData è undefined!');
-    } else if (!weatherData.days) {
-      console.error('❌ weatherData.days è undefined!');
+    console.log('Weather data:', weatherData);
+    
+    if (!weatherData || !weatherData.days) {
+      document.getElementById('app').innerHTML = '<p style="color: red;">Errore: dati non validi</p>';
     } else {
-      console.log('✅ Dati OK, rendering...');
+      const today = weatherData.days[0];
+      document.getElementById('app').innerHTML = '<div style="background: rgba(255,255,255,0.1); padding: 30px; border-radius: 20px; text-align: center;"><div style="font-size: 80px;">' + (today.rain && today.rain.total_mm > 5 ? '🌧️' : '☀️') + '</div><div style="font-size: 60px; margin: 20px 0;">' + Math.round(today.temp.max) + '°</div><p>' + (today.summary || 'Previsioni meteo') + '</p></div>';
     }
-    
-    try {
-      renderApp();
-      console.log('✅ App inizializzata con successo');
-    } catch (error) {
-      console.error('❌ Errore inizializzazione:', error);
-      console.error('❌ Stack:', error.stack);
-      document.getElementById('app').innerHTML = `
-        <div class="section" style="text-align: center; padding: 60px 20px; background: rgba(239, 68, 68, 0.2);">
-          <h2 style="color: #ef4444;">⚠️ Errore nel caricamento dei dati</h2>
-          <p style="color: var(--text-secondary);">` + error.message + `</p>
-          <pre style="color: #fff; text-align: left; background: rgba(0,0,0,0.3); padding: 20px; border-radius: 10px; overflow-x: auto;">` + error.stack + `</pre>
-        </div>
-      `;
-    }
+  </script>
+</body>
+</html>`;
+
+const html = htmlBefore + weatherDataJSON + htmlAfter;
+
+return [{ json: { content: html }}];
