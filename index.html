@@ -1,17 +1,18 @@
 // ===================================================================
-// NODO CODE: HTML - Genera pagina con dati meteo
+// EXTRACT DATA FROM INPUT
 // ===================================================================
+const inputData = $json;
+const meteoData = Array.isArray(inputData) ? inputData[0] : inputData;
 
-const meteoData = $json;
-
-// Verifica dati
 if (!meteoData || !meteoData.days) {
-  throw new Error('❌ Dati meteo mancanti! Controlla "Add Air Quality to Final"');
+  throw new Error('❌ Dati meteo non validi!');
 }
 
-console.log('✅ Generazione HTML con', meteoData.days.length, 'giorni di dati');
+console.log('✅ Generazione HTML con', meteoData.days.length, 'giorni');
 
-// Template HTML completo
+// ===================================================================
+// HTML TEMPLATE COMPLETO
+// ===================================================================
 const html = `<!DOCTYPE html>
 <html lang="it">
 <head>
@@ -166,6 +167,7 @@ const html = `<!DOCTYPE html>
       border: 1px solid var(--border);
       cursor: pointer;
       transition: all 0.3s;
+      text-align: center;
     }
 
     .mini-card:hover {
@@ -363,12 +365,8 @@ const html = `<!DOCTYPE html>
         </div>
       </div>
       <div class="header-actions">
-        <button class="icon-btn" onclick="window.print()">
-          📄
-        </button>
-        <button class="icon-btn" onclick="shareWeather()">
-          📤
-        </button>
+        <button class="icon-btn" onclick="window.print()" title="Stampa">📄</button>
+        <button class="icon-btn" onclick="shareWeather()" title="Condividi">📤</button>
       </div>
     </header>
 
@@ -479,12 +477,13 @@ const html = `<!DOCTYPE html>
     const weatherData = ${JSON.stringify(meteoData, null, 2)};
     
     console.log('📊 Weather data loaded:', weatherData);
+    console.log('📅 Days:', weatherData.days ? weatherData.days.length : 0);
     
     let notificationsEnabled = false;
     let rainChartInstance = null;
     let windChartInstance = null;
 
-    // Render functions
+    // Render Hero
     function renderHero() {
       if (!weatherData || !weatherData.days || weatherData.days.length === 0) {
         document.getElementById('hero').innerHTML = '<p>❌ Dati meteo non disponibili</p>';
@@ -499,18 +498,17 @@ const html = `<!DOCTYPE html>
       \`;
       document.getElementById('hero').innerHTML = html;
       
-      // Update mini cards
       document.getElementById('rain-info').innerHTML = \`<strong>\${today.rain.probability}%</strong><br>\${today.rain.total_mm}mm\`;
       const maxWind = Math.max(...today.wind.periods.map(p => p.speed_kmh));
       document.getElementById('wind-info').innerHTML = \`<strong>\${maxWind}km/h</strong><br>Max\`;
     }
 
+    // Render Charts
     function renderCharts() {
       if (!weatherData || !weatherData.days) return;
 
       const labels = weatherData.days.map(d => new Date(d.date).toLocaleDateString('it-IT', { weekday: 'short', day: 'numeric' }));
       
-      // Temperature & Rain Chart
       new Chart(document.getElementById('tempRainChart'), {
         type: 'line',
         data: {
@@ -546,7 +544,6 @@ const html = `<!DOCTYPE html>
         }
       });
 
-      // Pressure & Wind Chart
       new Chart(document.getElementById('pressureWindChart'), {
         type: 'line',
         data: {
@@ -576,7 +573,6 @@ const html = `<!DOCTYPE html>
         }
       });
 
-      // Sea Chart
       if (weatherData.days[0].sea) {
         new Chart(document.getElementById('seaChart'), {
           type: 'line',
@@ -609,6 +605,7 @@ const html = `<!DOCTYPE html>
       }
     }
 
+    // Render Stats
     function renderStats() {
       if (!weatherData || !weatherData.weekStats) return;
 
@@ -633,6 +630,7 @@ const html = `<!DOCTYPE html>
       document.getElementById('stats').innerHTML = html;
     }
 
+    // Render Forecast
     function renderForecast() {
       if (!weatherData || !weatherData.days) return;
 
@@ -654,12 +652,14 @@ const html = `<!DOCTYPE html>
       document.getElementById('forecast').innerHTML = html;
     }
 
+    // Get Weather Icon
     function getWeatherIcon(day) {
       if (day.rain.total_mm > 5) return '🌧️';
       if (day.rain.total_mm > 0) return '🌦️';
       return '☀️';
     }
 
+    // Show Rain Popup
     function showRainPopup() {
       document.getElementById('rainPopup').classList.add('active');
       
@@ -702,6 +702,7 @@ const html = `<!DOCTYPE html>
       });
     }
 
+    // Show Wind Popup
     function showWindPopup() {
       document.getElementById('windPopup').classList.add('active');
       
@@ -751,6 +752,7 @@ const html = `<!DOCTYPE html>
       \`;
     }
 
+    // Show Popups
     function showSummaryPopup() {
       document.getElementById('summaryPopup').classList.add('active');
       const today = weatherData.days[0];
@@ -773,16 +775,19 @@ const html = `<!DOCTYPE html>
       document.getElementById('alertsContent').innerHTML = html;
     }
 
+    // Close Popup
     function closePopup(id) {
       document.getElementById(id).classList.remove('active');
     }
 
+    // Toggle Notifications
     function toggleNotifications() {
       notificationsEnabled = !notificationsEnabled;
       document.getElementById('notif-icon').textContent = notificationsEnabled ? '🔕' : '🔔';
       document.getElementById('timestamp').textContent = 'Notifiche: ' + (notificationsEnabled ? 'Attivate' : 'Disattivate');
     }
 
+    // Share Weather
     function shareWeather() {
       if (navigator.share) {
         navigator.share({
@@ -790,9 +795,12 @@ const html = `<!DOCTYPE html>
           text: weatherData.days[0].summary,
           url: window.location.href
         });
+      } else {
+        alert('Condivisione non supportata su questo dispositivo');
       }
     }
 
+    // Update Timestamp
     function updateTimestamp() {
       const now = new Date(weatherData.generated_at).toLocaleString('it-IT');
       document.getElementById('timestamp').innerHTML += \`<br>Ultimo aggiornamento: \${now}\`;
@@ -800,20 +808,23 @@ const html = `<!DOCTYPE html>
 
     // Initialize
     if (weatherData && weatherData.days && weatherData.days.length > 0) {
+      console.log('✅ Inizializzazione UI con', weatherData.days.length, 'giorni');
       renderHero();
       renderCharts();
       renderStats();
       renderForecast();
       updateTimestamp();
     } else {
-      document.body.innerHTML = '<div style="text-align:center; margin-top: 50px;"><h1>❌ Errore Dati Meteo</h1><p>Impossibile caricare le previsioni</p></div>';
-      console.error('Weather data non valido:', weatherData);
+      console.error('❌ Weather data non valido:', weatherData);
+      document.body.innerHTML = '<div style="text-align:center; margin-top: 50px; padding: 20px;"><h1 style="color:#ef4444;">❌ Errore Dati Meteo</h1><p>Impossibile caricare le previsioni. Riprova più tardi.</p></div>';
     }
   </script>
 </body>
 </html>`;
 
-// Ritorna HTML per il nodo successivo
+// ===================================================================
+// RETURN HTML
+// ===================================================================
 return [{
   json: {
     content: html
