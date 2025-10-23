@@ -1,5 +1,5 @@
 // ===================================================================
-// NODO HTML - FIX DOPPIA INTERPOLAZIONE N8N
+// NODO HTML - SOLUZIONE CON PLACEHOLDER
 // ===================================================================
 
 const inputData = $json;
@@ -13,8 +13,8 @@ console.log('Dati meteo:', meteoData.days.length, 'giorni');
 
 const weatherDataJSON = JSON.stringify(meteoData);
 
-// ⚠️ USA \$ invece di $ per evitare che n8n interpreti il template!
-const html = `<!DOCTYPE html>
+// ✅ USA PLACEHOLDER __WEATHER_DATA__ e poi sostituisci
+const htmlTemplate = `<!DOCTYPE html>
 <html lang="it">
 <head>
   <meta charset="UTF-8">
@@ -36,7 +36,7 @@ const html = `<!DOCTYPE html>
 </head>
 <body>
   <script type="application/json" id="weatherData">
-${weatherDataJSON}
+__WEATHER_DATA__
   </script>
 
   <div class="container">
@@ -62,4 +62,8 @@ ${weatherDataJSON}
 </body>
 </html>`;
 
+// ✅ SOSTITUISCI IL PLACEHOLDER
+const html = htmlTemplate.replace('__WEATHER_DATA__', weatherDataJSON);
+
 return [{ json: { content: html }}];
+
