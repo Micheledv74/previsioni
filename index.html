@@ -1002,78 +1002,44 @@
     </div>
   </div>
 
-<!-- MODAL PIOGGIA -->
-<div class="modal-overlay" id="rainModal" onclick="closeRainModal()">
-  <div class="modal-content" onclick="event.stopPropagation()">
-    <div class="modal-header">
-      <div class="modal-icon" style="color: #08a5e8;">
-        <img src="https://raw.githubusercontent.com/Micheledv74/previsioni/main/icons/meteocons/raindrops.svg" style="width: 28px; height: 28px;">
+  <!-- MODAL PIOGGIA -->
+  <div class="modal-overlay" id="rainModal" onclick="closeRainModal()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <div class="modal-icon" style="color: #08a5e8;">
+          <img src="https://raw.githubusercontent.com/Micheledv74/previsioni/main/icons/meteocons/raindrops.svg" style="width: 28px; height: 28px;">
+        </div>
+        <h3>Pioggia Oggi - <span id="rainModalDate"></span></h3>
+        <button class="modal-close" onclick="closeRainModal()" aria-label="Chiudi">×</button>
       </div>
-      <h3>Pioggia Oggi - <span id="rainModalDate"></span></h3>
-      <button class="modal-close" onclick="closeRainModal()" aria-label="Chiudi">×</button>
-    </div>
-    <div class="modal-body">
-      <canvas id="rainChart" style="max-height: 300px;"></canvas>
-    <div id="rainviewer-alert" style="margin:8px 0;font-size:1.2em;"></div>
-<div id="rainviewer-radar" style="margin-bottom:14px;"></div>
-<script>
-  // --- Rainviewer Alert/Radar POPUP su weatherData.rainviewer
-  (function() {
-    if (!window.weatherData || !weatherData.rainviewer) {
-      document.getElementById("rainviewer-alert").innerHTML = "❌ Radar pioggia non disponibile";
-      return;
-    }
-    var rv = weatherData.rainviewer;
-    var rain = rv.nowcast_summary;
-    var frame = rv.nowcast_frames && rv.nowcast_frames[0];
-    if (!rain) {
-      document.getElementById("rainviewer-alert").innerHTML = "❌ Dato radar mancante";
-      return;
-    }
-    document.getElementById('rainviewer-alert').innerHTML =
-      rain.has_rain_incoming
-        ? "🚨 Pioggia in arrivo tra " + rain.rain_in_minutes + " minuti!"
-        : "✅ Nessuna pioggia imminente rilevata";
-    if (frame && frame.tile_url) {
-      var img = document.createElement('img');
-      img.src = frame.tile_url.replace('https://https://', 'https://');
-      img.width = 256;
-      img.height = 256;
-      img.className = "radar-img";
-      document.getElementById('rainviewer-radar').appendChild(img);
-      var timeInfo = document.createElement('div');
-      timeInfo.style="font-size:11px;color:#a0c4d8;margin-top:6px;";
-      timeInfo.innerText = 'Ultima scansione radar: ' + frame.timestamp;
-      document.getElementById('rainviewer-radar').appendChild(timeInfo);
-    }
-  })();
-</script>
-      <div class="rain-stats">
-        <div class="rain-stat">
-          <img src="https://raw.githubusercontent.com/Micheledv74/previsioni/main/icons/meteocons/raindrops.svg" class="rain-stat-icon" alt="Totale">
-          <div class="rain-stat-value" id="rainTotalValue">--</div>
-          <div class="rain-stat-label">Totale mm</div>
-        </div>
-        <div class="rain-stat">
-          <img src="https://raw.githubusercontent.com/Micheledv74/previsioni/main/icons/meteocons/raindrop-measure.svg" class="rain-stat-icon" alt="Picco">
-          <div class="rain-stat-value" id="rainPeakValue">--</div>
-          <div class="rain-stat-label">Picco mm/h</div>
-        </div>
-        <div class="rain-stat">
-          <img src="https://raw.githubusercontent.com/Micheledv74/previsioni/main/icons/meteocons/wi-time-2.svg" class="rain-stat-icon" alt="Durata">
-          <div class="rain-stat-value" id="rainDurationValue">--</div>
-          <div class="rain-stat-label">Durata ore</div>
-        </div>
-        <div class="rain-stat">
-          <img src="https://raw.githubusercontent.com/Micheledv74/previsioni/main/icons/meteocons/barometer.svg" class="rain-stat-icon" alt="Probabilità">
-          <div class="rain-stat-value" id="rainProbValue">--</div>
-          <div class="rain-stat-label">Probabilità</div>
+      <div class="modal-body">
+        <canvas id="rainChart" style="max-height: 300px;"></canvas>
+        
+        <div class="rain-stats">
+          <div class="rain-stat">
+            <img src="https://raw.githubusercontent.com/Micheledv74/previsioni/main/icons/meteocons/raindrops.svg" class="rain-stat-icon" alt="Totale">
+            <div class="rain-stat-value" id="rainTotalValue">--</div>
+            <div class="rain-stat-label">Totale mm</div>
+          </div>
+          <div class="rain-stat">
+            <img src="https://raw.githubusercontent.com/Micheledv74/previsioni/main/icons/meteocons/raindrop-measure.svg" class="rain-stat-icon" alt="Picco">
+            <div class="rain-stat-value" id="rainPeakValue">--</div>
+            <div class="rain-stat-label">Picco mm/h</div>
+          </div>
+          <div class="rain-stat">
+            "<img src="https://raw.githubusercontent.com/Micheledv74/previsioni/main/icons/meteocons/wi-time-2.svg" class="rain-stat-icon alt="Durata">
+            <div class="rain-stat-value" id="rainDurationValue">--</div>
+            <div class="rain-stat-label">Durata ore</div>
+          </div>
+          <div class="rain-stat">
+            <img src="https://raw.githubusercontent.com/Micheledv74/previsioni/main/icons/meteocons/barometer.svg" class="rain-stat-icon" alt="Probabilità">
+            <div class="rain-stat-value" id="rainProbValue">--</div>
+            <div class="rain-stat-label">Probabilità</div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
- </div>
 
   <!-- MODAL VENTO -->
   <div class="modal-overlay" id="windModal" onclick="closeWindModal()">
@@ -1115,22 +1081,7 @@
   </div>
 
   <script>
-   // FIX universale per ARRAY o OGGETTO:
-let weatherDataRaw = {"ai":{}};
-let weatherData;
-if (Array.isArray(weatherDataRaw)) {
-  weatherData = weatherDataRaw[0];
-} else if (typeof weatherDataRaw === 'string') {
-  try {
-    const parsed = JSON.parse(weatherDataRaw);
-    weatherData = Array.isArray(parsed) ? parsed[0] : parsed;
-  } catch(e) {
-    weatherData = null;
-  }
-} else {
-  weatherData = weatherDataRaw;
-}
-
+    const weatherData = {"location":"Procida, Italia","generatedAt":"2025-10-23T22:12:46.545Z","totalDays":7,"weekStats":{"maxTemp":22,"minTemp":16,"avgTemp":"20.7","rainyDays":4},"days":[{"date":"2025-10-23","temp":{"min":17,"max":20,"feels_like":18},"rain":{"probability":70,"total_mm":8.5,"periods":[{"start":"08:00","end":"11:00","intensity":"moderata"},{"start":"16:00","end":"18:00","intensity":"leggera"}]},"wind":{"periods":[{"start":"00:00","end":"12:00","speed_kmh":20,"gusts_kmh":35,"direction":"SE","intensity":"moderato"},{"start":"12:00","end":"23:59","speed_kmh":35,"gusts_kmh":50,"direction":"S","intensity":"forte"}]},"pressure":{"value_hPa":1010,"trend":"in calo"},"sea":{"condition":"mosso","wave_height_m":1.5,"swell_direction":"Sud","temperature_c":19.2},"humidity":85,"uv_index":3,"sunrise":"07:23","sunset":"18:13","moon_phase":"Luna calante","air_quality":{"aqi":125,"level":"Malsana per sensibili","pm25":2.5,"pm10":5,"no2":10,"o3":30},"summary":"Mercoledì sarà caratterizzato da tempo instabile a Procida, con cielo nuvoloso e piogge intermittenti. Le precipitazioni saranno moderate al mattino, tra le 08:00 e le 11:00, per poi ripresentarsi in forma più leggera nel tardo pomeriggio, dalle 16:00 alle 18:00. Il vento, che inizierà la giornata da Sud-Est con intensità moderata (20 km/h, raffiche fino a 35 km/h), subirà un deciso rinforzo a partire da mezzogiorno, ruotando a Sud e raggiungendo intensità forte (35 km/h, con raffiche fino a 50 km/h). Il mare sarà mosso, specialmente nel pomeriggio, con onde che potranno arrivare a 1.5 metri da Sud e una temperatura superficiale di 19.2°C. L'indice di qualità dell'aria (AQI) è previsto a 125, indicando condizioni malsane per i gruppi sensibili.","advice":["Si consiglia di avere a portata di mano ombrello e giacca impermeabile per le piogge previste.","A causa del forte vento e del mare mosso, si raccomanda la massima cautela per chi volesse intraprendere attività nautiche.","I soggetti più sensibili all'inquinamento atmosferico (AQI 125) dovrebbero limitare le attività all'aperto, soprattutto nelle ore di punta."],"alerts":["Vento forte da Sud con raffiche fino a 50 km/h a partire dalle ore 12:00.","Mare mosso con onde fino a 1.5m, attenzione per la navigazione."]},{"date":"2025-10-24","temp":{"min":16,"max":19,"feels_like":17},"rain":{"probability":80,"total_mm":15,"periods":[{"start":"00:00","end":"06:00","intensity":"moderata"},{"start":"10:00","end":"14:00","intensity":"forte"},{"start":"20:00","end":"23:00","intensity":"moderata"}]},"wind":{"periods":[{"start":"00:00","end":"10:00","speed_kmh":40,"gusts_kmh":60,"direction":"S","intensity":"molto forte"},{"start":"10:00","end":"23:59","speed_kmh":25,"gusts_kmh":40,"direction":"SW","intensity":"moderato"}]},"pressure":{"value_hPa":1005,"trend":"in ulteriore calo poi in lieve aumento"},"sea":{"condition":"molto mosso","wave_height_m":2.5,"swell_direction":"SW","temperature_c":19},"humidity":90,"uv_index":2,"sunrise":"07:24","sunset":"18:12","moon_phase":"Luna calante","summary":"Giovedì sarà una giornata perturbata su Procida, con piogge estese e a tratti intense. Le precipitazioni più forti sono attese tra le 10:00 e le 14:00. Il vento, inizialmente molto forte da Sud con raffiche fino a 60 km/h, tenderà a diminuire leggermente d'intensità e a ruotare a Sud-Ovest nel corso della mattinata. Il mare sarà molto mosso o agitato, con onde che potranno superare i 2.5 metri, rendendo la navigazione estremamente difficile e pericolosa.","advice":["Prepararsi a piogge abbondanti e vento forte per gran parte della giornata.","Evitare assolutamente attività in mare e sulla costa a causa delle condizioni marine estreme.","Si consiglia di restare al chiuso durante le fasi di pioggia più intensa e vento forte."],"alerts":["Allerta meteo: Vento molto forte con raffiche fino a 60 km/h e mare molto mosso/agitato.","Forti piogge concentrate tra le 10:00 e le 14:00."]},{"date":"2025-10-25","temp":{"min":17,"max":20,"feels_like":18},"rain":{"probability":30,"total_mm":2,"periods":[{"start":"06:00","end":"08:00","intensity":"leggera"}]},"wind":{"periods":[{"start":"00:00","end":"12:00","speed_kmh":20,"gusts_kmh":30,"direction":"SW","intensity":"moderato"},{"start":"12:00","end":"23:59","speed_kmh":15,"gusts_kmh":25,"direction":"NW","intensity":"leggero"}]},"pressure":{"value_hPa":1012,"trend":"in aumento"},"sea":{"condition":"mosso","wave_height_m":1,"swell_direction":"NW","temperature_c":18.9},"humidity":80,"uv_index":3,"sunrise":"07:25","sunset":"18:11","moon_phase":"Luna calante","summary":"Venerdì vedrà un miglioramento delle condizioni meteo, con cielo parzialmente nuvoloso e solo qualche residua pioggia leggera nelle prime ore del mattino. Il vento si manterrà moderato da Sud-Ovest nella prima parte della giornata, per poi diminuire d'intensità e ruotare a Nord-Ovest nel pomeriggio. Il mare, seppur ancora mosso al mattino, tenderà a diminuire il moto ondoso nel corso della giornata, con onde intorno a 1 metro. Le temperature saranno in lieve aumento.","advice":["Le condizioni migliorano, ma un impermeabile può essere utile al mattino.","Il mare sarà meno agitato, ma si consiglia comunque cautela per le attività nautiche.","Approfitta del pomeriggio per passeggiate all'aperto, prestando attenzione al vento."],"alerts":[]},{"date":"2025-10-26","temp":{"min":17,"max":21,"feels_like":19},"rain":{"probability":10,"total_mm":0,"periods":[]},"wind":{"periods":[{"start":"00:00","end":"23:59","speed_kmh":10,"gusts_kmh":20,"direction":"NW","intensity":"leggero"}]},"pressure":{"value_hPa":1015,"trend":"stabile"},"sea":{"condition":"poco mosso","wave_height_m":0.8,"swell_direction":"NW","temperature_c":18.8},"humidity":75,"uv_index":4,"sunrise":"07:26","sunset":"18:09","moon_phase":"Luna nuova","summary":"Sabato si preannuncia una giornata gradevole su Procida, con ampi spazi di sereno e un clima mite e asciutto. Non sono previste precipitazioni significative. Il vento sarà leggero, spirando dai quadranti nord-occidentali, e il mare si presenterà poco mosso, con onde inferiori al metro. Saranno condizioni ideali per attività all'aperto e gite in barca, approfittando anche del buon soleggiamento.","advice":["Ottima giornata per godere delle bellezze di Procida, ideale per passeggiate e attività all'aperto.","Mare calmo o poco mosso, adatto per escursioni in barca e bagni di sole.","Proteggersi dal sole anche se l'UV è moderato, soprattutto nelle ore centrali."],"alerts":[]},{"date":"2025-10-27","temp":{"min":18,"max":22,"feels_like":20},"rain":{"probability":5,"total_mm":0,"periods":[]},"wind":{"periods":[{"start":"00:00","end":"23:59","speed_kmh":15,"gusts_kmh":25,"direction":"SW","intensity":"leggero"}]},"pressure":{"value_hPa":1014,"trend":"stabile"},"sea":{"condition":"poco mosso","wave_height_m":0.7,"swell_direction":"SW","temperature_c":18.7},"humidity":70,"uv_index":4,"sunrise":"07:27","sunset":"18:08","moon_phase":"Luna crescente","summary":"Domenica manterrà un tempo soleggiato e piacevole su Procida, con temperature massime che raggiungeranno i 22°C. Il vento sarà debole o leggero da Sud-Ovest, e il mare si manterrà calmo o poco mosso, favorendo tutte le attività turistiche e di svago all'aria aperta. Una giornata perfetta per esplorare l'isola, godendosi il clima mite e le belle condizioni marine.","advice":["Approfittate del bel tempo per gite, escursioni e relax in spiaggia, il mare è ideale.","Le condizioni del mare sono favorevoli per piccole imbarcazioni e nuotate.","Si raccomanda l'uso di creme solari nelle ore di maggiore irraggiamento."],"alerts":[]},{"date":"2025-10-28","temp":{"min":18,"max":22,"feels_like":20},"rain":{"probability":10,"total_mm":0,"periods":[]},"wind":{"periods":[{"start":"00:00","end":"23:59","speed_kmh":15,"gusts_kmh":25,"direction":"SW","intensity":"leggero"}]},"pressure":{"value_hPa":1013,"trend":"stabile"},"sea":{"condition":"poco mosso","wave_height_m":0.6,"swell_direction":"SW","temperature_c":18.6},"humidity":70,"uv_index":4,"sunrise":"07:28","sunset":"18:07","moon_phase":"Luna crescente","summary":"Lunedì si prevede una continuazione del tempo stabile e soleggiato a Procida. Le temperature rimarranno miti, con massime di 22°C. Il vento sarà leggero da Sud-Ovest e il mare si presenterà poco mosso, offrendo condizioni ideali per iniziare la settimana con attività all'aperto e godere delle bellezze naturali dell'isola. Una giornata tranquilla e piacevole, senza particolari fenomeni meteo.","advice":["Ancora una giornata perfetta per attività all'aperto e marittime, con mare calmo e temperature ideali.","Il mare sarà calmo e invitante, ideale per nuoto o piccole gite in barca.","Mantenere l'idratazione e proteggersi dal sole, specialmente durante le escursioni."],"alerts":[]},{"date":"2025-10-29","temp":{"min":19,"max":21,"feels_like":20},"rain":{"probability":20,"total_mm":0.5,"periods":[{"start":"22:00","end":"23:59","intensity":"leggera"}]},"wind":{"periods":[{"start":"00:00","end":"18:00","speed_kmh":10,"gusts_kmh":20,"direction":"SW","intensity":"leggero"},{"start":"18:00","end":"23:59","speed_kmh":20,"gusts_kmh":30,"direction":"S","intensity":"moderato"}]},"pressure":{"value_hPa":1012,"trend":"in lieve calo"},"sea":{"condition":"poco mosso","wave_height_m":0.7,"swell_direction":"S","temperature_c":18.5},"humidity":75,"uv_index":3,"sunrise":"07:29","sunset":"18:06","moon_phase":"Luna crescente","summary":"Martedì inizierà con tempo sereno e gradevole a Procida, con temperature miti e un leggero vento. Verso la tarda serata si assisterà a un graduale aumento della nuvolosità, con la possibilità di leggere piogge notturne a partire dalle 22:00. Il vento si manterrà leggero per gran parte della giornata, rinforzando a moderato da Sud in serata. Le condizioni del mare rimarranno favorevoli, con moto ondoso poco mosso.","advice":["Godetevi la giornata serena, ma considerate la possibilità di piogge leggere in tarda serata.","Il mare sarà favorevole per escursioni fino al tardo pomeriggio, poi prestare attenzione al rinforzo del vento.","Si raccomanda di consultare gli aggiornamenti serali per eventuali cambiamenti delle condizioni meteo."],"alerts":[]}],"processedAt":"2025-10-23T22:12:46.545Z"};
     let notificationsEnabled = false;
     let rainChartInstance = null;
     let windChartInstance = null;
