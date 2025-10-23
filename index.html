@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="Diagnosiviewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#012549">
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -1081,7 +1081,7 @@
   </div>
 
   <script>
-    const weatherData = undefined;
+   const weatherData = ${JSON.stringify($json, null, 2)};
     let notificationsEnabled = false;
     let rainChartInstance = null;
     let windChartInstance = null;
