@@ -11,7 +11,6 @@ const html = `<!DOCTYPE html>
       padding: 20px; 
       text-align: center;
     }
-    #app { margin-top: 50px; }
   </style>
 </head>
 <body>
@@ -19,27 +18,22 @@ const html = `<!DOCTYPE html>
   <div id="app">Caricamento...</div>
   
   <script>
-    fetch('weather-data.json')
-      .then(r => r.json())
-      .then(data => {
-        console.log('Data loaded:', data);
-        if (data && data.days) {
-          const today = data.days[0];
-          const temp = Math.round(today.temp.max);
-          const icon = today.rain && today.rain.total_mm > 5 ? '🌧️' : '☀️';
-          const summary = today.summary || 'Previsioni meteo';
-          document.getElementById('app').innerHTML = 
-            '<div style="font-size:80px">' + icon + '</div>' +
-            '<div style="font-size:60px; margin:20px 0">' + temp + '°</div>' +
-            '<p>' + summary + '</p>';
-        } else {
-          document.getElementById('app').innerHTML = 'Errore dati';
-        }
-      })
-      .catch(e => {
-        console.error(e);
-        document.getElementById('app').innerHTML = 'Errore caricamento';
-      });
+    // USA I DATI EMBEDDED (iniettati dal server)
+    window.WEATHER_DATA = ` + JSON.stringify(Array.isArray($json) ? $json[0] : $json) + `;
+    
+    const data = window.WEATHER_DATA;
+    if (data && data.days) {
+      const today = data.days[0];
+      const temp = Math.round(today.temp.max);
+      const icon = today.rain && today.rain.total_mm > 5 ? '🌧️' : '☀️';
+      const summary = today.summary || 'Previsioni meteo';
+      document.getElementById('app').innerHTML = 
+        '<div style="font-size:80px">' + icon + '</div>' +
+        '<div style="font-size:60px; margin:20px 0">' + temp + '°</div>' +
+        '<p>' + summary + '</p>';
+    } else {
+      document.getElementById('app').innerHTML = 'Errore dati';
+    }
   </script>
 </body>
 </html>`;
