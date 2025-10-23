@@ -1,18 +1,47 @@
-// ===================================================================
-// SOLUZIONE BRUTALE MA FUNZIONANTE
-// ===================================================================
-
-const inputData = $json;
-const meteoData = Array.isArray(inputData) ? inputData[0] : inputData;
-
-if (!meteoData || !meteoData.days) {
-  throw new Error('Dati meteo mancanti!');
-}
-
-// ✅ CONVERTI IN STRINGA E FAI REPLACE MANUALE DI CARATTERI SPECIALI
-let weatherDataJSON = JSON.stringify(meteoData);
-weatherDataJSON = weatherDataJSON.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-
-const html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Meteo</title></head><body><script id="data" type="application/json">' + weatherDataJSON + '</script><div id="app"></div><script>var d=JSON.parse(document.getElementById("data").textContent.replace(/&lt;/g,"<").replace(/&gt;/g,">"));if(d&&d.days){var t=d.days[0];document.getElementById("app").innerHTML="<h1>"+Math.round(t.temp.max)+"° - "+(t.summary||"Meteo")+"</h1>"}else{document.getElementById("app").innerHTML="Errore"}</script></body></html>';
+const html = `<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Meteo Procida</title>
+  <style>
+    body { 
+      font-family: sans-serif; 
+      background: linear-gradient(135deg, #012549, #003d6b); 
+      color: white; 
+      padding: 20px; 
+      text-align: center;
+    }
+    #app { margin-top: 50px; }
+  </style>
+</head>
+<body>
+  <h1>Meteo Procida ⛅</h1>
+  <div id="app">Caricamento...</div>
+  
+  <script>
+    fetch('weather-data.json')
+      .then(r => r.json())
+      .then(data => {
+        console.log('Data loaded:', data);
+        if (data && data.days) {
+          const today = data.days[0];
+          const temp = Math.round(today.temp.max);
+          const icon = today.rain && today.rain.total_mm > 5 ? '🌧️' : '☀️';
+          const summary = today.summary || 'Previsioni meteo';
+          document.getElementById('app').innerHTML = 
+            '<div style="font-size:80px">' + icon + '</div>' +
+            '<div style="font-size:60px; margin:20px 0">' + temp + '°</div>' +
+            '<p>' + summary + '</p>';
+        } else {
+          document.getElementById('app').innerHTML = 'Errore dati';
+        }
+      })
+      .catch(e => {
+        console.error(e);
+        document.getElementById('app').innerHTML = 'Errore caricamento';
+      });
+  </script>
+</body>
+</html>`;
 
 return [{ json: { content: html }}];
