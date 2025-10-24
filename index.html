@@ -1116,7 +1116,7 @@
 
   <script>
    // FIX universale per ARRAY o OGGETTO:
-let weatherDataRaw = {"ai":{}};
+let weatherDataRaw = {"ai":{"summary":"Previsioni di un rapido peggioramento: piogge intense e temporali, accompagnati da vento forte e mare molto mosso nelle prossime ore.","advice":["Si raccomanda massima attenzione e prudenza. Prepararsi a condizioni meteo severe.","Evitare attività all'aperto, nautiche e spostamenti non essenziali a causa di vento forte e mare agitato.","Mettere in sicurezza oggetti esposti al vento e monitorare costantemente gli aggiornamenti meteo."],"alerts":["Allerta Vento Forte: raffiche previste fino a 60 km/h.","Allerta Piogge Intense: possibili temporali e accumuli elevati.","Allerta Mare Molto Mosso: onde significative e condizioni pericolose in mare.","Allerta Radar: attività precipitativa intensa in avvicinamento, consultare il radar: https://tilecache.rainviewer.com/v2/radar/1678886400/256/2/1/1/0_0.png"]}};
 window.weatherData = null;
 let weatherData;
 if (Array.isArray(weatherDataRaw)) {
