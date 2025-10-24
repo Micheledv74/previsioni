@@ -45,6 +45,16 @@
       --spacing-lg: 24px;
       --spacing-xl: 32px;
     }
+      @keyframes pulse-badge {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 0.85;
+  }
+}
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -1812,10 +1822,10 @@ function openRadarViewer() {
               ${ICONS.advice}
               <div class="label">Consigli</div>
             </div>
-           <div class="info-pill alert-pill ${(aiWeatherData && aiWeatherData.alerts && aiWeatherData.alerts.length > 0) || (today.alerts && today.alerts.length > 0) ? 'has-alerts' : ''}" onclick="openAlertModal()">
-              ${ICONS.alert}
-              ${(aiWeatherData && aiWeatherData.alerts && aiWeatherData.alerts.length > 0) ? `<div class="alert-badge">${aiWeatherData.alerts.length}</div>` : (today.alerts && today.alerts.length > 0 ? `<div class="alert-badge">${today.alerts.length}</div>` : '')} 
-            <div class="label">Allerte</div>
+          <div class="info-pill alert-pill ${(aiWeatherData && aiWeatherData.alerts && aiWeatherData.alerts.length > 0) || (today.alerts && today.alerts.length > 0) ? 'has-alerts' : ''}" onclick="openAlertModal()">
+            ${ICONS.alert}
+            ${generateAlertBadge()}
+          <div class="label">Allerte</div>
             </div>
           </div>
         </div>
@@ -1908,8 +1918,38 @@ function openAlertModal() {
     });
     
     content += '</div>';
-    content += `<div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1); text-align: center;">
-                  <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0; line-height: 1.5;">
+
+// PULSANTE RADAR MINIMAL (solo se ci sono allerte pioggia)
+const hasPioggiaAlert = aiWeatherData.alerts.some(alert => 
+  alert.type && (alert.type.toLowerCase().includes('pioggia') || alert.type.toLowerCase().includes('temporali'))
+);
+
+if (hasPioggiaAlert) {
+  content += `
+    <div style="margin-top: 1.5rem; text-align: center;">
+      <button onclick="openRadarViewer()" style="
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.6rem 1.2rem;
+        background: rgba(8, 165, 232, 0.15);
+        border: 1.5px solid #08a5e8;
+        border-radius: 8px;
+        color: #08a5e8;
+        font-size: 0.9rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      " onmouseover="this.style.background='rgba(8, 165, 232, 0.25)'; this.style.borderColor='#0096d6';" onmouseout="this.style.background='rgba(8, 165, 232, 0.15)'; this.style.borderColor='#08a5e8';">
+        <img src="https://raw.githubusercontent.com/Micheledv74/previsioni/main/icons/meteocons/radar.svg" style="width: 18px; height: 18px; filter: brightness(0) saturate(100%) invert(56%) sepia(91%) saturate(2664%) hue-rotate(175deg);" alt="Radar">
+        <span>Radar</span>
+      </button>
+    </div>
+  `;
+}
+
+content += `<div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1); text-align: center;">
+    <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0; line-height: 1.5;">
                     <em>Sistema di allertamento Protezione Civile Regione Campania<br>
                     Generato da AI • ${new Date(aiWeatherData.timestamp).toLocaleString('it-IT', {
                       day: '2-digit',
@@ -1935,6 +1975,47 @@ function openAlertModal() {
     }
     openModal('alert', 'Allerte Meteo', `<div style="color: #ff3b30">${ICONS.alert}</div>`, content);
   }
+}
+// Genera badge colorato in base al livello di allerta più alto
+function generateAlertBadge() {
+  if (!aiWeatherData || !aiWeatherData.alerts || aiWeatherData.alerts.length === 0) {
+    // Fallback ai dati vecchi se AI non disponibile
+    if (weatherData && weatherData.days && weatherData.days[0].alerts && weatherData.days[0].alerts.length > 0) {
+      return `<div class="alert-badge" style="background: #FFC107; width: 12px; height: 12px; border-radius: 50%;"></div>`;
+    }
+    return '';
+  }
+  
+  // Trova il livello di severity più alto
+  let maxSeverity = 'VERDE';
+  const severityOrder = ['VERDE', 'GIALLO', 'ARANCIONE', 'ROSSO'];
+  
+  aiWeatherData.alerts.forEach(alert => {
+    const currentSeverity = alert.severity?.toUpperCase() || 'VERDE';
+    if (severityOrder.indexOf(currentSeverity) > severityOrder.indexOf(maxSeverity)) {
+      maxSeverity = currentSeverity;
+    }
+  });
+  
+  // Mappa colori Protezione Civile Campania
+  const severityColors = {
+    'VERDE': '#4CAF50',
+    'GIALLO': '#FFC107',
+    'ARANCIONE': '#FF9800',
+    'ROSSO': '#F44336'
+  };
+  
+  const badgeColor = severityColors[maxSeverity] || severityColors['VERDE'];
+  
+  return `<div class="alert-badge" style="
+    background: ${badgeColor}; 
+    width: 14px; 
+    height: 14px; 
+    border-radius: 50%; 
+    border: 2px solid rgba(255,255,255,0.3);
+    box-shadow: 0 0 8px ${badgeColor}80, 0 0 12px ${badgeColor}40;
+    animation: pulse-badge 2s ease-in-out infinite;
+  "></div>`;
 }
 
 
