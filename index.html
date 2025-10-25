@@ -2126,7 +2126,7 @@ function openRadarViewer() {
       const weatherIcon = getWeatherIcon(today.summary);
       const moonEmoji = getMoonPhaseEmoji(today.moon_phase);
 
-     // === HERO REDESIGN - POPOLAZIONE DATI ===
+// === HERO REDESIGN - POPOLAZIONE DATI ===
 function updateHeroSection() {
   if (!weatherData || !weatherData.days || weatherData.days.length === 0) return;
   
@@ -2135,20 +2135,19 @@ function updateHeroSection() {
   // Location
   document.getElementById('heroLocation').textContent = 'Procida';
   
-// Data formattata con numero evidenziato
-const date = new Date(selectedDay.date);
-const dayNames = ['Domenica', 'Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'];
-const months = ['Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno', 
-                'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'];
-
-const dayName = dayNames[date.getDay()];
-const day = date.getDate();
-const month = months[date.getMonth()];
-
-// Popola data con numero separato
-document.getElementById('heroDateDay').textContent = day;
-document.getElementById('heroDateText').textContent = `${month}`;
-
+  // Data formattata con numero evidenziato
+  const date = new Date(selectedDay.date);
+  const dayNames = ['Domenica', 'Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'];
+  const months = ['Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno', 
+                  'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'];
+  
+  const day = date.getDate();
+  const month = months[date.getMonth()];
+  
+  // Popola data con numero separato
+  document.getElementById('heroDateDay').textContent = day;
+  document.getElementById('heroDateText').textContent = month;
+  
   // Icona meteo
   const iconCode = getWeatherIconForHero(selectedDay);
   const iconUrl = `https://raw.githubusercontent.com/Micheledv74/previsioni/main/icons/meteocons/${iconCode}.svg`;
@@ -2187,6 +2186,7 @@ function getWeatherIconForHero(day) {
   
   return 'partly-cloudy-day';
 }
+
 
       const html = `
 <!-- HERO SECTION REDESIGN FINALE -->
