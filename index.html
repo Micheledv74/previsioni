@@ -2149,7 +2149,7 @@ function updateHeroSection() {
   document.getElementById('heroDateText').textContent = month;
   
   // Icona meteo
-  const iconCode = getWeatherIconForHero(selectedDay);
+  const iconCode = 'partly-cloudy-day'; // ← Forza questa icona per test
   const iconUrl = `https://raw.githubusercontent.com/Micheledv74/previsioni/main/icons/meteocons/${iconCode}.svg`;
   document.getElementById('heroIcon').src = iconUrl;
   
