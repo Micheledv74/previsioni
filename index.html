@@ -2790,7 +2790,25 @@ function renderWeatherContent() {
     renderWeatherContent();  // ← USA LA NUOVA FUNZIONE
     renderForecast();
     updateTimestamp();
-  
+  renderForecast();
+
+// === FIX FASE 1C: Aggiungi evento click alla card vento ===
+setTimeout(() => {
+  // Trova tutti i detail-pill wind-detail
+  const windCards = document.querySelectorAll('.wind-detail, .detail-pill');
+  windCards.forEach(card => {
+    // Verifica che contenga dati vento (km/h)
+    if (card.textContent && card.textContent.includes('km/h')) {
+      card.style.cursor = 'pointer';
+      card.onclick = function(e) {
+        e.stopPropagation(); // Previeni altri eventi
+        openWindModal();
+      };
+      console.log('✅ Evento click aggiunto alla card vento');
+    }
+  });
+}, 200);
+
     
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('service-worker.js')
