@@ -1181,6 +1181,7 @@
       <div class="modal-body" id="modalBody"></div>
     </div>
   </div>
+
 <!-- MODAL PIOGGIA -->
 <div class="modal-overlay" id="rainModal" onclick="closeRainModal()">
   <div class="modal-content" onclick="event.stopPropagation()">
@@ -1193,9 +1194,24 @@
     </div>
     <div class="modal-body">
       <canvas id="rainChart" style="max-height: 300px;"></canvas>
+      
       <!-- PULSANTE RADAR RAINVIEWER -->
       <div style="margin: 1.5rem 0; text-align: center;">
-        <button onclick="openRadarViewer()" class="radar-button" style="display: inline-flex; align-items: center; gap: 0.75rem; padding: 0.85rem 1.75rem; background: linear-gradient(135deg, #08a5e8 0%, #0077b6 100%); border: none; border-radius: 12px; color: white; font-size: 1rem; font-weight: 600; cursor: pointer; box-shadow: 0 4px 15px rgba(8, 165, 232, 0.3); transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-2px) scale(1.02)'; this.style.boxShadow='0 6px 20px rgba(8, 165, 232, 0.4)';" onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='0 4px 15px rgba(8, 165, 232, 0.3)';">
+        <button onclick="openRadarViewer()" class="radar-button" style="
+          display: inline-flex;
+          align-items: center;
+          gap: 0.75rem;
+          padding: 0.85rem 1.75rem;
+          background: linear-gradient(135deg, #08a5e8 0%, #0077b6 100%);
+          border: none;
+          border-radius: 12px;
+          color: white;
+          font-size: 1rem;
+          font-weight: 600;
+          cursor: pointer;
+          box-shadow: 0 4px 15px rgba(8, 165, 232, 0.3);
+          transition: all 0.3s ease;
+        " onmouseover="this.style.transform='translateY(-2px) scale(1.02)'; this.style.boxShadow='0 6px 20px rgba(8, 165, 232, 0.4)';" onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='0 4px 15px rgba(8, 165, 232, 0.3)';">
           <img src="https://raw.githubusercontent.com/Micheledv74/previsioni/main/icons/meteocons/radar.svg" style="width: 24px; height: 24px; filter: brightness(0) invert(1);" alt="Radar">
           <span>Visualizza Radar Meteo Live</span>
           <span style="font-size: 0.85rem; opacity: 0.9;">🔴 LIVE</span>
@@ -1204,6 +1220,7 @@
           Radar pioggia in tempo reale su Procida
         </p>
       </div>
+      
       <div class="rain-stats">
         <div class="rain-stat">
           <img src="https://raw.githubusercontent.com/Micheledv74/previsioni/main/icons/meteocons/raindrops.svg" class="rain-stat-icon" alt="Totale">
@@ -1229,104 +1246,188 @@
     </div>
   </div>
 </div>
-<!-- MODAL VENTO -->
-<div class="modal-overlay" id="windModal" onclick="closeWindModal()">
-  <div class="modal-content" onclick="event.stopPropagation()">
-    <div class="modal-header">
-      <div class="modal-icon" style="color: #08a5e8;">
-        <img src="https://raw.githubusercontent.com/Micheledv74/previsioni/main/icons/meteocons/wind.svg" style="width: 28px; height: 28px;">
+
+
+  <!-- MODAL VENTO -->
+  <div class="modal-overlay" id="windModal" onclick="closeWindModal()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <div class="modal-icon" style="color: #08a5e8;">
+          <img src="https://raw.githubusercontent.com/Micheledv74/previsioni/main/icons/meteocons/wind.svg" style="width: 28px; height: 28px;">
+        </div>
+        <h3>Vento Oggi - <span id="windModalDate"></span></h3>
+        <button class="modal-close" onclick="closeWindModal()" aria-label="Chiudi">×</button>
       </div>
-      <h3>Vento Oggi - <span id="windModalDate"></span></h3>
-      <button class="modal-close" onclick="closeWindModal()" aria-label="Chiudi">×</button>
-    </div>
-    <div class="modal-body">
-      <canvas id="windChart" style="max-height: 300px;"></canvas>
-      <!-- PANNELLO DETTAGLI VENTO - FASE 1C -->
-      <div id="windDetailsPanel" class="wind-details-panel" style="display:none; margin-top:1.5rem; background:rgba(0,0,0,0.3); border-radius:12px; padding:1.25rem;">
-        <div class="wind-details-header" style="display:flex; align-items:center; gap:0.75rem; margin-bottom:1rem; padding-bottom:1rem; border-bottom:1px solid rgba(255,255,255,0.1);">
-          <span class="wind-detail-icon" style="font-size:1.8rem;">💨</span>
-          <span id="windDetailHour" style="font-size:1.2rem; font-weight:600; color:#08a5e8;">--:--</span>
-        </div>
-        <div class="wind-details-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(140px, 1fr)); gap:1rem;">
-          <div class="wind-detail-item" style="background:rgba(8,165,232,0.1); border-radius:10px; padding:1rem; text-align:center;">
-            <span class="wind-detail-label" style="font-size:0.8rem; color:rgba(255,255,255,0.7); display:block; margin-bottom:0.5rem;">Direzione</span>
-            <div class="wind-direction-wrapper" style="display:flex; flex-direction:column; align-items:center; gap:0.5rem;">
-              <img src="" id="windDirectionIcon" class="wind-direction-icon" alt="Direzione" style="width:32px; height:32px;">
-              <span id="windDirection" class="wind-detail-value" style="font-size:1rem; font-weight:600;">---°</span>
-            </div>
-            <span id="windCardinal" class="wind-cardinal" style="font-size:0.9rem; color:#08a5e8; font-weight:600; display:block; margin-top:0.25rem;">--</span>
+      <div class="modal-body">
+        <canvas id="windChart" style="max-height: 300px;"></canvas>
+        
+        <div class="rain-stats">
+          <div class="rain-stat">
+            <img src="https://raw.githubusercontent.com/Micheledv74/previsioni/main/icons/meteocons/wind.svg" class="rain-stat-icon" alt="Media">
+            <div class="rain-stat-value" id="windAvgValue">--</div>
+            <div class="rain-stat-label">Media Km/h</div>
           </div>
-          <div class="wind-detail-item" style="background:rgba(250,162,2,0.1); border-radius:10px; padding:1rem; text-align:center;">
-            <span class="wind-detail-label" style="font-size:0.8rem; color:rgba(255,255,255,0.7); display:block; margin-bottom:0.75rem;">Velocità</span>
-            <span id="windSpeed" class="wind-detail-value-large" style="font-size:2rem; font-weight:700; color:#faa202; display:block;">-- km/h</span>
+          <div class="rain-stat">
+            <img src="https://raw.githubusercontent.com/Micheledv74/previsioni/main/icons/meteocons/wind-beaufort-12.svg" class="rain-stat-icon" alt="Max">
+            <div class="rain-stat-value" id="windMaxValue">--</div>
+            <div class="rain-stat-label">Raffica Max</div>
           </div>
-          <div class="wind-detail-item" style="background:rgba(52,199,89,0.1); border-radius:10px; padding:1rem; text-align:center;">
-            <span class="wind-detail-label" style="font-size:0.8rem; color:rgba(255,255,255,0.7); display:block; margin-bottom:0.5rem;">Scala Beaufort</span>
-            <span id="windBeaufort" class="wind-detail-value" style="font-size:1.1rem; font-weight:600; color:#34c759; display:block;">Forza --</span>
-            <span id="windBeaufortName" style="font-size:0.85rem; color:rgba(255,255,255,0.6); display:block; margin-top:0.25rem;">(---)</span>
+          <div class="rain-stat">
+            <img src="https://raw.githubusercontent.com/Micheledv74/previsioni/main/icons/meteocons/compass.svg" class="rain-stat-icon" alt="Beaufort">
+            <div class="rain-stat-value" id="windBeaufortValue">--</div>
+            <div class="rain-stat-label">Beaufort Max</div>
           </div>
-        </div>
-      </div>
-      <div class="rain-stats">
-        <div class="rain-stat">
-          <img src="https://raw.githubusercontent.com/Micheledv74/previsioni/main/icons/meteocons/wind.svg" class="rain-stat-icon" alt="Media">
-          <div class="rain-stat-value" id="windAvgValue">--</div>
-          <div class="rain-stat-label">Media Km/h</div>
-        </div>
-        <div class="rain-stat">
-          <img src="https://raw.githubusercontent.com/Micheledv74/previsioni/main/icons/meteocons/wind-beaufort-12.svg" class="rain-stat-icon" alt="Max">
-          <div class="rain-stat-value" id="windMaxValue">--</div>
-          <div class="rain-stat-label">Raffica Max</div>
-        </div>
-        <div class="rain-stat">
-          <img src="https://raw.githubusercontent.com/Micheledv74/previsioni/main/icons/meteocons/compass.svg" class="rain-stat-icon" alt="Beaufort">
-          <div class="rain-stat-value" id="windBeaufortValue">--</div>
-          <div class="rain-stat-label">Beaufort Max</div>
-        </div>
-        <div class="rain-stat">
-          <img src="https://raw.githubusercontent.com/Micheledv74/previsioni/main/icons/meteocons/wind.svg" class="rain-stat-icon" alt="Dir">
-          <div class="rain-stat-value" id="windDirValue">--</div>
-          <div class="rain-stat-label">Direzione</div>
+          <div class="rain-stat">
+            <img src="https://raw.githubusercontent.com/Micheledv74/previsioni/main/icons/meteocons/wind.svg" class="rain-stat-icon" alt="Dir">
+            <div class="rain-stat-value" id="windDirValue">--</div>
+            <div class="rain-stat-label">Direzione</div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
-<!-- FINE BLOCCO MODAL VENTO -->
+
+  <script>
+   // FIX universale per ARRAY o OGGETTO:
+let weatherDataRaw = {"location":"Procida","generated_at":"2025-10-25T17:57:49.507Z","days":[{"date":"2025-10-25","temp":{"max":20.8,"min":18.9},"rain":{"probability":77,"total_mm":0,"periods":[]},"wind":{"periods":[{"time":"00:00","speed_kmh":18,"direction":"O"},{"time":"01:00","speed_kmh":17,"direction":"O"},{"time":"02:00","speed_kmh":17,"direction":"O"},{"time":"03:00","speed_kmh":15,"direction":"O"},{"time":"04:00","speed_kmh":15,"direction":"OSO"},{"time":"05:00","speed_kmh":14,"direction":"OSO"},{"time":"06:00","speed_kmh":14,"direction":"OSO"},{"time":"07:00","speed_kmh":14,"direction":"OSO"},{"time":"08:00","speed_kmh":14,"direction":"OSO"},{"time":"09:00","speed_kmh":13,"direction":"OSO"},{"time":"10:00","speed_kmh":13,"direction":"OSO"},{"time":"11:00","speed_kmh":12,"direction":"SO"},{"time":"12:00","speed_kmh":13,"direction":"SO"},{"time":"13:00","speed_kmh":14,"direction":"SO"},{"time":"14:00","speed_kmh":14,"direction":"SO"},{"time":"15:00","speed_kmh":13,"direction":"SO"},{"time":"16:00","speed_kmh":12,"direction":"SO"},{"time":"17:00","speed_kmh":12,"direction":"SO"},{"time":"18:00","speed_kmh":11,"direction":"SSO"},{"time":"19:00","speed_kmh":12,"direction":"SSO"},{"time":"20:00","speed_kmh":14,"direction":"SSO"},{"time":"21:00","speed_kmh":14,"direction":"SSO"},{"time":"22:00","speed_kmh":14,"direction":"SSO"},{"time":"23:00","speed_kmh":17,"direction":"SSO"}]},"humidity":69,"pressure":{"value_hPa":1014,"trend":"stabile"},"uv_index":3,"sea":{"wave_height_m":1.2,"temperature_c":19.5,"condition":"poco mosso"},"sunrise":"07:23","sunset":"18:13","moon_phase":null,"summary":"19°-21°C. Tempo asciutto. Vento moderato.","advice":["🌡️ Temperature miti: abbigliamento leggero consigliato","☀️ Tempo asciutto: ideale per attività all'aperto","🌊 Mare poco mosso (onde 1.2m): attenzione in barca"],"alerts":[]},{"date":"2025-10-26","temp":{"max":21.3,"min":18.4},"rain":{"probability":75,"total_mm":6.3,"periods":[{"start":"03:00","end":"20:59","intensity":"leggera"}]},"wind":{"periods":[{"time":"00:00","speed_kmh":19,"direction":"SO"},{"time":"01:00","speed_kmh":19,"direction":"SO"},{"time":"02:00","speed_kmh":20,"direction":"SO"},{"time":"03:00","speed_kmh":22,"direction":"SO"},{"time":"04:00","speed_kmh":20,"direction":"SO"},{"time":"05:00","speed_kmh":18,"direction":"OSO"},{"time":"06:00","speed_kmh":16,"direction":"OSO"},{"time":"07:00","speed_kmh":16,"direction":"OSO"},{"time":"08:00","speed_kmh":15,"direction":"OSO"},{"time":"09:00","speed_kmh":15,"direction":"O"},{"time":"10:00","speed_kmh":16,"direction":"O"},{"time":"11:00","speed_kmh":19,"direction":"O"},{"time":"12:00","speed_kmh":18,"direction":"O"},{"time":"13:00","speed_kmh":17,"direction":"O"},{"time":"14:00","speed_kmh":18,"direction":"O"},{"time":"15:00","speed_kmh":21,"direction":"O"},{"time":"16:00","speed_kmh":23,"direction":"O"},{"time":"17:00","speed_kmh":25,"direction":"O"},{"time":"18:00","speed_kmh":27,"direction":"O"},{"time":"19:00","speed_kmh":23,"direction":"O"},{"time":"20:00","speed_kmh":24,"direction":"O"},{"time":"21:00","speed_kmh":25,"direction":"O"},{"time":"22:00","speed_kmh":24,"direction":"O"},{"time":"23:00","speed_kmh":25,"direction":"O"}]},"humidity":75,"pressure":{"value_hPa":1009,"trend":"in calo"},"uv_index":4,"sea":{"wave_height_m":1.04,"temperature_c":19.6,"condition":"poco mosso"},"sunrise":"07:23","sunset":"18:13","moon_phase":null,"summary":"18°-21°C. Possibili precipitazioni (6.3mm). Vento moderato.","advice":["🌡️ Temperature miti: abbigliamento leggero consigliato","☔ Possibili piogge: porta ombrello o impermeabile","🌊 Mare poco mosso (onde 1.04m): attenzione in barca"],"alerts":[]},{"date":"2025-10-27","temp":{"max":19.5,"min":17.82},"rain":{"probability":20,"total_mm":0,"periods":[]},"wind":{"periods":[{"time":"00:00","speed_kmh":25,"direction":"O"},{"time":"01:00","speed_kmh":25,"direction":"O"},{"time":"02:00","speed_kmh":25,"direction":"O"},{"time":"03:00","speed_kmh":24,"direction":"O"},{"time":"04:00","speed_kmh":22,"direction":"O"},{"time":"05:00","speed_kmh":20,"direction":"O"},{"time":"06:00","speed_kmh":18,"direction":"ONO"},{"time":"07:00","speed_kmh":17,"direction":"ONO"},{"time":"08:00","speed_kmh":16,"direction":"NO"},{"time":"09:00","speed_kmh":17,"direction":"ONO"},{"time":"10:00","speed_kmh":20,"direction":"ONO"},{"time":"11:00","speed_kmh":19,"direction":"ONO"},{"time":"12:00","speed_kmh":19,"direction":"ONO"},{"time":"13:00","speed_kmh":17,"direction":"ONO"},{"time":"14:00","speed_kmh":17,"direction":"O"},{"time":"15:00","speed_kmh":17,"direction":"O"},{"time":"16:00","speed_kmh":19,"direction":"O"},{"time":"17:00","speed_kmh":21,"direction":"O"},{"time":"18:00","speed_kmh":21,"direction":"O"},{"time":"19:00","speed_kmh":20,"direction":"O"},{"time":"20:00","speed_kmh":20,"direction":"O"},{"time":"21:00","speed_kmh":20,"direction":"O"},{"time":"22:00","speed_kmh":22,"direction":"O"},{"time":"23:00","speed_kmh":22,"direction":"O"}]},"humidity":65,"pressure":{"value_hPa":1010,"trend":"stabile"},"uv_index":4,"sea":{"wave_height_m":1.64,"temperature_c":19.5,"condition":"mosso"},"sunrise":"07:23","sunset":"18:13","moon_phase":null,"summary":"18°-20°C. Tempo asciutto. Vento moderato.","advice":["🌡️ Temperature fresche: porta una giacca leggera","☀️ Tempo asciutto: ideale per attività all'aperto","🌊 Mare poco mosso (onde 1.64m): attenzione in barca"],"alerts":[]},{"date":"2025-10-28","temp":{"max":20.5,"min":18.7},"rain":{"probability":10,"total_mm":0,"periods":[]},"wind":{"periods":[{"time":"00:00","speed_kmh":17,"direction":"OSO"},{"time":"01:00","speed_kmh":16,"direction":"OSO"},{"time":"02:00","speed_kmh":15,"direction":"OSO"},{"time":"03:00","speed_kmh":15,"direction":"OSO"},{"time":"04:00","speed_kmh":14,"direction":"OSO"},{"time":"05:00","speed_kmh":14,"direction":"OSO"},{"time":"06:00","speed_kmh":12,"direction":"O"},{"time":"07:00","speed_kmh":10,"direction":"O"},{"time":"08:00","speed_kmh":7,"direction":"S"},{"time":"09:00","speed_kmh":6,"direction":"E"},{"time":"10:00","speed_kmh":7,"direction":"ESE"},{"time":"11:00","speed_kmh":8,"direction":"SE"},{"time":"12:00","speed_kmh":9,"direction":"SE"},{"time":"13:00","speed_kmh":9,"direction":"SSE"},{"time":"14:00","speed_kmh":9,"direction":"SSE"},{"time":"15:00","speed_kmh":10,"direction":"SSE"},{"time":"16:00","speed_kmh":10,"direction":"SSE"},{"time":"17:00","speed_kmh":11,"direction":"SSE"},{"time":"18:00","speed_kmh":10,"direction":"SSE"},{"time":"19:00","speed_kmh":10,"direction":"SSE"},{"time":"20:00","speed_kmh":9,"direction":"SSE"},{"time":"21:00","speed_kmh":9,"direction":"S"},{"time":"22:00","speed_kmh":10,"direction":"S"},{"time":"23:00","speed_kmh":10,"direction":"S"}]},"humidity":75,"pressure":{"value_hPa":1014,"trend":"in aumento"},"uv_index":4,"sea":{"wave_height_m":1.74,"temperature_c":19.5,"condition":"mosso"},"sunrise":"07:23","sunset":"18:13","moon_phase":null,"summary":"19°-21°C. Tempo asciutto. Vento moderato.","advice":["🌡️ Temperature miti: abbigliamento leggero consigliato","☀️ Tempo asciutto: ideale per attività all'aperto","🌊 Mare poco mosso (onde 1.74m): attenzione in barca"],"alerts":[]},{"date":"2025-10-29","temp":{"max":20.4,"min":18.6},"rain":{"probability":18,"total_mm":0,"periods":[]},"wind":{"periods":[{"time":"00:00","speed_kmh":9,"direction":"SSO"},{"time":"01:00","speed_kmh":10,"direction":"SSO"},{"time":"02:00","speed_kmh":9,"direction":"SO"},{"time":"03:00","speed_kmh":9,"direction":"SO"},{"time":"04:00","speed_kmh":8,"direction":"OSO"},{"time":"05:00","speed_kmh":8,"direction":"OSO"},{"time":"06:00","speed_kmh":8,"direction":"OSO"},{"time":"07:00","speed_kmh":7,"direction":"OSO"},{"time":"08:00","speed_kmh":7,"direction":"OSO"},{"time":"09:00","speed_kmh":6,"direction":"OSO"},{"time":"10:00","speed_kmh":6,"direction":"SO"},{"time":"11:00","speed_kmh":6,"direction":"SO"},{"time":"12:00","speed_kmh":6,"direction":"SO"},{"time":"13:00","speed_kmh":7,"direction":"SO"},{"time":"14:00","speed_kmh":8,"direction":"SO"},{"time":"15:00","speed_kmh":8,"direction":"SO"},{"time":"16:00","speed_kmh":7,"direction":"SO"},{"time":"17:00","speed_kmh":7,"direction":"SSO"},{"time":"18:00","speed_kmh":7,"direction":"SSO"},{"time":"19:00","speed_kmh":7,"direction":"SSO"},{"time":"20:00","speed_kmh":7,"direction":"SSO"},{"time":"21:00","speed_kmh":7,"direction":"S"},{"time":"22:00","speed_kmh":8,"direction":"S"},{"time":"23:00","speed_kmh":8,"direction":"S"}]},"humidity":72,"pressure":{"value_hPa":1019,"trend":"in aumento"},"uv_index":4,"sea":{"wave_height_m":0.62,"temperature_c":19.5,"condition":"poco mosso"},"sunrise":"07:23","sunset":"18:13","moon_phase":null,"summary":"19°-20°C. Tempo asciutto. Vento moderato.","advice":["🌡️ Temperature miti: abbigliamento leggero consigliato","☀️ Tempo asciutto: ideale per attività all'aperto","🌊 Mare calmo (onde 0.62m): condizioni favorevoli per navigare"],"alerts":[]},{"date":"2025-10-30","temp":{"max":19.49,"min":17.96},"rain":{"probability":65,"total_mm":1.3,"periods":[{"start":"08:00","end":"11:59","intensity":"leggera"},{"start":"18:00","end":"23:59","intensity":"leggera"}]},"wind":{"periods":[{"time":"00:00","speed_kmh":8,"direction":"SE"},{"time":"01:00","speed_kmh":8,"direction":"SE"},{"time":"02:00","speed_kmh":8,"direction":"SE"},{"time":"03:00","speed_kmh":8,"direction":"SE"},{"time":"04:00","speed_kmh":9,"direction":"SE"},{"time":"05:00","speed_kmh":9,"direction":"SE"},{"time":"06:00","speed_kmh":9,"direction":"SE"},{"time":"07:00","speed_kmh":9,"direction":"SE"},{"time":"08:00","speed_kmh":9,"direction":"SE"},{"time":"09:00","speed_kmh":9,"direction":"SE"},{"time":"10:00","speed_kmh":10,"direction":"SE"},{"time":"11:00","speed_kmh":10,"direction":"SE"},{"time":"12:00","speed_kmh":10,"direction":"SE"},{"time":"13:00","speed_kmh":10,"direction":"SE"},{"time":"14:00","speed_kmh":10,"direction":"SE"},{"time":"15:00","speed_kmh":10,"direction":"SE"},{"time":"16:00","speed_kmh":10,"direction":"SE"},{"time":"17:00","speed_kmh":10,"direction":"SE"},{"time":"18:00","speed_kmh":10,"direction":"SE"},{"time":"19:00","speed_kmh":10,"direction":"SE"},{"time":"20:00","speed_kmh":10,"direction":"SE"},{"time":"21:00","speed_kmh":10,"direction":"SE"},{"time":"22:00","speed_kmh":9,"direction":"SE"},{"time":"23:00","speed_kmh":9,"direction":"SE"}]},"humidity":80,"pressure":{"value_hPa":1019,"trend":"stabile"},"uv_index":3,"sea":{"wave_height_m":0.6,"temperature_c":19.5,"condition":"poco mosso"},"sunrise":"07:23","sunset":"18:13","moon_phase":null,"summary":"18°-19°C. Possibili precipitazioni (1.3mm). Vento moderato.","advice":["🌡️ Temperature fresche: porta una giacca leggera","🌦️ Possibili pioviggini: ombrello consigliato","🌊 Mare calmo (onde 0.6m): condizioni favorevoli per navigare"],"alerts":[]},{"date":"2025-10-31","temp":{"max":20.3,"min":18.7},"rain":{"probability":75,"total_mm":6.9,"periods":[{"start":"00:00","end":"00:59","intensity":"leggera"},{"start":"02:00","end":"02:59","intensity":"leggera"},{"start":"05:00","end":"05:59","intensity":"leggera"},{"start":"08:00","end":"20:59","intensity":"leggera"}]},"wind":{"periods":[{"time":"00:00","speed_kmh":11,"direction":"SE"},{"time":"01:00","speed_kmh":11,"direction":"ESE"},{"time":"02:00","speed_kmh":11,"direction":"ESE"},{"time":"03:00","speed_kmh":10,"direction":"ESE"},{"time":"04:00","speed_kmh":10,"direction":"ESE"},{"time":"05:00","speed_kmh":10,"direction":"ESE"},{"time":"06:00","speed_kmh":9,"direction":"ESE"},{"time":"07:00","speed_kmh":8,"direction":"ESE"},{"time":"08:00","speed_kmh":8,"direction":"ESE"},{"time":"09:00","speed_kmh":8,"direction":"ESE"},{"time":"10:00","speed_kmh":8,"direction":"ESE"},{"time":"11:00","speed_kmh":9,"direction":"ESE"},{"time":"12:00","speed_kmh":9,"direction":"SE"},{"time":"13:00","speed_kmh":9,"direction":"SE"},{"time":"14:00","speed_kmh":9,"direction":"SSE"},{"time":"15:00","speed_kmh":8,"direction":"SSE"},{"time":"16:00","speed_kmh":7,"direction":"SSE"},{"time":"17:00","speed_kmh":7,"direction":"SSE"},{"time":"18:00","speed_kmh":7,"direction":"SSE"},{"time":"19:00","speed_kmh":7,"direction":"SE"},{"time":"20:00","speed_kmh":6,"direction":"SE"},{"time":"21:00","speed_kmh":6,"direction":"SE"},{"time":"22:00","speed_kmh":6,"direction":"ESE"},{"time":"23:00","speed_kmh":6,"direction":"ESE"}]},"humidity":77,"pressure":{"value_hPa":1018,"trend":"stabile"},"uv_index":4,"sea":{"wave_height_m":0.86,"temperature_c":19.5,"condition":"poco mosso"},"sunrise":"07:23","sunset":"18:13","moon_phase":null,"summary":"19°-20°C. Possibili precipitazioni (6.9mm). Vento moderato.","advice":["🌡️ Temperature miti: abbigliamento leggero consigliato","☔ Possibili piogge: porta ombrello o impermeabile","🌊 Mare calmo (onde 0.86m): condizioni favorevoli per navigare"],"alerts":[]}],"weekStats":{"maxTemp":21.3,"minTemp":17.82,"avgTemp":"20.3","rainyDays":3},"air_quality":{"aqi":2,"aqi_description":"Discreta","timestamp":"2025-10-25T17:57:49.000Z","components":{"co":97.44,"no":null,"no2":0.25,"o3":86.06,"so2":0.37,"pm2_5":4.2,"pm10":15.42,"nh3":0.04},"assessment":{"pm2_5_level":"Ottimo","pm10_level":"Ottimo","o3_level":"Buono","no2_level":"Ottimo"}},"rainviewer":{"nowcast_summary":{"has_rain_incoming":true,"rain_in_minutes":2,"frames_count":3},"nowcast_frames":[{"timestamp":"2025-10-25T18:00:00.000Z","time_offset_minutes":2,"unix_time":1761415200,"radar_path":"/v2/radar/nowcast_809f2fe5ccff","tile_url":"https://https://tilecache.rainviewer.com/v2/radar/nowcast_809f2fe5ccff/256/{z}/{x}/{y}/2/1_1.png"},{"timestamp":"2025-10-25T18:10:00.000Z","time_offset_minutes":12,"unix_time":1761415800,"radar_path":"/v2/radar/nowcast_809f6a4c4869","tile_url":"https://https://tilecache.rainviewer.com/v2/radar/nowcast_809f6a4c4869/256/{z}/{x}/{y}/2/1_1.png"},{"timestamp":"2025-10-25T18:20:00.000Z","time_offset_minutes":22,"unix_time":1761416400,"radar_path":"/v2/radar/nowcast_809fef469dc1","tile_url":"https://https://tilecache.rainviewer.com/v2/radar/nowcast_809fef469dc1/256/{z}/{x}/{y}/2/1_1.png"}],"source":"rainviewer","timestamp":"2025-10-25T17:57:50.201Z","location":{"name":"Procida","latitude":40.76,"longitude":14.02}},"generatedAt":"2025-10-25T17:57:50.919Z","processedAt":"2025-10-25T17:57:50.919Z","totalDays":7,"ai":{}};
+window.weatherData = null;
+let weatherData;
+    let currentDayIndex = 0; // Tiene traccia del giorno selezionato
+
+// Genera i tab dei giorni
+function renderDaysTabs() {
+  if (!weatherData || !weatherData.days) return;
   
+  const tabsContainer = document.getElementById('daysTabs');
+  if (!tabsContainer) return;
+  
+  const days = weatherData.days.slice(0, 7);
+  const dayNames = ['Dom', 'Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab'];
+  
+  // Usa lo stesso mapping dell'hero per coerenza
+  function getWeatherIcon(day) {
+    const summary = (day.summary || '').toLowerCase();
+    const rainMm = day.rain?.total_mm || 0;
+    const rainProb = day.rain?.probability || 0;
+    
+    // Temporali
+    if (summary.includes('temporale') || summary.includes('thunder')) {
+      return 'thunderstorms-day';
+    }
+    
+    // Pioggia forte
+    if (rainMm > 10) {
+      return 'extreme-day-rain';
+    }
+    
+    // Pioggia moderata
+    if (rainMm > 2) {
+      return 'partly-cloudy-day-rain';
+    }
+    
+    // Pioggia leggera
+    if (rainMm > 0 || rainProb > 60 || summary.includes('pioggia')) {
+      return 'partly-cloudy-day-drizzle';
+    }
+    
+    // Neve
+    if (summary.includes('neve')) {
+      return 'partly-cloudy-day-snow';
+    }
+    
+    // Nebbia
+    if (summary.includes('nebbia')) {
+      return 'fog-day';
+    }
+    
+    // Nuvoloso
+    if (summary.includes('nuvoloso') || summary.includes('nuvole')) {
+      return 'partly-cloudy-day';
+    }
+    
+    // Coperto
+    if (summary.includes('coperto')) {
+      return 'overcast-day';
+    }
+    
+    // Sereno
+    if (summary.includes('sereno') || summary.includes('asciutto') || summary.includes('sole')) {
+      return 'clear-day';
+    }
+    
+    return 'partly-cloudy-day';
+  }
+  
+  tabsContainer.innerHTML = days.map((day, index) => {
+    const date = new Date(day.date);
+    const dayName = index === 0 ? 'Oggi' : (index === 1 ? 'Domani' : dayNames[date.getDay()]);
+    const dateStr = `${date.getDate()}/${date.getMonth() + 1}`;
+    
+    const tempMax = Math.round(day.temp?.max || 20);
+    const tempMin = Math.round(day.temp?.min || 15);
+    
+    const iconCode = getWeatherIcon(day);
+    const iconUrl = `https://raw.githubusercontent.com/Micheledv74/previsioni/main/icons/meteocons/${iconCode}.svg`;
+    
+    return `
+      <div class="day-tab ${index === currentDayIndex ? 'active' : ''}" 
+           onclick="switchDay(${index})">
+        <div class="day-tab-header">
+          <span class="day-tab-day">${dayName}</span>
+          <span class="day-tab-date">${dateStr}</span>
+        </div>
+        <div class="day-tab-icon-wrapper">
+          <img src="${iconUrl}" 
+               class="day-tab-icon-svg weather-icon-animated" 
+               alt="${iconCode}">
+        </div>
+        <div class="day-tab-temps">
+          <span class="day-tab-temp temp-max">↑${tempMax}°</span>
+          <span class="day-tab-temp temp-min">↓${tempMin}°</span>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+
+
+
+
+
 // Cambia giorno visualizzato
 function switchDay(dayIndex) {
   if (currentDayIndex === dayIndex) return;
-
+  
   currentDayIndex = dayIndex;
-
+  
   // Aggiorna tab attivi
   document.querySelectorAll('.day-tab').forEach((tab, idx) => {
     tab.classList.toggle('active', idx === dayIndex);
   });
-
+  
   // Ricarica il contenuto per il nuovo giorno
   renderWeatherContent();
 }
 
-let aiWeatherData = null;
+    let aiWeatherData = null;
 
 // Carica i dati AI da indexAlert.html
 async function loadAIData() {
   try {
     const response = await fetch('indexAlert.html');
     const text = await response.text();
-
+    
     // Crea un iframe temporaneo per eseguire lo script in modo sicuro
     const iframe = document.createElement('iframe');
     iframe.style.display = 'none';
     document.body.appendChild(iframe);
-
+    
     // Scrivi il contenuto nell'iframe
     iframe.contentDocument.open();
     iframe.contentDocument.write(text);
     iframe.contentDocument.close();
-
+    
     // Recupera la variabile dall'iframe
     if (iframe.contentWindow.aiWeatherData) {
       aiWeatherData = iframe.contentWindow.aiWeatherData;
@@ -1334,13 +1435,15 @@ async function loadAIData() {
     } else {
       console.warn('⚠️ aiWeatherData non trovata in indexAlert.html');
     }
-
+    
     // Rimuovi l'iframe
     document.body.removeChild(iframe);
   } catch(error) {
     console.error('❌ Errore caricamento dati AI:', error);
   }
 }
+
+
 // Carica i dati AI all'avvio
 loadAIData();
 if (Array.isArray(weatherDataRaw)) {
@@ -1356,170 +1459,173 @@ if (Array.isArray(weatherDataRaw)) {
   weatherData = weatherDataRaw;
 }
 window.weatherData = weatherData;
+    
+    let notificationsEnabled = false;
+    let rainChartInstance = null;
+    let windChartInstance = null;
 
-let notificationsEnabled = false;
-let rainChartInstance = null;
-let windChartInstance = null;
+    const METEOCONS_CDN = 'https://raw.githubusercontent.com/Micheledv74/previsioni/main/icons/meteocons';
 
-const METEOCONS_CDN = 'https://raw.githubusercontent.com/Micheledv74/previsioni/main/icons/meteocons';
+    const ICONS = {
+      summary: `<img src="https://raw.githubusercontent.com/Micheledv74/previsioni/main/Riepilogo.svg" style="width: 1.8rem; height: 1.8rem; object-fit: contain; filter: brightness(0) saturate(100%) invert(56%) sepia(91%) saturate(2664%) hue-rotate(175deg) brightness(96%) contrast(93%);">`,
+      advice: `<img src="https://raw.githubusercontent.com/Micheledv74/previsioni/main/Consigli.svg" style="width: 1.8rem; height: 1.8rem; object-fit: contain; filter: brightness(0) saturate(100%) invert(71%) sepia(98%) saturate(1714%) hue-rotate(358deg) brightness(101%) contrast(98%);">`,
+      alert: `<img src="https://raw.githubusercontent.com/Micheledv74/previsioni/main/Allerte.svg" style="width: 1.8rem; height: 1.8rem; object-fit: contain; filter: brightness(0) saturate(100%) invert(28%) sepia(86%) saturate(4586%) hue-rotate(351deg) brightness(102%) contrast(105%);">`
+    };
 
-const ICONS = {
-  summary: `<img src="https://raw.githubusercontent.com/Micheledv74/previsioni/main/Riepilogo.svg" style="width: 1.8rem; height: 1.8rem; object-fit: contain; filter: brightness(0) saturate(100%) invert(56%) sepia(91%) saturate(2664%) hue-rotate(175deg) brightness(96%) contrast(93%);">`,
-  advice: `<img src="https://raw.githubusercontent.com/Micheledv74/previsioni/main/Consigli.svg" style="width: 1.8rem; height: 1.8rem; object-fit: contain; filter: brightness(0) saturate(100%) invert(71%) sepia(98%) saturate(1714%) hue-rotate(358deg) brightness(101%) contrast(98%);">`,
-  alert: `<img src="https://raw.githubusercontent.com/Micheledv74/previsioni/main/Allerte.svg" style="width: 1.8rem; height: 1.8rem; object-fit: contain; filter: brightness(0) saturate(100%) invert(28%) sepia(86%) saturate(4586%) hue-rotate(351deg) brightness(102%) contrast(105%);">`
-};
+    function getWeatherIcon(summary) {
+      const text = (summary || '').toLowerCase();
+      let iconName = 'partly-cloudy-day.svg';
+      
+      if (text.includes('temporale') || text.includes('thunderstorm')) {
+        iconName = 'thunderstorms-rain.svg';
+      } else if (text.includes('pioggia forte') || text.includes('heavy rain')) {
+        iconName = 'rain.svg';
+      } else if (text.includes('pioggia') || text.includes('rain')) {
+        iconName = 'drizzle.svg';
+      } else if (text.includes('neve') || text.includes('snow')) {
+        iconName = 'snow.svg';
+      } else if (text.includes('nebbia') || text.includes('fog')) {
+        iconName = 'fog.svg';
+      } else if (text.includes('nuvoloso') || text.includes('cloudy')) {
+        iconName = 'cloudy.svg';
+      } else if (text.includes('parzialmente') || text.includes('partly')) {
+        iconName = 'partly-cloudy-day.svg';
+      } else if (text.includes('sereno') || text.includes('clear') || text.includes('sunny')) {
+        iconName = 'clear-day.svg';
+      }
+      
+      return `${METEOCONS_CDN}/${iconName}`;
+    }
 
-function getWeatherIcon(summary) {
-  const text = (summary || '').toLowerCase();
-  let iconName = 'partly-cloudy-day.svg';
+    function getBeaufortIcon(speed_kmh) {
+      if (speed_kmh < 2) return 'wind-beaufort-0.svg';
+      if (speed_kmh < 6) return 'wind-beaufort-1.svg';
+      if (speed_kmh < 12) return 'wind-beaufort-2.svg';
+      if (speed_kmh < 20) return 'wind-beaufort-3.svg';
+      if (speed_kmh < 29) return 'wind-beaufort-4.svg';
+      if (speed_kmh < 39) return 'wind-beaufort-5.svg';
+      if (speed_kmh < 50) return 'wind-beaufort-6.svg';
+      if (speed_kmh < 62) return 'wind-beaufort-7.svg';
+      if (speed_kmh < 75) return 'wind-beaufort-8.svg';
+      if (speed_kmh < 89) return 'wind-beaufort-9.svg';
+      if (speed_kmh < 103) return 'wind-beaufort-10.svg';
+      if (speed_kmh < 118) return 'wind-beaufort-11.svg';
+      return 'wind-beaufort-12.svg';
+    }
 
-  if (text.includes('temporale') || text.includes('thunderstorm')) {
-    iconName = 'thunderstorms-rain.svg';
-  } else if (text.includes('pioggia forte') || text.includes('heavy rain')) {
-    iconName = 'rain.svg';
-  } else if (text.includes('pioggia') || text.includes('rain')) {
-    iconName = 'drizzle.svg';
-  } else if (text.includes('neve') || text.includes('snow')) {
-    iconName = 'snow.svg';
-  } else if (text.includes('nebbia') || text.includes('fog')) {
-    iconName = 'fog.svg';
-  } else if (text.includes('nuvoloso') || text.includes('cloudy')) {
-    iconName = 'cloudy.svg';
-  } else if (text.includes('parzialmente') || text.includes('partly')) {
-    iconName = 'partly-cloudy-day.svg';
-  } else if (text.includes('sereno') || text.includes('clear') || text.includes('sunny')) {
-    iconName = 'clear-day.svg';
-  }
+    function getBeaufortClass(speed) {
+      if (speed < 2) return 0;
+      if (speed < 6) return 1;
+      if (speed < 12) return 2;
+      if (speed < 20) return 3;
+      if (speed < 29) return 4;
+      if (speed < 39) return 5;
+      if (speed < 50) return 6;
+      if (speed < 62) return 7;
+      if (speed < 75) return 8;
+      if (speed < 89) return 9;
+      if (speed < 103) return 10;
+      if (speed < 118) return 11;
+      return 12;
+    }
 
-  return `${METEOCONS_CDN}/${iconName}`;
-}
+    function getUVIcon(uvIndex) {
+      if (uvIndex <= 2) return 'uv-index-1.svg';
+      if (uvIndex <= 5) return 'uv-index-3.svg';
+      if (uvIndex <= 7) return 'uv-index-6.svg';
+      if (uvIndex <= 10) return 'uv-index-8.svg';
+      return 'uv-index-11.svg';
+    }
 
-function getBeaufortIcon(speed_kmh) {
-  if (speed_kmh < 2) return 'wind-beaufort-0.svg';
-  if (speed_kmh < 6) return 'wind-beaufort-1.svg';
-  if (speed_kmh < 12) return 'wind-beaufort-2.svg';
-  if (speed_kmh < 20) return 'wind-beaufort-3.svg';
-  if (speed_kmh < 29) return 'wind-beaufort-4.svg';
-  if (speed_kmh < 39) return 'wind-beaufort-5.svg';
-  if (speed_kmh < 50) return 'wind-beaufort-6.svg';
-  if (speed_kmh < 62) return 'wind-beaufort-7.svg';
-  if (speed_kmh < 75) return 'wind-beaufort-8.svg';
-  if (speed_kmh < 89) return 'wind-beaufort-9.svg';
-  if (speed_kmh < 103) return 'wind-beaufort-10.svg';
-  if (speed_kmh < 118) return 'wind-beaufort-11.svg';
-  return 'wind-beaufort-12.svg';
-}
+    function getSeaIcon(waveHeight) {
+      if (waveHeight < 0.5) return 'tide-low.svg';
+      return 'tide-high.svg';
+    }
 
-function getBeaufortClass(speed) {
-  if (speed < 2) return 0;
-  if (speed < 6) return 1;
-  if (speed < 12) return 2;
-  if (speed < 20) return 3;
-  if (speed < 29) return 4;
-  if (speed < 39) return 5;
-  if (speed < 50) return 6;
-  if (speed < 62) return 7;
-  if (speed < 75) return 8;
-  if (speed < 89) return 9;
-  if (speed < 103) return 10;
-  if (speed < 118) return 11;
-  return 12;
-}
+    function getWindDegrees(direction) {
+      const dirs = {
+        'N': 0, 'NNE': 22.5, 'NE': 45, 'ENE': 67.5,
+        'E': 90, 'ESE': 112.5, 'SE': 135, 'SSE': 157.5,
+        'S': 180, 'SSW': 202.5, 'SW': 225, 'WSW': 247.5,
+        'W': 270, 'WNW': 292.5, 'NW': 315, 'NNW': 337.5,
+        'SSO': 202.5, 'SO': 225, 'OSO': 247.5, 'O': 270,
+        'ONO': 292.5, 'NO': 315, 'NNO': 337.5
+      };
+      return dirs[direction?.toUpperCase()] || 0;
+    }
 
-function getUVIcon(uvIndex) {
-  if (uvIndex <= 2) return 'uv-index-1.svg';
-  if (uvIndex <= 5) return 'uv-index-3.svg';
-  if (uvIndex <= 7) return 'uv-index-6.svg';
-  if (uvIndex <= 10) return 'uv-index-8.svg';
-  return 'uv-index-11.svg';
-}
+    function formatDate(dateStr) {
+      const date = new Date(dateStr);
+      const giorni = ['Domenica', 'Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'];
+      const mesi = ['Gen', 'Feb', 'Mar', 'Apr', 'Mag', 'Giu', 'Lug', 'Ago', 'Set', 'Ott', 'Nov', 'Dic'];
+      if (isNaN(date.getTime())) return 'Data non valida';
+      return `${giorni[date.getDay()]} ${date.getDate()} ${mesi[date.getMonth()]}`;
+    }
 
-function getSeaIcon(waveHeight) {
-  if (waveHeight < 0.5) return 'tide-low.svg';
-  return 'tide-high.svg';
-}
+    function getShortDate(dateStr) {
+      const date = new Date(dateStr);
+      const giorni = ['Dom', 'Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab'];
+      if (isNaN(date.getTime())) return '---';
+      return giorni[date.getDay()];
+    }
 
-function getWindDegrees(direction) {
-  const dirs = {
-    'N': 0, 'NNE': 22.5, 'NE': 45, 'ENE': 67.5, 'E': 90, 'ESE': 112.5, 'SE': 135, 'SSE': 157.5,
-    'S': 180, 'SSW': 202.5, 'SW': 225, 'WSW': 247.5, 'W': 270, 'WNW': 292.5, 'NW': 315, 'NNW': 337.5,
-    'SSO': 202.5, 'SO': 225, 'OSO': 247.5, 'O': 270, 'ONO': 292.5, 'NO': 315, 'NNO': 337.5
-  };
-  return dirs[direction?.toUpperCase()] || 0;
-}
+    function getTempClass(temp) {
+      if (temp >= 28) return 'hot';
+      if (temp >= 22) return 'warm';
+      if (temp >= 15) return 'mild';
+      if (temp >= 8) return 'cool';
+      return 'cold';
+    }
 
-function formatDate(dateStr) {
-  const date = new Date(dateStr);
-  const giorni = ['Domenica', 'Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'];
-  const mesi = ['Gen', 'Feb', 'Mar', 'Apr', 'Mag', 'Giu', 'Lug', 'Ago', 'Set', 'Ott', 'Nov', 'Dic'];
-  if (isNaN(date.getTime())) return 'Data non valida';
-  return `${giorni[date.getDay()]} ${date.getDate()} ${mesi[date.getMonth()]}`;
-}
+    function getMoonPhaseEmoji(phaseText) {
+      if (!phaseText) return '🌕';
+      const phase = phaseText.toLowerCase();
+      if (phase.includes('nuova') || phase.includes('new moon')) return '🌑';
+      if (phase.includes('primo quarto') || phase.includes('first quarter')) return '🌓';
+      if (phase.includes('crescente')) return '🌒';
+      if (phase.includes('gibbosa crescente') || phase.includes('waxing gibbous')) return '🌔';
+      if (phase.includes('piena') || phase.includes('full moon')) return '🌕';
+      if (phase.includes('gibbosa calante') || phase.includes('waning gibbous')) return '🌖';
+      if (phase.includes('ultimo quarto') || phase.includes('last quarter')) return '🌗';
+      if (phase.includes('calante')) return '🌘';
+      return '🌕';
+    }
 
-function getShortDate(dateStr) {
-  const date = new Date(dateStr);
-  const giorni = ['Dom', 'Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab'];
-  if (isNaN(date.getTime())) return '---';
-  return giorni[date.getDay()];
-}
+    function openModal(type, title, icon, content) {
+      const modal = document.getElementById('modalOverlay');
+      const modalTitle = document.getElementById('modalTitle');
+      const modalIcon = document.getElementById('modalIcon');
+      const modalBody = document.getElementById('modalBody');
 
-function getTempClass(temp) {
-  if (temp >= 28) return 'hot';
-  if (temp >= 22) return 'warm';
-  if (temp >= 15) return 'mild';
-  if (temp >= 8) return 'cool';
-  return 'cold';
-}
+      modalTitle.textContent = title;
+      modalIcon.innerHTML = icon;
+      modalBody.innerHTML = content;
+      
+      if (type === 'alert') {
+        modalBody.classList.add('alert-body');
+      } else {
+        modalBody.classList.remove('alert-body');
+      }
 
-function getMoonPhaseEmoji(phaseText) {
-  if (!phaseText) return '🌕';
-  const phase = phaseText.toLowerCase();
-  if (phase.includes('nuova') || phase.includes('new moon')) return '🌑';
-  if (phase.includes('primo quarto') || phase.includes('first quarter')) return '🌓';
-  if (phase.includes('crescente')) return '🌒';
-  if (phase.includes('gibbosa crescente') || phase.includes('waxing gibbous')) return '🌔';
-  if (phase.includes('piena') || phase.includes('full moon')) return '🌕';
-  if (phase.includes('gibbosa calante') || phase.includes('waning gibbous')) return '🌖';
-  if (phase.includes('ultimo quarto') || phase.includes('last quarter')) return '🌗';
-  if (phase.includes('calante')) return '🌘';
-  return '🌕';
-}
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
 
-function openModal(type, title, icon, content) {
-  const modal = document.getElementById('modalOverlay');
-  const modalTitle = document.getElementById('modalTitle');
-  const modalIcon = document.getElementById('modalIcon');
-  const modalBody = document.getElementById('modalBody');
-
-  modalTitle.textContent = title;
-  modalIcon.innerHTML = icon;
-  modalBody.innerHTML = content;
-  
-  if (type === 'alert') {
-    modalBody.classList.add('alert-body');
-  } else {
-    modalBody.classList.remove('alert-body');
-  }
-
-  modal.classList.add('active');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeModal() {
-  const modal = document.getElementById('modalOverlay');
-  modal.classList.remove('active');
-  document.body.style.overflow = '';
-}
+    function closeModal() {
+      const modal = document.getElementById('modalOverlay');
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
 // Funzione per aprire Rainviewer in un popup/nuova finestra
 function openRadarViewer() {
   const radarUrl = 'https://www.rainviewer.com/weather-radar-map-live.html?loc=40.7114,14.0983,9.253102817283006&oCS=1&oF=true&c=3&o=83&lm=1&layer=radar&sm=1&sn=1';
-
+  
   // Apri in una nuova finestra popup centrata
   const width = 1200;
   const height = 800;
   const left = (screen.width - width) / 2;
   const top = (screen.height - height) / 2;
-
+  
   window.open(
     radarUrl,
     'RadarMeteo',
@@ -1527,584 +1633,505 @@ function openRadarViewer() {
   );
 }
 
-function openRainModal() {
-  if (!weatherData || !weatherData.days || weatherData.days.length === 0) return;
-
-  const selectedDay = weatherData.days[currentDayIndex];
-  const rainData = selectedDay.rain;
-
-  if (!rainData || rainData.probability === 0) {
-    alert('Nessuna pioggia prevista per oggi! ☀️');
-    return;
-  }
-
-  const modal = document.getElementById('rainModal');
-  document.getElementById('rainModalDate').textContent = formatDate(selectedDay.date);
-
-  const hourlyData = generateHourlyRainData(rainData);
-  renderRainChart(hourlyData);
-  updateRainStats(rainData, hourlyData);
-
-  modal.classList.add('active');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeRainModal() {
-  const modal = document.getElementById('rainModal');
-  modal.classList.remove('active');
-  document.body.style.overflow = '';
-}
-
-function generateHourlyRainData(rainData) {
-  const hours = Array.from({length: 24}, (_, i) => i);
-  const intensityMap = {
-    'leggera': 2,
-    'moderata': 5,
-    'forte': 10,
-    'intensa': 15
-  };
-
-  const hourlyIntensity = hours.map(hour => {
-    if (!rainData.periods || rainData.periods.length === 0) return 0;
-
-    for (const period of rainData.periods) {
-      const startHour = parseInt(period.start.split(':')[0]);
-      const endHour = parseInt(period.end.split(':')[0]);
-
-      if (hour >= startHour && hour < endHour) {
-        return intensityMap[period.intensity] || 2;
+    function openRainModal() {
+      if (!weatherData || !weatherData.days || weatherData.days.length === 0) return;
+      
+     const selectedDay = weatherData.days[currentDayIndex];
+     const rainData = selectedDay.rain;
+      
+      if (!rainData || rainData.probability === 0) {
+        alert('Nessuna pioggia prevista per oggi! ☀️');
+        return;
       }
+
+      const modal = document.getElementById('rainModal');
+      document.getElementById('rainModalDate').textContent = formatDate(selectedDay.date);
+ 
+      const hourlyData = generateHourlyRainData(rainData);
+      renderRainChart(hourlyData);
+      updateRainStats(rainData, hourlyData);
+      
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
     }
 
-    return 0;
-  });
-
-  return hourlyIntensity;
-}
-function renderRainChart(hourlyData) {
-  const ctx = document.getElementById('rainChart');
-
-  if (rainChartInstance) {
-    rainChartInstance.destroy();
-  }
-
-  const labels = Array.from({length: 24}, (_, i) => `${i.toString().padStart(2, '0')}:00`);
-
-  rainChartInstance = new Chart(ctx.getContext('2d'), {
-    type: 'bar',
-    data: {
-      labels: labels,
-      datasets: [{
-        label: 'Intensità Pioggia (mm/h)',
-        data: hourlyData,
-        backgroundColor: hourlyData.map(val => {
-          if (val === 0) return 'rgba(8, 165, 232, 0)';
-          if (val <= 3) return 'rgba(8, 165, 232, 0.6)';
-          if (val <= 7) return 'rgba(8, 165, 232, 0.8)';
-          return 'rgba(8, 145, 199, 1)';
-        }),
-        borderColor: '#08a5e8',
-        borderWidth: 1,
-        borderRadius: 4,
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          display: false
-        },
-        tooltip: {
-          backgroundColor: 'rgba(1, 37, 73, 0.95)',
-          titleColor: '#fff',
-          bodyColor: '#a0c4d8',
-          borderColor: '#08a5e8',
-          borderWidth: 1,
-          callbacks: {
-            label: function(context) {
-              const value = context.parsed.y;
-              if (value === 0) return 'Nessuna pioggia';
-              return `${value} mm/h`;
-            }
-          }
-        }
-      },
-      scales: {
-        y: {
-          beginAtZero: true,
-          max: Math.max(...hourlyData, 10) + 2,
-          ticks: {
-            color: '#08a5e8',
-            font: { size: 11 },
-            callback: function(value) {
-              return value + ' mm';
-            }
-          },
-          grid: {
-            color: 'rgba(8, 165, 232, 0.1)'
-          },
-          title: {
-            display: true,
-            text: 'Intensità (mm/h)',
-            color: '#08a5e8',
-            font: { size: 13, weight: 'bold' }
-          }
-        },
-        x: {
-          ticks: {
-            color: '#a0c4d8',
-            font: { size: 10 },
-            maxRotation: 45,
-            minRotation: 45
-          },
-          grid: {
-            color: 'rgba(255, 255, 255, 0.05)'
-          }
-        }
-      }
+    function closeRainModal() {
+      const modal = document.getElementById('rainModal');
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
     }
-  });
-}
-function updateRainStats(rainData, hourlyData) {
-  document.getElementById('rainTotalValue').textContent = rainData.total_mm + 'mm';
-  document.getElementById('rainProbValue').textContent = rainData.probability + '%';
 
-  const peakIntensity = Math.max(...hourlyData);
-  document.getElementById('rainPeakValue').textContent = peakIntensity.toFixed(1) + 'mm/h';
-
-  const rainHours = hourlyData.filter(val => val > 0).length;
-  document.getElementById('rainDurationValue').textContent = rainHours + 'h';
-}
-
-function openWindModal() {
-  if (!weatherData || !weatherData.days || weatherData.days.length === 0) return;
-
-  const selectedDay = weatherData.days[currentDayIndex];
-  const windData = selectedDay.wind;
-  console.log('windData:', windData);
-
-  document.getElementById('windModalDate').textContent = formatDate(selectedDay.date);
-  const hours = Array.from({length: 24}, (_, i) => i);
-  let periods = windData?.periods || [];
-
-  if (!periods || periods.length === 0) {
-    const avgSpeed = windData?.avg_speed || windData?.speed_kmh || 10;
-    const avgDir = windData?.direction || 180;
-
-    periods = hours.map(hour => ({
-      time: `${hour.toString().padStart(2, '0')}:00`,
-      speed_kmh: avgSpeed + (Math.random() * 10 - 5),
-      direction: avgDir + (Math.random() * 40 - 20)
-    }));
-  }
-
-  const hourlySpeeds = hours.map(hour => {
-    const period = periods.find(p => {
-      const pHour = p.time ? parseInt(p.time.split(':')[0]) : hour;
-      return pHour === hour;
-    });
-    return period ? period.speed_kmh : 0;
-  });
-
-  const hourlyDirs = hours.map(hour => {
-    const period = periods.find(p => {
-      const pHour = p.time ? parseInt(p.time.split(':')[0]) : hour;
-      return pHour === hour;
-    });
-    return period ? period.direction : null;
-  });
-
-  renderWindChart(hours, hourlySpeeds);
-  updateWindStats(hourlySpeeds, hourlyDirs);
-
-  document.getElementById('windDetailsPanel').style.display = 'none';
-  document.getElementById('windModal').classList.add('active');
-  document.body.style.overflow = 'hidden';
-}
-
-// === FASE 1C - Wind Details Helper Functions ===
-function degreesToCardinal(degrees) {
-  const cardinals = [
-    'N', 'NNE', 'NE', 'ENE',
-    'E', 'ESE', 'SE', 'SSE',
-    'S', 'SSO', 'SO', 'OSO',
-    'O', 'ONO', 'NO', 'NNO'
-  ];
-  const cardinalsFull = [
-    'Nord', 'Nord-Nord-Est', 'Nord-Est', 'Est-Nord-Est',
-    'Est', 'Est-Sud-Est', 'Sud-Est', 'Sud-Sud-Est',
-    'Sud', 'Sud-Sud-Ovest', 'Sud-Ovest', 'Ovest-Sud-Ovest',
-    'Ovest', 'Ovest-Nord-Ovest', 'Nord-Ovest', 'Nord-Nord-Ovest'
-  ];
-  const index = Math.round(degrees / 22.5) % 16;
-  return {
-    short: cardinals[index],
-    full: cardinalsFull[index]
-  };
-}
-
-function getBeaufortScale(kmh) {
-  if (kmh < 1) return { force: 0, name: 'Calma' };
-  if (kmh < 6) return { force: 1, name: 'Bava di Vento' };
-  if (kmh < 12) return { force: 2, name: 'Brezza Leggera' };
-  if (kmh < 20) return { force: 3, name: 'Brezza Tesa' };
-  if (kmh < 29) return { force: 4, name: 'Vento Moderato' };
-  if (kmh < 39) return { force: 5, name: 'Vento Teso' };
-  if (kmh < 50) return { force: 6, name: 'Vento Fresco' };
-  if (kmh < 62) return { force: 7, name: 'Vento Forte' };
-  if (kmh < 75) return { force: 8, name: 'Burrasca' };
-  if (kmh < 89) return { force: 9, name: 'Burrasca Forte' };
-  if (kmh < 103) return { force: 10, name: 'Tempesta' };
-  if (kmh < 118) return { force: 11, name: 'Tempesta Violenta' };
-  return { force: 12, name: 'Uragano' };
-}
-
-function getWindDirectionIcon(degrees) {
-  const normalized = Math.round(degrees / 22.5) * 22.5;
-  return `https://raw.githubusercontent.com/Micheledv74/previsioni/main/icons/meteocons/wind-arrow-${normalized}.svg`;
-}
-
-function displayWindDetails(hourIndex, windPeriods) {
-  const period = windPeriods[hourIndex];
-  const panel = document.getElementById('windDetailsPanel');
-  if (!period || !panel) return;
-
-  document.getElementById('windDetailHour').textContent = period.time;
-  document.getElementById('windDirection').textContent = `${period.direction}°`;
-  document.getElementById('windSpeed').textContent = `${period.speed} km/h`;
-
-  const cardinal = degreesToCardinal(period.direction);
-  document.getElementById('windCardinal').textContent = `${cardinal.short} (${cardinal.full})`;
-
-  const beaufort = getBeaufortScale(period.speed);
-  document.getElementById('windBeaufort').textContent = `Forza ${beaufort.force}`;
-  document.getElementById('windBeaufortName').textContent = `(${beaufort.name})`;
-
-  const iconUrl = getWindDirectionIcon(period.direction);
-  const iconEl = document.getElementById('windDirectionIcon');
-  iconEl.src = iconUrl;
-  iconEl.style.transform = `rotate(${period.direction}deg)`;
-
-  panel.style.display = 'block';
-  panel.style.opacity = '0';
-  setTimeout(() => {
-    panel.style.transition = 'opacity 0.3s ease';
-    panel.style.opacity = '1';
-  }, 10);
-}
-
-function closeWindModal() {
-  document.getElementById('windModal').classList.remove('active');
-  document.body.style.overflow = '';
-}
-
-function renderWindChart(hours, data) {
-  const ctx = document.getElementById('windChart');
-  if (windChartInstance) windChartInstance.destroy();
-
-  const hourLabels = hours.map(h => `${h.toString().padStart(2, '0')}:00`);
-
-  windChartInstance = new Chart(ctx.getContext('2d'), {
-    type: 'bar',
-    data: {
-      labels: hourLabels,
-      datasets: [{
-        label: 'Vento (km/h)',
-        data: data,
-        backgroundColor: data.map(v => v >= 40 ? '#0891c7' : v >= 20 ? 'rgba(8,165,232,0.8)' : 'rgba(8,165,232,0.5)'),
-        borderColor: '#08a5e8',
-        borderWidth: 1.5,
-        borderRadius: 4,
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      onClick: (event, activeElements) => {
-        if (activeElements.length > 0) {
-          const index = activeElements[0].index;
-          const selectedDay = weatherData.days[currentDayIndex];
-          displayWindDetails(index, selectedDay.wind.periods);
-        }
-      },
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          backgroundColor: 'rgba(1, 37, 73, 0.95)',
-          titleColor: '#fff',
-          bodyColor: '#a0c4d8',
-          borderColor: '#08a5e8',
-          borderWidth: 1,
-          callbacks: {
-            label: function(context) {
-              const v = context.parsed.y;
-              if (v === 0) return 'Assente';
-
-              const selectedDay = weatherData.days[currentDayIndex];
-              const period = selectedDay.wind.periods[context.dataIndex];
-              if (period) {
-                const cardinal = degreesToCardinal(period.direction);
-                const beaufort = getBeaufortScale(v);
-                return [
-                  `Velocità: ${v} km/h`,
-                  `Direzione: ${period.direction}° ${cardinal.short}`,
-                  `Beaufort: Forza ${beaufort.force} (${beaufort.name})`
-                ];
-              }
-              return `${v} km/h`;
-            }
-          }
-        }
-      },
-      scales: {
-        y: {
-          beginAtZero: true,
-          max: Math.max(...data, 10) + 5,
-          ticks: {
-            color: '#08a5e8',
-            font: { size: 11 },
-            callback: function(value) {
-              return value + ' km/h';
-            }
-          },
-          grid: {
-            color: 'rgba(8, 165, 232, 0.1)'
-          },
-          title: {
-            display: true,
-            text: 'Vento (km/h)',
-            color: '#08a5e8',
-            font: { size: 13, weight: 'bold' }
-          }
-        },
-        x: {
-          ticks: {
-            color: '#a0c4d8',
-            font: { size: 10 },
-            maxRotation: 45,
-            minRotation: 45
-          },
-          grid: {
-            color: 'rgba(255, 255, 255, 0.05)'
-          }
-        }
-      }
-    }
-  });
-}
-scales: {
-  y: {
-    beginAtZero: true,
-    max: Math.max(...data, 50) + 5,
-    ticks: { color: '#08a5e8', font: { size: 12 }, callback: v => v + ' km/h' },
-    grid: { color: 'rgba(8, 165, 232, 0.1)' },
-    title: {
-      display: true, text: 'Velocità (km/h)', color: '#08a5e8', font: { size: 13, weight: 'bold' }
-    }
-  },
-  x: {
-    ticks: { color: '#a0c4d8', font: { size: 10 }, maxRotation: 45, minRotation: 45 },
-    grid: { color: 'rgba(255,255,255,0.05)' }
-  }
-}
-}
-});
-}
-
-function updateWindStats(data, dirs) {
-  const activeValues = data.filter(v => v > 0);
-  const avg = activeValues.length ? (activeValues.reduce((a, b) => a + b, 0) / activeValues.length) : 0;
-  document.getElementById('windAvgValue').textContent = avg.toFixed(1) + ' km/h';
-
-  let max = 0, ora = '--';
-  data.forEach((v, i) => {
-    if (v > max) {
-      max = v;
-      ora = (i < 10 ? '0' : '') + i + ':00';
-    }
-  });
-  document.getElementById('windMaxValue').textContent = max.toFixed(1) + ' (' + ora + ')';
-
-  const beaufort = getBeaufortScale(max);
-  document.getElementById('windBeaufortValue').textContent = `Forza ${beaufort.force} Bft`;
-
-  const dominantDir = getDominantDirection(dirs);
-  document.getElementById('windDirValue').textContent = dominantDir;
-}
-
-function getDominantDirection(array) {
-  const counts = {};
-  for (const v of array) if (v) counts[v] = (counts[v] || 0) + 1;
-  let maxCount = 0, dominant = '--';
-  for (const [k, v] of Object.entries(counts)) if (v > maxCount) { maxCount = v; dominant = k; }
-  return dominant;
-}
-
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') {
-    closeModal();
-    closeRainModal();
-    closeWindModal();
-  }
-});
-
-function exportToPDF() {
-  window.print();
-}
-
-async function shareWeather() {
-  if (!weatherData || !weatherData.days || weatherData.days.length === 0) return;
-  const today = weatherData.days[0];
-  const text = `Meteo Procida oggi: ${Math.round(today.temp?.max || 20)}°C\n${today.summary || 'Consulta le previsioni complete'}`;
-
-  if (navigator.share) {
-    try {
-      await navigator.share({
-        title: 'Meteo Procida',
-        text: text,
-        url: window.location.href
-      });
-    } catch (err) {
-      console.log('Share cancelled');
-    }
-  } else {
-    alert('Condivisione non supportata su questo browser');
-  }
-}
-
-async function toggleNotifications() {
-  if (!('Notification' in window)) {
-    alert('Notifiche non supportate su questo browser');
-    return;
-  }
-
-  if (Notification.permission === 'granted') {
-    notificationsEnabled = !notificationsEnabled;
-    updateNotificationUI();
-    if (notificationsEnabled) {
-      sendTestNotification();
-    }
-  } else if (Notification.permission !== 'denied') {
-    const permission = await Notification.requestPermission();
-    if (permission === 'granted') {
-      notificationsEnabled = true;
-      updateNotificationUI();
-      sendTestNotification();
-    }
-  } else {
-    alert('Notifiche bloccate. Abilitale dalle impostazioni del browser.');
-  }
-}
-
-function updateNotificationUI() {
-  const toggle = document.getElementById('notificationToggle');
-  const icon = document.getElementById('notifIcon');
-  const status = document.getElementById('notification-status');
-
-  if (notificationsEnabled) {
-    toggle.classList.add('active');
-    icon.src = 'https://raw.githubusercontent.com/Micheledv74/previsioni/main/attiva-notifiche.svg';
-    status.textContent = 'Notifiche: Attive ✓';
-  } else {
-    toggle.classList.remove('active');
-    icon.src = 'https://raw.githubusercontent.com/Micheledv74/previsioni/main/notifiche-disabilitate.svg';
-    status.textContent = 'Notifiche: Disattivate';
-  }
-}
-
-function sendTestNotification() {
-  if (!weatherData || !weatherData.days || weatherData.days.length === 0) return;
-  const today = weatherData.days[0];
-
-  new Notification('Meteo Procida', {
-    body: `Oggi: ${Math.round(today.temp?.max || 20)}°C - ${today.summary?.substring(0, 100) || 'Consulta le previsioni'}`,
-    icon: 'apple-touch-icon.png',
-    badge: 'apple-touch-icon.png',
-    tag: 'meteo-update'
-  });
-}
-
-function renderHero() {
-  if (!weatherData || !weatherData.days || weatherData.days.length === 0) return;
-  const today = weatherData.days[currentDayIndex];
-  const tempClass = getTempClass(today.temp?.max || 20);
-  const weatherIcon = getWeatherIcon(today.summary);
-  const moonEmoji = getMoonPhaseEmoji(today.moon_phase);
-
-  const html = `
-    <div class="hero-card ${tempClass}">
-      <div class="hero-header">
-        <div class="hero-location">
-          📍 ${weatherData.location || 'Procida'}
-        </div>
-        <div class="hero-date">${formatDate(today.date)}</div>
-      </div>
-
-      <div class="hero-main">
-        <img src="${weatherIcon}" class="hero-weather-icon" alt="Condizioni meteo">
-        <div class="hero-temp">${Math.round(today.temp?.max || 20)}°</div>
-        <div class="hero-condition">${getConditionText(today)}</div>
-        <div class="hero-minmax">
-          <span>
-            <img src="${METEOCONS_CDN}/thermometer-colder.svg" alt="Min">
-            ${Math.round(today.temp?.min || 15)}°
-          </span>
-          <span>
-            <img src="${METEOCONS_CDN}/thermometer-warmer.svg" alt="Max">
-            ${Math.round(today.temp?.max || 20)}°
-          </span>
-        </div>
-      </div>
-
-      <div class="details-pills">
-        ${today.rain && today.rain.probability > 0 ? `
-          <div class="detail-pill rain-detail clickable" onclick="openRainModal()" title="Clicca per dettagli orari">
-            <img src="${METEOCONS_CDN}/raindrops.svg" alt="Pioggia">
-            <span class="value">${today.rain.probability}%</span>
-            <span class="label">Pioggia</span>
-          </div>
-        ` : ''}
+    function generateHourlyRainData(rainData) {
+      const hours = Array.from({length: 24}, (_, i) => i);
+      const intensityMap = {
+        'leggera': 2,
+        'moderata': 5,
+        'forte': 10,
+        'intensa': 15
+      };
+      
+      const hourlyIntensity = hours.map(hour => {
+        if (!rainData.periods || rainData.periods.length === 0) return 0;
         
-        ${today.wind && today.wind.periods && today.wind.periods[0] ? `
-          <div class="detail-pill wind-detail clickable" onclick="openWindModal()" title="Clicca per grafico vento">
-            <img src="${METEOCONS_CDN}/${getBeaufortIcon(today.wind.periods[0].speed_kmh)}" alt="Vento">
-            <span class="value">${today.wind.periods[0].speed_kmh} km/h</span>
-            <span class="label">${getWindDegrees(today.wind.periods[0].direction)}° ${today.wind.periods[0].direction}</span>
-          </div>
-        ` : ''}
-        <!-- altri pills come già nel tuo blocco -->
-      </div>
-      <!-- info/pills churn etc -->
-    </div>
-  `;
-}
-document.getElementById('hero-container').innerHTML = html;
-}
+        for (const period of rainData.periods) {
+          const startHour = parseInt(period.start.split(':')[0]);
+          const endHour = parseInt(period.end.split(':')[0]);
+          
+          if (hour >= startHour && hour < endHour) {
+            return intensityMap[period.intensity] || 2;
+          }
+        }
+        
+        return 0;
+      });
+      
+      return hourlyIntensity;
+    }
 
-function attachWindModalListener() {
-  const windCards = document.querySelectorAll('.wind-detail.clickable');
-  windCards.forEach(card => {
-    card.removeAttribute('onclick');
-    card.addEventListener('click', function(e) {
-      e.stopPropagation();
-      console.log('🌬️ Card vento cliccata!');
-      openWindModal();
+    function renderRainChart(hourlyData) {
+      const ctx = document.getElementById('rainChart');
+      
+      if (rainChartInstance) {
+        rainChartInstance.destroy();
+      }
+      
+      const labels = Array.from({length: 24}, (_, i) => `${i.toString().padStart(2, '0')}:00`);
+      
+      rainChartInstance = new Chart(ctx.getContext('2d'), {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Intensità Pioggia (mm/h)',
+            data: hourlyData,
+            backgroundColor: hourlyData.map(val => {
+              if (val === 0) return 'rgba(8, 165, 232, 0)';
+              if (val <= 3) return 'rgba(8, 165, 232, 0.6)';
+              if (val <= 7) return 'rgba(8, 165, 232, 0.8)';
+              return 'rgba(8, 145, 199, 1)';
+            }),
+            borderColor: '#08a5e8',
+            borderWidth: 1,
+            borderRadius: 4,
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false
+            },
+            tooltip: {
+              backgroundColor: 'rgba(1, 37, 73, 0.95)',
+              titleColor: '#fff',
+              bodyColor: '#a0c4d8',
+              borderColor: '#08a5e8',
+              borderWidth: 1,
+              callbacks: {
+                label: function(context) {
+                  const value = context.parsed.y;
+                  if (value === 0) return 'Nessuna pioggia';
+                  return `${value} mm/h`;
+                }
+              }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: Math.max(...hourlyData, 10) + 2,
+              ticks: {
+                color: '#08a5e8',
+                font: { size: 11 },
+                callback: function(value) {
+                  return value + ' mm';
+                }
+              },
+              grid: {
+                color: 'rgba(8, 165, 232, 0.1)'
+              },
+              title: {
+                display: true,
+                text: 'Intensità (mm/h)',
+                color: '#08a5e8',
+                font: { size: 13, weight: 'bold' }
+              }
+            },
+            x: {
+              ticks: {
+                color: '#a0c4d8',
+                font: { size: 10 },
+                maxRotation: 45,
+                minRotation: 45
+              },
+              grid: {
+                color: 'rgba(255, 255, 255, 0.05)'
+              }
+            }
+          }
+        }
+      });
+    }
+
+    function updateRainStats(rainData, hourlyData) {
+      document.getElementById('rainTotalValue').textContent = rainData.total_mm + 'mm';
+      document.getElementById('rainProbValue').textContent = rainData.probability + '%';
+      
+      const peakIntensity = Math.max(...hourlyData);
+      document.getElementById('rainPeakValue').textContent = peakIntensity.toFixed(1) + 'mm/h';
+      
+      const rainHours = hourlyData.filter(val => val > 0).length;
+      document.getElementById('rainDurationValue').textContent = rainHours + 'h';
+    }
+
+    function openWindModal() {
+      if (!weatherData || !weatherData.days || weatherData.days.length === 0) return;
+      
+      const selectedDay = weatherData.days[currentDayIndex];
+      const windData = selectedDay.wind;
+      
+      if (!windData || !windData.periods || windData.periods.length === 0) {
+        alert('Nessun dato orario sul vento disponibile.');
+        return;
+      }
+
+      document.getElementById('windModalDate').textContent = formatDate(selectedDay.date);
+      const hours = Array.from({length: 24}, (_, i) => i);
+
+      const hourlySpeeds = hours.map(hour => {
+        const period = windData.periods.find(p => {
+          const pHour = p.time ? parseInt(p.time.split(':')[0]) : hour;
+          return pHour === hour;
+        });
+        return period ? period.speed_kmh : 0;
+      });
+
+      const hourlyDirs = hours.map(hour => {
+        const period = windData.periods.find(p => {
+          const pHour = p.time ? parseInt(p.time.split(':')[0]) : hour;
+          return pHour === hour;
+        });
+        return period ? period.direction : null;
+      });
+
+      renderWindChart(hours, hourlySpeeds);
+      updateWindStats(hourlySpeeds, hourlyDirs);
+
+      document.getElementById('windModal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeWindModal() {
+      document.getElementById('windModal').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function renderWindChart(hours, data) {
+      const ctx = document.getElementById('windChart');
+      if (windChartInstance) windChartInstance.destroy();
+      
+      const hourLabels = hours.map(h => `${h.toString().padStart(2,'0')}:00`);
+      
+      windChartInstance = new Chart(ctx.getContext('2d'), {
+        type: 'bar',
+        data: {
+          labels: hourLabels,
+          datasets: [{
+            label: 'Vento (km/h)',
+            data: data,
+            backgroundColor: data.map(v => v >= 40 ? '#0891c7' : v >= 20 ? 'rgba(8,165,232,0.8)' : 'rgba(8,165,232,0.5)'),
+            borderColor: '#08a5e8',
+            borderWidth: 1.5,
+            borderRadius: 4,
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: 'rgba(1, 37, 73, 0.95)',
+              titleColor: '#fff',
+              bodyColor: '#a0c4d8',
+              borderColor: '#08a5e8',
+              borderWidth: 1,
+              callbacks: {
+                label: function(context) {
+                  const v = context.parsed.y;
+                  if (v === 0) return 'Assente';
+                  return `${v} km/h`;
+                }
+              }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: Math.max(...data, 50) + 5,
+              ticks: { color: '#08a5e8', font: { size: 12 }, callback: v => v+' km/h' },
+              grid: { color: 'rgba(8, 165, 232, 0.1)' },
+              title: {
+                display: true, text: 'Velocità (km/h)', color: '#08a5e8', font: {size:13,weight:'bold'}
+              }
+            },
+            x: {
+              ticks: { color: '#a0c4d8', font: { size: 10 }, maxRotation: 45, minRotation: 45 },
+              grid: { color: 'rgba(255,255,255,0.05)' }
+            }
+          }
+        }
+      });
+    }
+
+    function updateWindStats(data, dirs) {
+      const activeValues = data.filter(v => v > 0);
+      const avg = activeValues.length ? (activeValues.reduce((a,b) => a+b,0) / activeValues.length) : 0;
+      document.getElementById('windAvgValue').textContent = avg.toFixed(1)+' km/h';
+
+      let max = 0, ora = '--';
+      data.forEach((v, i) => { if (v > max) { max = v; ora = (i < 10 ? '0':'')+i+':00'; } });
+      document.getElementById('windMaxValue').textContent = max.toFixed(1)+' ('+ora+')';
+
+      const beaufort = getBeaufortClass(max);
+      document.getElementById('windBeaufortValue').textContent = beaufort+' Bft';
+
+      const dominantDir = getDominantDirection(dirs);
+      document.getElementById('windDirValue').textContent = dominantDir;
+    }
+
+    function getDominantDirection(array) {
+      const counts = {};
+      for (const v of array) if (v) counts[v] = (counts[v]||0)+1;
+      let maxCount = 0, dominant = '--';
+      for (const [k,v] of Object.entries(counts)) if (v > maxCount) { maxCount = v; dominant = k; }
+      return dominant;
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeModal();
+        closeRainModal();
+        closeWindModal();
+      }
     });
-  });
-  console.log(`✅ Listener vento aggiunti a ${windCards.length} card(e)`);
-}
 
-function getConditionText(day) {
-  if (day.rain && day.rain.probability > 70) return 'Pioggia';
-  if (day.rain && day.rain.probability > 40) return 'Possibile pioggia';
-  const summary = (day.summary || '').toLowerCase();
-  if (summary.includes('sereno')) return 'Sereno';
-  if (summary.includes('nuvoloso')) return 'Nuvoloso';
-  return 'Variabile';
-}
+    function exportToPDF() {
+      window.print();
+    }
 
-function openSummaryModal() {
+    async function shareWeather() {
+      if (!weatherData || !weatherData.days || weatherData.days.length === 0) return;
+      const today = weatherData.days[0];
+      const text = `Meteo Procida oggi: ${Math.round(today.temp?.max || 20)}°C\n${today.summary || 'Consulta le previsioni complete'}`;
+      
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: 'Meteo Procida',
+            text: text,
+            url: window.location.href
+          });
+        } catch (err) {
+          console.log('Share cancelled');
+        }
+      } else {
+        alert('Condivisione non supportata su questo browser');
+      }
+    }
+
+    async function toggleNotifications() {
+      if (!('Notification' in window)) {
+        alert('Notifiche non supportate su questo browser');
+        return;
+      }
+
+      if (Notification.permission === 'granted') {
+        notificationsEnabled = !notificationsEnabled;
+        updateNotificationUI();
+        if (notificationsEnabled) {
+          sendTestNotification();
+        }
+      } else if (Notification.permission !== 'denied') {
+        const permission = await Notification.requestPermission();
+        if (permission === 'granted') {
+          notificationsEnabled = true;
+          updateNotificationUI();
+          sendTestNotification();
+        }
+      } else {
+        alert('Notifiche bloccate. Abilitale dalle impostazioni del browser.');
+      }
+    }
+
+    function updateNotificationUI() {
+      const toggle = document.getElementById('notificationToggle');
+      const icon = document.getElementById('notifIcon');
+      const status = document.getElementById('notification-status');
+      
+      if (notificationsEnabled) {
+        toggle.classList.add('active');
+        icon.src = 'https://raw.githubusercontent.com/Micheledv74/previsioni/main/attiva-notifiche.svg';
+        status.textContent = 'Notifiche: Attive ✓';
+      } else {
+        toggle.classList.remove('active');
+        icon.src = 'https://raw.githubusercontent.com/Micheledv74/previsioni/main/notifiche-disabilitate.svg';
+        status.textContent = 'Notifiche: Disattivate';
+      }
+    }
+
+    function sendTestNotification() {
+      if (!weatherData || !weatherData.days || weatherData.days.length === 0) return;
+      const today = weatherData.days[0];
+      
+      new Notification('Meteo Procida', {
+        body: `Oggi: ${Math.round(today.temp?.max || 20)}°C - ${today.summary?.substring(0, 100) || 'Consulta le previsioni'}`,
+        icon: 'apple-touch-icon.png',
+        badge: 'apple-touch-icon.png',
+        tag: 'meteo-update'
+      });
+    }
+
+   function renderHero() {
+  if (!weatherData || !weatherData.days || weatherData.days.length === 0) return;
+  const today = weatherData.days[currentDayIndex];  // ← USA currentDayIndex
+      const tempClass = getTempClass(today.temp?.max || 20);
+      const weatherIcon = getWeatherIcon(today.summary);
+      const moonEmoji = getMoonPhaseEmoji(today.moon_phase);
+      
+      const html = `
+        <div class="hero-card ${tempClass}">
+          <div class="hero-header">
+            <div class="hero-location">
+              📍 ${weatherData.location || 'Procida'}
+            </div>
+            <div class="hero-date">${formatDate(today.date)}</div>
+          </div>
+
+          <div class="hero-main">
+            <img src="${weatherIcon}" class="hero-weather-icon" alt="Condizioni meteo">
+            <div class="hero-temp">${Math.round(today.temp?.max || 20)}°</div>
+            <div class="hero-condition">${getConditionText(today)}</div>
+            <div class="hero-minmax">
+              <span>
+                <img src="${METEOCONS_CDN}/thermometer-colder.svg" alt="Min">
+                ${Math.round(today.temp?.min || 15)}°
+              </span>
+              <span>
+                <img src="${METEOCONS_CDN}/thermometer-warmer.svg" alt="Max">
+                ${Math.round(today.temp?.max || 20)}°
+              </span>
+            </div>
+          </div>
+
+          <div class="details-pills">
+            ${today.rain && today.rain.probability > 0 ? `
+              <div class="detail-pill rain-detail clickable" onclick="openRainModal()" title="Clicca per dettagli orari">
+                <img src="${METEOCONS_CDN}/raindrops.svg" alt="Pioggia">
+                <span class="value">${today.rain.probability}%</span>
+                <span class="label">Pioggia</span>
+              </div>
+            ` : ''}
+            
+            ${today.wind && today.wind.periods && today.wind.periods[0] ? `
+              <div class="detail-pill wind-detail clickable" onclick="openWindModal()" title="Clicca per grafico vento">
+                <img src="${METEOCONS_CDN}/${getBeaufortIcon(today.wind.periods[0].speed_kmh)}" alt="Vento">
+                <span class="value">${today.wind.periods[0].speed_kmh} km/h</span>
+                <span class="label">${getWindDegrees(today.wind.periods[0].direction)}° ${today.wind.periods[0].direction}</span>
+              </div>
+            ` : ''}
+
+            ${today.humidity ? `
+              <div class="detail-pill">
+                <img src="${METEOCONS_CDN}/humidity.svg" alt="Umidità">
+                <span class="value">${today.humidity}%</span>
+                <span class="label">Umidità</span>
+              </div>
+            ` : ''}
+
+            ${today.uv_index ? `
+              <div class="detail-pill temp-detail">
+                <img src="${METEOCONS_CDN}/${getUVIcon(today.uv_index)}" alt="UV">
+                <span class="value">${today.uv_index}</span>
+                <span class="label">UV Index</span>
+              </div>
+            ` : ''}
+
+            ${today.pressure ? `
+              <div class="detail-pill">
+                <img src="${METEOCONS_CDN}/barometer.svg" alt="Pressione">
+                <span class="value">${today.pressure.value_hPa}</span>
+                <span class="label">hPa</span>
+              </div>
+            ` : ''}
+
+            ${today.sea ? `
+              <div class="detail-pill rain-detail">
+                <img src="${METEOCONS_CDN}/${getSeaIcon(today.sea.wave_height_m)}" alt="Mare">
+                <span class="value">${today.sea.wave_height_m}m</span>
+                <span class="label">${today.sea.condition}</span>
+              </div>
+            ` : ''}
+
+            ${today.sunrise ? `
+              <div class="detail-pill temp-detail">
+                <img src="${METEOCONS_CDN}/sunrise.svg" alt="Alba">
+                <span class="value">${today.sunrise}</span>
+                <span class="label">Alba</span>
+              </div>
+            ` : ''}
+
+            ${today.sunset ? `
+              <div class="detail-pill temp-detail">
+                <img src="${METEOCONS_CDN}/sunset.svg" alt="Tramonto">
+                <span class="value">${today.sunset}</span>
+                <span class="label">Tramonto</span>
+              </div>
+            ` : ''}
+
+            ${today.moon_phase ? `
+              <div class="detail-pill moon-phase-pill">
+                <span class="moon-emoji">${moonEmoji}</span>
+                <span class="label">${today.moon_phase}</span>
+              </div>
+            ` : ''}
+          </div>
+
+          <div class="info-section-title">Informazioni Dettagliate</div>
+          <div class="info-pills">
+            <div class="info-pill summary-pill" onclick="openSummaryModal()">
+              ${ICONS.summary}
+              <div class="label">Riepilogo</div>
+            </div>
+            
+            <div class="info-pill advice-pill" onclick="openAdviceModal()">
+              ${ICONS.advice}
+              <div class="label">Consigli</div>
+            </div>
+           <div class="info-pill alert-pill ${(aiWeatherData && aiWeatherData.alerts && aiWeatherData.alerts.length > 0) || (today.alerts && today.alerts.length > 0) ? 'has-alerts' : ''}" onclick="openAlertModal()">
+              ${ICONS.alert}
+              ${(aiWeatherData && aiWeatherData.alerts && aiWeatherData.alerts.length > 0) ? `<div class="alert-badge">${aiWeatherData.alerts.length}</div>` : (today.alerts && today.alerts.length > 0 ? `<div class="alert-badge">${today.alerts.length}</div>` : '')} 
+            <div class="label">Allerte</div>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      document.getElementById('hero-container').innerHTML = html;
+    }
+
+    function getConditionText(day) {
+      if (day.rain && day.rain.probability > 70) return 'Pioggia';
+      if (day.rain && day.rain.probability > 40) return 'Possibile pioggia';
+      const summary = (day.summary || '').toLowerCase();
+      if (summary.includes('sereno')) return 'Sereno';
+      if (summary.includes('nuvoloso')) return 'Nuvoloso';
+      return 'Variabile';
+    }
+
+ function openSummaryModal() {
+  // Usa i dati AI se disponibili, altrimenti fallback ai dati originali
   if (aiWeatherData && aiWeatherData.summary) {
     const content = `<p>${aiWeatherData.summary}</p>
                      <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 1rem;">
@@ -2119,9 +2146,12 @@ function openSummaryModal() {
 }
 
 function openAdviceModal() {
+  // Usa i dati AI se disponibili
   if (aiWeatherData && aiWeatherData.advice && aiWeatherData.advice.length > 0) {
     let content = '<ul>';
-    aiWeatherData.advice.forEach(adv => { content += `<li>${adv}</li>`; });
+    aiWeatherData.advice.forEach(adv => {
+      content += `<li>${adv}</li>`;
+    });
     content += '</ul>';
     content += `<p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 1rem;">
                   <em>Generato da AI • ${new Date(aiWeatherData.timestamp).toLocaleString('it-IT')}</em>
@@ -2132,7 +2162,9 @@ function openAdviceModal() {
     let content = '';
     if (today.advice && today.advice.length > 0) {
       content = '<ul>';
-      today.advice.forEach(adv => { content += `<li>${adv}</li>`; });
+      today.advice.forEach(adv => {
+        content += `<li>${adv}</li>`;
+      });
       content += '</ul>';
     } else {
       content = '<p>Nessun consiglio particolare per oggi.</p>';
@@ -2144,6 +2176,7 @@ function openAdviceModal() {
 function openAlertModal() {
   if (aiWeatherData && aiWeatherData.alerts && aiWeatherData.alerts.length > 0) {
     let content = '<div style="display: flex; flex-direction: column; gap: 1.25rem;">';
+    
     aiWeatherData.alerts.forEach(alert => {
       if (typeof alert === 'string') {
         content += `<div style="padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 8px; line-height: 1.6;">
@@ -2156,7 +2189,9 @@ function openAlertModal() {
           'ARANCIONE': { icon: '🟠', color: '#FF9800', label: 'Criticità moderata', bg: 'rgba(255, 152, 0, 0.1)' },
           'ROSSO': { icon: '🔴', color: '#F44336', label: 'Criticità elevata', bg: 'rgba(244, 67, 54, 0.1)' }
         };
+        
         const sev = severityMap[alert.severity?.toUpperCase()] || severityMap['GIALLO'];
+        
         content += `
           <div style="padding: 1.25rem; background: ${sev.bg}; border-left: 4px solid ${sev.color}; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
             <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; flex-wrap: wrap;">
@@ -2168,6 +2203,7 @@ function openAlertModal() {
           </div>`;
       }
     });
+    
     content += '</div>';
     content += `<div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1); text-align: center;">
                   <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0; line-height: 1.5;">
@@ -2197,10 +2233,11 @@ function openAlertModal() {
     openModal('alert', 'Allerte Meteo', `<div style="color: #ff3b30">${ICONS.alert}</div>`, content);
   }
 }
+
 function renderCharts() {
   if (!weatherData || !weatherData.days || weatherData.days.length === 0) return;
   
-  // Distruggi i grafici esistenti (controllo robusto)
+  // DISTRUGGI I GRAFICI ESISTENTI (con controllo più robusto)
   if (window.weatherChart && typeof window.weatherChart.destroy === 'function') {
     window.weatherChart.destroy();
   }
@@ -2210,397 +2247,407 @@ function renderCharts() {
   if (window.marineChart && typeof window.marineChart.destroy === 'function') {
     window.marineChart.destroy();
   }
+  
+// USA SOLO IL GIORNO SELEZIONATO
+// HERO: Usa solo il giorno selezionato (per temperatura, icona grande, ecc.)
+const selectedDay = weatherData.days[currentDayIndex];
 
-  // USA SOLO IL GIORNO SELEZIONATO
-  const selectedDay = weatherData.days[currentDayIndex];
+// GRAFICI: Usa TUTTI i 7 giorni (sempre)
+const labels = weatherData.days.slice(0, 7).map(d => getShortDate(d.date));
 
-  // GRAFICI: dati settimanali
-  const labels = weatherData.days.slice(0, 7).map(d => getShortDate(d.date));
-  const temps = weatherData.days.slice(0, 7).map(d => d.temp?.max || 20);
-  const tempsMins = weatherData.days.slice(0, 7).map(d => d.temp?.min || 15);
-  const rains = weatherData.days.slice(0, 7).map(d => d.rain?.total_mm || 0);
-  const pressures = weatherData.days.slice(0, 7).map(d => d.pressure?.value_hPa || d.pressure || 1013);
-  const winds = weatherData.days.slice(0, 7).map(d => d.wind?.periods?.[0]?.speed_kmh || d.wind?.speed_kmh || 0);
-  const waveHeights = weatherData.days.slice(0, 7).map(d => d.sea?.wave_height_m || 0);
-  const seaTemps = weatherData.days.slice(0, 7).map(d => d.sea?.temperature_c || 18);
+// Temperature (7 giorni)
+const temps = weatherData.days.slice(0, 7).map(d => d.temp?.max || 20);
+const tempsMins = weatherData.days.slice(0, 7).map(d => d.temp?.min || 15);
 
-  try {
-    const ctx1 = document.getElementById('weatherChart');
-    if (ctx1) {
-      window.weatherChart = new Chart(ctx1.getContext('2d'), {
-        type: 'line',
-        data: {
-          labels: labels,
-          datasets: [
-            {
-              label: 'Temp Max (°C)',
-              data: temps,
-              borderColor: '#faa202',
-              backgroundColor: 'rgba(250, 162, 2, 0.1)',
-              borderWidth: 3,
-              fill: true,
-              tension: 0.4,
-              pointRadius: 5,
-              pointHoverRadius: 7
+// Pioggia (7 giorni)
+const rains = weatherData.days.slice(0, 7).map(d => d.rain?.total_mm || 0);
+
+// Pressione (7 giorni)
+const pressures = weatherData.days.slice(0, 7).map(d => d.pressure?.value_hPa || d.pressure || 1013);
+
+// Vento (7 giorni)
+const winds = weatherData.days.slice(0, 7).map(d => 
+  d.wind?.periods?.[0]?.speed_kmh || d.wind?.speed_kmh || 0
+);
+
+// Mare (7 giorni)
+const waveHeights = weatherData.days.slice(0, 7).map(d => d.sea?.wave_height_m || 0);
+const seaTemps = weatherData.days.slice(0, 7).map(d => d.sea?.temperature_c || 18);
+
+      try {
+        const ctx1 = document.getElementById('weatherChart');
+        if (ctx1) {
+         window.weatherChart = new Chart(ctx1.getContext('2d'), {
+            type: 'line',
+            data: {
+              labels: labels,
+              datasets: [
+                {
+                  label: 'Temp Max (°C)',
+                  data: temps,
+                  borderColor: '#faa202',
+                  backgroundColor: 'rgba(250, 162, 2, 0.1)',
+                  borderWidth: 3,
+                  fill: true,
+                  tension: 0.4,
+                  pointRadius: 5,
+                  pointHoverRadius: 7
+                },
+                {
+                  label: 'Temp Min (°C)',
+                  data: tempsMins,
+                  borderColor: '#08a5e8',
+                  backgroundColor: 'rgba(8, 165, 232, 0.1)',
+                  borderWidth: 3,
+                  fill: true,
+                  tension: 0.4,
+                  pointRadius: 5,
+                  pointHoverRadius: 7
+                },
+                {
+                  label: 'Pioggia (mm)',
+                  data: rains,
+                  type: 'bar',
+                  backgroundColor: 'rgba(8, 165, 232, 0.6)',
+                  borderColor: '#08a5e8',
+                  borderWidth: 2,
+                  yAxisID: 'y1'
+                }
+              ]
             },
-            {
-              label: 'Temp Min (°C)',
-              data: tempsMins,
-              borderColor: '#08a5e8',
-              backgroundColor: 'rgba(8, 165, 232, 0.1)',
-              borderWidth: 3,
-              fill: true,
-              tension: 0.4,
-              pointRadius: 5,
-              pointHoverRadius: 7
-            },
-            {
-              label: 'Pioggia (mm)',
-              data: rains,
-              type: 'bar',
-              backgroundColor: 'rgba(8, 165, 232, 0.6)',
-              borderColor: '#08a5e8',
-              borderWidth: 2,
-              yAxisID: 'y1'
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: { labels: { color: '#a0c4d8', font: { size: 12 } } },
+                tooltip: {
+                  backgroundColor: 'rgba(1, 37, 73, 0.9)',
+                  titleColor: '#fff',
+                  bodyColor: '#a0c4d8',
+                  borderColor: '#08a5e8',
+                  borderWidth: 1
+                }
+              },
+              scales: {
+                y: {
+                  type: 'linear',
+                  display: true,
+                  position: 'left',
+                  ticks: { color: '#a0c4d8' },
+                  grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                },
+                y1: {
+                  type: 'linear',
+                  display: true,
+                  position: 'right',
+                  ticks: { color: '#08a5e8' },
+                  grid: { drawOnChartArea: false }
+                },
+                x: {
+                  ticks: { color: '#a0c4d8' },
+                  grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                }
+              }
             }
-          ]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: { labels: { color: '#a0c4d8', font: { size: 12 } } },
-            tooltip: {
-              backgroundColor: 'rgba(1, 37, 73, 0.9)',
-              titleColor: '#fff',
-              bodyColor: '#a0c4d8',
-              borderColor: '#08a5e8',
-              borderWidth: 1
-            }
-          },
-          scales: {
-            y: {
-              type: 'linear',
-              display: true,
-              position: 'left',
-              ticks: { color: '#a0c4d8' },
-              grid: { color: 'rgba(255, 255, 255, 0.1)' }
-            },
-            y1: {
-              type: 'linear',
-              display: true,
-              position: 'right',
-              ticks: { color: '#08a5e8' },
-              grid: { drawOnChartArea: false }
-            },
-            x: {
-              ticks: { color: '#a0c4d8' },
-              grid: { color: 'rgba(255, 255, 255, 0.1)' }
-            }
-          }
+          });
         }
-      });
+      } catch (error) {
+        console.error('Errore grafico Temperature:', error);
+      }
+
+      try {
+        const ctx2 = document.getElementById('pressureWindChart');
+        if (ctx2) {
+          window.pressureWindChart = new Chart(ctx2.getContext('2d'), {
+            type: 'line',
+            data: {
+              labels: labels,
+              datasets: [
+                {
+                  label: 'Pressione (hPa)',
+                  data: pressures,
+                  borderColor: '#34c759',
+                  backgroundColor: 'rgba(52, 199, 89, 0.1)',
+                  borderWidth: 3,
+                  fill: true,
+                  tension: 0.4,
+                  pointRadius: 5,
+                  pointHoverRadius: 7
+                },
+                {
+                  label: 'Vento (km/h)',
+                  data: winds,
+                  borderColor: '#faa202',
+                  backgroundColor: 'rgba(250, 162, 2, 0.1)',
+                  borderWidth: 3,
+                  fill: false,
+                  tension: 0.4,
+                  pointRadius: 5,
+                  pointHoverRadius: 7,
+                  yAxisID: 'y1'
+                }
+              ]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: { labels: { color: '#a0c4d8', font: { size: 12 } } },
+                tooltip: {
+                  backgroundColor: 'rgba(1, 37, 73, 0.9)',
+                  titleColor: '#fff',
+                  bodyColor: '#a0c4d8',
+                  borderColor: '#08a5e8',
+                  borderWidth: 1
+                }
+              },
+              scales: {
+                y: {
+                  ticks: { color: '#34c759' },
+                  grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                },
+                y1: {
+                  type: 'linear',
+                  display: true,
+                  position: 'right',
+                  ticks: { color: '#faa202' },
+                  grid: { drawOnChartArea: false }
+                },
+                x: {
+                  ticks: { color: '#a0c4d8' },
+                  grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                }
+              }
+            }
+          });
+        }
+      } catch (error) {
+        console.error('Errore grafico Pressione:', error);
+      }
+
+      try {
+        const ctx3 = document.getElementById('marineChart');
+        if (ctx3) {
+          window.marineChart = new Chart(ctx3.getContext('2d'), {
+            type: 'line',
+            data: {
+              labels: labels,
+              datasets: [
+                {
+                  label: 'Altezza Onde (m)',
+                  data: waveHeights,
+                  borderColor: '#08a5e8',
+                  backgroundColor: 'rgba(8, 165, 232, 0.2)',
+                  borderWidth: 3,
+                  fill: true,
+                  tension: 0.4,
+                  pointRadius: 5,
+                  pointHoverRadius: 7
+                },
+                {
+                  label: 'Temperatura Mare (°C)',
+                  data: seaTemps,
+                  borderColor: '#faa202',
+                  backgroundColor: 'rgba(250, 162, 2, 0.1)',
+                  borderWidth: 3,
+                  fill: false,
+                  tension: 0.4,
+                  pointRadius: 5,
+                  pointHoverRadius: 7,
+                  yAxisID: 'y1'
+                }
+              ]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: { labels: { color: '#a0c4d8', font: { size: 12 } } },
+                tooltip: {
+                  backgroundColor: 'rgba(1, 37, 73, 0.9)',
+                  titleColor: '#fff',
+                  bodyColor: '#a0c4d8',
+                  borderColor: '#08a5e8',
+                  borderWidth: 1
+                }
+              },
+              scales: {
+                y: {
+                  ticks: { color: '#08a5e8' },
+                  grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                  title: { display: true, text: 'Altezza Onde (m)', color: '#08a5e8' }
+                },
+                y1: {
+                  type: 'linear',
+                  display: true,
+                  position: 'right',
+                  ticks: { color: '#faa202' },
+                  grid: { drawOnChartArea: false },
+                  title: { display: true, text: 'Temperatura (°C)', color: '#faa202' }
+                },
+                x: {
+                  ticks: { color: '#a0c4d8' },
+                  grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                }
+              }
+            }
+          });
+        }
+      } catch (error) {
+        console.error('Errore grafico Mare:', error);
+      }
     }
-  } catch (err) { console.error('Errore rendering grafico temperature:', err); }
-}
-} catch (error) {
-  console.error('Errore grafico Temperature:', error);
-}
 
-try {
-  const ctx2 = document.getElementById('pressureWindChart');
-  if (ctx2) {
-    window.pressureWindChart = new Chart(ctx2.getContext('2d'), {
-      type: 'line',
-      data: {
-        labels: labels,
-        datasets: [
-          {
-            label: 'Pressione (hPa)',
-            data: pressures,
-            borderColor: '#34c759',
-            backgroundColor: 'rgba(52, 199, 89, 0.1)',
-            borderWidth: 3,
-            fill: true,
-            tension: 0.4,
-            pointRadius: 5,
-            pointHoverRadius: 7
-          },
-          {
-            label: 'Vento (km/h)',
-            data: winds,
-            borderColor: '#faa202',
-            backgroundColor: 'rgba(250, 162, 2, 0.1)',
-            borderWidth: 3,
-            fill: false,
-            tension: 0.4,
-            pointRadius: 5,
-            pointHoverRadius: 7,
-            yAxisID: 'y1'
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: { labels: { color: '#a0c4d8', font: { size: 12 } } },
-          tooltip: {
-            backgroundColor: 'rgba(1, 37, 73, 0.9)',
-            titleColor: '#fff',
-            bodyColor: '#a0c4d8',
-            borderColor: '#08a5e8',
-            borderWidth: 1
-          }
-        },
-        scales: {
-          y: {
-            ticks: { color: '#34c759' },
-            grid: { color: 'rgba(255, 255, 255, 0.1)' }
-          },
-          y1: {
-            type: 'linear',
-            display: true,
-            position: 'right',
-            ticks: { color: '#faa202' },
-            grid: { drawOnChartArea: false }
-          },
-          x: {
-            ticks: { color: '#a0c4d8' },
-            grid: { color: 'rgba(255, 255, 255, 0.1)' }
-          }
-        }
-      }
-    });
-  }
-} catch (error) {
-  console.error('Errore grafico Pressione:', error);
-}
-
-try {
-  const ctx3 = document.getElementById('marineChart');
-  if (ctx3) {
-    window.marineChart = new Chart(ctx3.getContext('2d'), {
-      type: 'line',
-      data: {
-        labels: labels,
-        datasets: [
-          {
-            label: 'Altezza Onde (m)',
-            data: waveHeights,
-            borderColor: '#08a5e8',
-            backgroundColor: 'rgba(8, 165, 232, 0.2)',
-            borderWidth: 3,
-            fill: true,
-            tension: 0.4,
-            pointRadius: 5,
-            pointHoverRadius: 7
-          },
-          {
-            label: 'Temperatura Mare (°C)',
-            data: seaTemps,
-            borderColor: '#faa202',
-            backgroundColor: 'rgba(250, 162, 2, 0.1)',
-            borderWidth: 3,
-            fill: false,
-            tension: 0.4,
-            pointRadius: 5,
-            pointHoverRadius: 7,
-            yAxisID: 'y1'
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: { labels: { color: '#a0c4d8', font: { size: 12 } } },
-          tooltip: {
-            backgroundColor: 'rgba(1, 37, 73, 0.9)',
-            titleColor: '#fff',
-            bodyColor: '#a0c4d8',
-            borderColor: '#08a5e8',
-            borderWidth: 1
-          }
-        },
-        scales: {
-          y: {
-            ticks: { color: '#08a5e8' },
-            grid: { color: 'rgba(255, 255, 255, 0.1)' },
-            title: { display: true, text: 'Altezza Onde (m)', color: '#08a5e8' }
-          },
-          y1: {
-            type: 'linear',
-            display: true,
-            position: 'right',
-            ticks: { color: '#faa202' },
-            grid: { drawOnChartArea: false },
-            title: { display: true, text: 'Temperatura (°C)', color: '#faa202' }
-          },
-          x: {
-            ticks: { color: '#a0c4d8' },
-            grid: { color: 'rgba(255, 255, 255, 0.1)' }
-          }
-        }
-      }
-    });
-  }
-} catch (error) {
-  console.error('Errore grafico Mare:', error);
-}
-function renderStats() {
-  if (!weatherData || !weatherData.weekStats) return;
-  const stats = weatherData.weekStats;
-  const html = `
-    <div class="stats-grid">
-      <div class="stat-card">
-        <img src="${METEOCONS_CDN}/thermometer-warmer.svg" alt="Max">
-        <div class="stat-value">${stats.maxTemp}°C</div>
-        <div class="stat-label">Max Settimana</div>
-      </div>
-      <div class="stat-card">
-        <img src="${METEOCONS_CDN}/thermometer-colder.svg" alt="Min">
-        <div class="stat-value">${stats.minTemp}°C</div>
-        <div class="stat-label">Min Settimana</div>
-      </div>
-      <div class="stat-card">
-        <img src="${METEOCONS_CDN}/thermometer-celsius.svg" alt="Media">
-        <div class="stat-value">${stats.avgTemp}°C</div>
-        <div class="stat-label">Media</div>
-      </div>
-      <div class="stat-card">
-        <img src="${METEOCONS_CDN}/raindrops.svg" alt="Pioggia">
-        <div class="stat-value">${stats.rainyDays}</div>
-        <div class="stat-label">Giorni Pioggia</div>
-      </div>
-    </div>
-  `;
-  document.getElementById('stats-container').innerHTML = html;
-}
-
-function renderForecast() {
-  if (!weatherData || !weatherData.days || weatherData.days.length < 2) {
-    document.getElementById('forecast-container').innerHTML = `
-      <div class="error-message">
-        <h2>⚠️ Errore nel caricamento dei dati</h2>
-        <p>Impossibile recuperare le previsioni meteo. Riprova più tardi.</p>
-      </div>
-    `;
-    return;
-  }
-  const futureDays = weatherData.days.slice(1);
-  const html = futureDays.map(day => {
-    const moonEmoji = getMoonPhaseEmoji(day.moon_phase);
-    const dayIcon = getWeatherIcon(day.summary);
-    return `
-      <div class="day-card-compact">
-        <div class="day-card-header">
-          <div class="day-name">
-            <img src="${dayIcon}" class="day-weather-icon" alt="Meteo">
-            ${formatDate(day.date)}
+    function renderStats() {
+      if (!weatherData || !weatherData.weekStats) return;
+      const stats = weatherData.weekStats;
+      
+      const html = `
+        <div class="stats-grid">
+          <div class="stat-card">
+            <img src="${METEOCONS_CDN}/thermometer-warmer.svg" alt="Max">
+            <div class="stat-value">${stats.maxTemp}°C</div>
+            <div class="stat-label">Max Settimana</div>
           </div>
-          <div class="day-temps-compact">
-            <span class="temp-max">${Math.round(day.temp?.max || 20)}°</span>
-            <span class="temp-min">${Math.round(day.temp?.min || 15)}°</span>
+          <div class="stat-card">
+            <img src="${METEOCONS_CDN}/thermometer-colder.svg" alt="Min">
+            <div class="stat-value">${stats.minTemp}°C</div>
+            <div class="stat-label">Min Settimana</div>
+          </div>
+          <div class="stat-card">
+            <img src="${METEOCONS_CDN}/thermometer-celsius.svg" alt="Media">
+            <div class="stat-value">${stats.avgTemp}°C</div>
+            <div class="stat-label">Media</div>
+          </div>
+          <div class="stat-card">
+            <img src="${METEOCONS_CDN}/raindrops.svg" alt="Pioggia">
+            <div class="stat-value">${stats.rainyDays}</div>
+            <div class="stat-label">Giorni Pioggia</div>
           </div>
         </div>
-        ${day.summary ? `<div class="day-summary-short">${day.summary}</div>` : ''}
-        <div class="day-details-row">
-          ${day.rain && day.rain.probability > 0 ? `
-            <div class="detail-compact">
-              <img src="${METEOCONS_CDN}/raindrops.svg" alt="Pioggia">
-              <div class="value">${day.rain.probability}%</div>
-              <div class="label">${day.rain.total_mm}mm</div>
-            </div>
-          ` : ''}
-          ${day.wind && day.wind.periods && day.wind.periods[0] ? `
-            <div class="detail-compact">
-              <img src="${METEOCONS_CDN}/${getBeaufortIcon(day.wind.periods[0].speed_kmh)}" alt="Vento">
-              <div class="value">${day.wind.periods[0].speed_kmh} km/h</div>
-              <div class="label">${getWindDegrees(day.wind.periods[0].direction)}° ${day.wind.periods[0].direction}</div>
-            </div>
-          ` : ''}
-          ${day.sea ? `
-            <div class="detail-compact">
-              <img src="${METEOCONS_CDN}/${getSeaIcon(day.sea.wave_height_m)}" alt="Mare">
-              <div class="value">${day.sea.wave_height_m}m</div>
-              <div class="label">${day.sea.condition}</div>
-            </div>
-          ` : ''}
-          ${day.humidity ? `
-            <div class="detail-compact">
-              <img src="${METEOCONS_CDN}/humidity.svg" alt="Umidità">
-              <div class="value">${day.humidity}%</div>
-              <div class="label">Umidità</div>
-            </div>
-          ` : ''}
-          ${day.uv_index ? `
-            <div class="detail-compact">
-              <img src="${METEOCONS_CDN}/${getUVIcon(day.uv_index)}" alt="UV">
-              <div class="value">${day.uv_index}</div>
-              <div class="label">UV Index</div>
-            </div>
-          ` : ''}
-          ${day.pressure ? `
-            <div class="detail-compact">
-              <img src="${METEOCONS_CDN}/barometer.svg" alt="Pressione">
-              <div class="value">${day.pressure.value_hPa}</div>
-              <div class="label">${day.pressure.trend || 'hPa'}</div>
-            </div>
-          ` : ''}
-          ${day.moon_phase ? `
-            <div class="detail-compact">
-              <span style="font-size: 1.5rem; display: block; margin-bottom: 4px;">${moonEmoji}</span>
-              <div class="label">${day.moon_phase}</div>
-            </div>
-          ` : ''}
-        </div>
-      </div>
-    `;
-  }).join('');
-  document.getElementById('forecast-container').innerHTML = `<div class="days-grid">${html}</div>`;
-}
+      `;
+      
+      document.getElementById('stats-container').innerHTML = html;
+    }
 
+    function renderForecast() {
+      if (!weatherData || !weatherData.days || weatherData.days.length < 2) {
+        document.getElementById('forecast-container').innerHTML = `
+          <div class="error-message">
+            <h2>⚠️ Errore nel caricamento dei dati</h2>
+            <p>Impossibile recuperare le previsioni meteo. Riprova più tardi.</p>
+          </div>
+        `;
+        return;
+      }
+
+      const futureDays = weatherData.days.slice(1);
+      const html = futureDays.map(day => {
+        const moonEmoji = getMoonPhaseEmoji(day.moon_phase);
+        const dayIcon = getWeatherIcon(day.summary);
+        
+        return `
+        <div class="day-card-compact">
+          <div class="day-card-header">
+            <div class="day-name">
+              <img src="${dayIcon}" class="day-weather-icon" alt="Meteo">
+              ${formatDate(day.date)}
+            </div>
+            <div class="day-temps-compact">
+              <span class="temp-max">${Math.round(day.temp?.max || 20)}°</span>
+              <span class="temp-min">${Math.round(day.temp?.min || 15)}°</span>
+            </div>
+          </div>
+
+          ${day.summary ? `<div class="day-summary-short">${day.summary}</div>` : ''}
+
+          <div class="day-details-row">
+            ${day.rain && day.rain.probability > 0 ? `
+              <div class="detail-compact">
+                <img src="${METEOCONS_CDN}/raindrops.svg" alt="Pioggia">
+                <div class="value">${day.rain.probability}%</div>
+                <div class="label">${day.rain.total_mm}mm</div>
+              </div>
+            ` : ''}
+
+            ${day.wind && day.wind.periods && day.wind.periods[0] ? `
+              <div class="detail-compact">
+                <img src="${METEOCONS_CDN}/${getBeaufortIcon(day.wind.periods[0].speed_kmh)}" alt="Vento">
+                <div class="value">${day.wind.periods[0].speed_kmh} km/h</div>
+                <div class="label">${getWindDegrees(day.wind.periods[0].direction)}° ${day.wind.periods[0].direction}</div>
+              </div>
+            ` : ''}
+
+            ${day.sea ? `
+              <div class="detail-compact">
+                <img src="${METEOCONS_CDN}/${getSeaIcon(day.sea.wave_height_m)}" alt="Mare">
+                <div class="value">${day.sea.wave_height_m}m</div>
+                <div class="label">${day.sea.condition}</div>
+              </div>
+            ` : ''}
+
+            ${day.humidity ? `
+              <div class="detail-compact">
+                <img src="${METEOCONS_CDN}/humidity.svg" alt="Umidità">
+                <div class="value">${day.humidity}%</div>
+                <div class="label">Umidità</div>
+              </div>
+            ` : ''}
+
+            ${day.uv_index ? `
+              <div class="detail-compact">
+                <img src="${METEOCONS_CDN}/${getUVIcon(day.uv_index)}" alt="UV">
+                <div class="value">${day.uv_index}</div>
+                <div class="label">UV Index</div>
+              </div>
+            ` : ''}
+
+            ${day.pressure ? `
+              <div class="detail-compact">
+                <img src="${METEOCONS_CDN}/barometer.svg" alt="Pressione">
+                <div class="value">${day.pressure.value_hPa}</div>
+                <div class="label">${day.pressure.trend || 'hPa'}</div>
+              </div>
+            ` : ''}
+
+            ${day.moon_phase ? `
+              <div class="detail-compact">
+                <span style="font-size: 1.5rem; display: block; margin-bottom: 4px;">${moonEmoji}</span>
+                <div class="label">${day.moon_phase}</div>
+              </div>
+            ` : ''}
+          </div>
+        </div>
+      `}).join('');
+
+      document.getElementById('forecast-container').innerHTML = `<div class="days-grid">${html}</div>`;
+    }
+// Funzione master che ricarica tutto il contenuto
 function renderWeatherContent() {
   renderHero();
   renderCharts();
   renderStats();
-  setTimeout(() => { attachWindModalListener(); }, 100);
 }
 
-function updateTimestamp() {
-  if (weatherData && weatherData.generatedAt) {
-    const date = new Date(weatherData.generatedAt);
-    document.getElementById('last-update').textContent = 
-      `Ultimo aggiornamento: ${date.toLocaleString('it-IT')}`;
-  }
-}
-
-renderDaysTabs();
-renderWeatherContent();
-renderForecast();
-updateTimestamp();
-renderForecast();
-
-setTimeout(() => {
-  const windCards = document.querySelectorAll('.wind-detail, .detail-pill');
-  windCards.forEach(card => {
-    if (card.textContent && card.textContent.includes('km/h')) {
-      card.style.cursor = 'pointer';
-      card.onclick = function(e) {
-        e.stopPropagation();
-        openWindModal();
-      };
-      console.log('✅ Evento click aggiunto alla card vento');
+    function updateTimestamp() {
+      if (weatherData && weatherData.generatedAt) {
+        const date = new Date(weatherData.generatedAt);
+        document.getElementById('last-update').textContent = 
+          `Ultimo aggiornamento: ${date.toLocaleString('it-IT')}`;
+      }
     }
-  });
-}, 200);
 
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('service-worker.js')
-    .then(reg => console.log('Service Worker registrato'))
-    .catch(err => console.log('Service Worker errore:', err));
-}
-</script>
+    renderDaysTabs();  // ← AGGIUNGI QUESTA
+    renderWeatherContent();  // ← USA LA NUOVA FUNZIONE
+    renderForecast();
+    updateTimestamp();
+  
+    
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(reg => console.log('Service Worker registrato'))
+        .catch(err => console.log('Service Worker errore:', err));
+    }
+  </script>
 </body>
 </html>
