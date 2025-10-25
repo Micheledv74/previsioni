@@ -1514,18 +1514,16 @@ function renderDaysTabs() {
   }).join('');
 }
 
+// Nella funzione renderWeatherContent() o simile, cerca:
+// updateHeroSection(); // ← COMMENTA questa riga
 
-
-
-
-
-// Cambia giorno visualizzato
-function switchDay(dayIndex) {
-  if (currentDayIndex === dayIndex) return;
-  
-  currentDayIndex = dayIndex;
-  updateHeroSection();
-  // updateHeroSection(); // ← Metti // davanti
+// Oppure in switchDay():
+function switchDay(index) {
+  currentDayIndex = index;
+  renderWeatherContent();
+  renderDaysTabs();
+  // updateHeroSection(); // ← COMMENTA
+}
 
   // Aggiorna tab attivi
   document.querySelectorAll('.day-tab').forEach((tab, idx) => {
