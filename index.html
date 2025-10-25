@@ -2125,6 +2125,7 @@ function openRadarViewer() {
       const moonEmoji = getMoonPhaseEmoji(today.moon_phase);
 
 // === HERO REDESIGN - POPOLAZIONE DATI ===
+// === FUNZIONI GLOBALI PER HERO ===
 function updateHeroSection() {
   if (!weatherData || !weatherData.days || weatherData.days.length === 0) return;
   
@@ -2133,21 +2134,16 @@ function updateHeroSection() {
   // Location
   document.getElementById('heroLocation').textContent = 'Procida';
   
-  // Data formattata con numero evidenziato
+  // Data formattata
   const date = new Date(selectedDay.date);
-  const dayNames = ['Domenica', 'Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'];
   const months = ['Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno', 
                   'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'];
   
-  const day = date.getDate();
-  const month = months[date.getMonth()];
+  document.getElementById('heroDateDay').textContent = date.getDate();
+  document.getElementById('heroDateText').textContent = months[date.getMonth()];
   
-  // Popola data con numero separato
-  document.getElementById('heroDateDay').textContent = day;
-  document.getElementById('heroDateText').textContent = month;
-  
-  // Icona meteo
-  const iconCode = 'partly-cloudy-day'; // ← Forza questa icona per test
+  // Icona meteo (usa la funzione helper)
+  const iconCode = getWeatherIconForHero(selectedDay);
   const iconUrl = `https://raw.githubusercontent.com/Micheledv74/previsioni/main/icons/meteocons/${iconCode}.svg`;
   document.getElementById('heroIcon').src = iconUrl;
   
@@ -2155,10 +2151,8 @@ function updateHeroSection() {
   const tempAvg = Math.round((selectedDay.temp.max + selectedDay.temp.min) / 2);
   document.getElementById('heroTemp').textContent = `${tempAvg}°`;
   
-  // Condizione meteo (dal summary AI)
-  const condition = selectedDay.summary ? 
-    selectedDay.summary.split('.')[0] : 
-    'Condizioni variabili';
+  // Condizione
+  const condition = selectedDay.summary ? selectedDay.summary.split('.')[0] : 'Condizioni variabili';
   document.getElementById('heroCondition').textContent = condition;
   
   // Min/Max
@@ -2166,7 +2160,6 @@ function updateHeroSection() {
   document.getElementById('heroTempMin').textContent = Math.round(selectedDay.temp.min);
 }
 
-// Funzione helper per ottenere icona corretta
 function getWeatherIconForHero(day) {
   const summary = (day.summary || '').toLowerCase();
   const rainMm = day.rain?.total_mm || 0;
@@ -2185,6 +2178,20 @@ function getWeatherIconForHero(day) {
   return 'partly-cloudy-day';
 }
 
+// Funzione per cambiare giorno
+function switchDay(index) {
+  currentDayIndex = index;
+  renderDaysTabs();      // Aggiorna tab attivi
+  renderWeatherContent(); // Ricarica contenuto
+}
+
+// Funzione master di rendering
+function renderWeatherContent() {
+  renderHero();
+  updateHeroSection(); // ← UNA SOLA VOLTA
+  renderCharts();
+  renderStats();
+}
 
       const html = `
 <!-- HERO SECTION REDESIGN FINALE -->
