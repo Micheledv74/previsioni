@@ -395,204 +395,80 @@
     .hero-card.cool { background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--primary-blue-light) 100%); }
     .hero-card.cold { background: linear-gradient(135deg, #a8edea 0%, var(--accent-cyan) 100%); }
 
-/* === HERO REDESIGN FINALE === */
-.hero-redesign {
-  background: linear-gradient(180deg, 
-    rgba(255, 255, 255, 0.12) 0%, 
-    rgba(255, 255, 255, 0.05) 100%);
-  backdrop-filter: blur(30px);
-  -webkit-backdrop-filter: blur(30px);
-  border-radius: 24px;
-  padding: 2.5rem 2rem;
-  margin: 1.5rem 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12),
-              inset 0 1px 0 rgba(255, 255, 255, 0.15);
-}
+    .hero-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--spacing-lg);
+    }
 
-/* Header: Location + Date */
-.hero-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  margin-bottom: 2.5rem;
-}
+    .hero-location {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-xs);
+      font-size: 1.1rem;
+      font-weight: 500;
+      opacity: 0.9;
+    }
 
-.hero-location {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.95);
-}
+    .hero-date {
+      font-size: 0.95rem;
+      opacity: 0.8;
+    }
 
-.location-icon {
-  font-size: 1.2rem;
-}
+    .hero-main {
+      text-align: center;
+      margin: var(--spacing-xl) 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--spacing-md);
+    }
 
-.hero-date {
-  font-size: 1rem;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.7);
-  letter-spacing: 0.02em;
-}
+    .hero-weather-icon {
+      width: 140px;
+      height: 140px;
+      filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+      animation: fadeIn 1.2s ease-out;
+    }
 
-/* Numero giorno evidenziato */
-.hero-date-day {
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: #08a5e8;
-  margin-right: 0.3rem;
-}
+    .hero-temp {
+      font-size: 80px;
+      font-weight: 700;
+      line-height: 1;
+      text-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      animation: fadeIn 1s ease-out;
+    }
 
-/* Main: Icon + Temperature AFFIANCATI */
-.hero-main {
-  display: flex;
-  align-items: center;
-  gap: 4rem; /* ← AUMENTATO per spostare temp a destra */
-  justify-content: center;
-}
+    .hero-condition {
+      font-size: 1.5rem;
+      font-weight: 500;
+      opacity: 0.9;
+    }
 
-.hero-icon-wrapper {
-  flex-shrink: 0;
-}
+    .hero-minmax {
+      display: flex;
+      justify-content: center;
+      gap: var(--spacing-lg);
+      font-size: 1.2rem;
+      margin-bottom: var(--spacing-lg);
+    }
 
-.hero-icon {
-  width: 150px; /* ← AUMENTATO da 120px */
-  height: 150px;
-  filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.25));
-}
+    .hero-minmax span {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-xs);
+      transition: transform 0.3s ease;
+    }
 
-/* Temperature Section */
-.hero-temp-wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
+    .hero-minmax span img {
+      width: 32px;
+      height: 32px;
+    }
 
-.hero-temp {
-  font-size: 5.5rem; /* ← AUMENTATO leggermente */
-  font-weight: 700;
-  line-height: 1;
-  color: #fff;
-  letter-spacing: -0.03em;
-  text-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-}
-
-.hero-condition {
-  font-size: 1.5rem;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.9);
-}
-
-/* Min/Max con ICONE ANIMATE */
-.hero-minmax {
-  display: flex;
-  align-items: center;
-  gap: 1.25rem;
-  font-size: 1.35rem;
-  font-weight: 600;
-}
-
-.temp-high,
-.temp-low {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-}
-
-.temp-high {
-  color: #ffa726;
-}
-
-.temp-low {
-  color: #4fc3f7;
-}
-
-/* Animazione icone termometro */
-.temp-icon {
-  display: inline-block;
-  vertical-align: middle;
-  animation: pulse 2.5s ease-in-out infinite;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
-}
-
-@keyframes pulse {
-  0%, 100% { 
-    transform: scale(1); 
-    opacity: 1; 
-  }
-  50% { 
-    transform: scale(1.2); 
-    opacity: 0.8; 
-  }
-}
-
-
-.temp-divider {
-  color: rgba(255, 255, 255, 0.4);
-  font-weight: 400;
-  font-size: 1.5rem;
-}
-
-/* === RESPONSIVE === */
-
-/* Tablet */
-@media (max-width: 768px) {
-  .hero-redesign {
-    padding: 2rem 1.5rem;
-  }
-  
-  .hero-main {
-    gap: 2.5rem;
-  }
-  
-  .hero-icon {
-    width: 120px;
-    height: 120px;
-  }
-  
-  .hero-temp {
-    font-size: 4.5rem;
-  }
-}
-
-/* Mobile */
-@media (max-width: 640px) {
-  .hero-redesign {
-    padding: 1.5rem 1rem;
-    margin: 1rem 0.5rem;
-  }
-  
-  .hero-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
-    margin-bottom: 2rem;
-  }
-  
-  .hero-main {
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-  
-  .hero-icon {
-    width: 110px;
-    height: 110px;
-  }
-  
-  .hero-temp {
-    font-size: 4rem;
-    text-align: center;
-  }
-  
-  .hero-minmax {
-    justify-content: center;
-  }
-}
-
-
+    .hero-minmax span:hover {
+      transform: translateY(-2px);
+    }
 
     .details-pills {
       display: grid;
@@ -1413,7 +1289,7 @@
 
   <script>
    // FIX universale per ARRAY o OGGETTO:
-let weatherDataRaw = {"location":"Procida","generated_at":"2025-10-25T06:32:27.866Z","days":[{"date":"2025-10-25","temp":{"max":20.7,"min":19.1},"rain":{"probability":68,"total_mm":0,"periods":[]},"wind":{"periods":[{"time":"00:00","speed_kmh":17,"direction":"O"},{"time":"01:00","speed_kmh":17,"direction":"O"},{"time":"02:00","speed_kmh":16,"direction":"O"},{"time":"03:00","speed_kmh":15,"direction":"O"},{"time":"04:00","speed_kmh":14,"direction":"O"},{"time":"05:00","speed_kmh":14,"direction":"O"},{"time":"06:00","speed_kmh":14,"direction":"O"},{"time":"07:00","speed_kmh":14,"direction":"O"},{"time":"08:00","speed_kmh":14,"direction":"OSO"},{"time":"09:00","speed_kmh":13,"direction":"OSO"},{"time":"10:00","speed_kmh":13,"direction":"OSO"},{"time":"11:00","speed_kmh":13,"direction":"OSO"},{"time":"12:00","speed_kmh":12,"direction":"OSO"},{"time":"13:00","speed_kmh":14,"direction":"OSO"},{"time":"14:00","speed_kmh":13,"direction":"OSO"},{"time":"15:00","speed_kmh":13,"direction":"OSO"},{"time":"16:00","speed_kmh":11,"direction":"OSO"},{"time":"17:00","speed_kmh":10,"direction":"SO"},{"time":"18:00","speed_kmh":13,"direction":"SO"},{"time":"19:00","speed_kmh":12,"direction":"SSO"},{"time":"20:00","speed_kmh":14,"direction":"SSO"},{"time":"21:00","speed_kmh":14,"direction":"SSO"},{"time":"22:00","speed_kmh":15,"direction":"SSO"},{"time":"23:00","speed_kmh":17,"direction":"SO"}]},"humidity":67,"pressure":{"value_hPa":1014,"trend":"stabile"},"uv_index":3,"sea":{"wave_height_m":1.12,"temperature_c":19.5,"condition":"poco mosso"},"sunrise":"07:23","sunset":"18:13","moon_phase":null,"summary":"19°-21°C. Tempo asciutto. Vento moderato.","advice":["🌡️ Temperature miti: abbigliamento leggero consigliato","☀️ Tempo asciutto: ideale per attività all'aperto","🌊 Mare poco mosso (onde 1.12m): attenzione in barca"],"alerts":[]},{"date":"2025-10-26","temp":{"max":20.7,"min":18.9},"rain":{"probability":45,"total_mm":0.3,"periods":[{"start":"00:00","end":"01:59","intensity":"leggera"}]},"wind":{"periods":[{"time":"00:00","speed_kmh":18,"direction":"SO"},{"time":"01:00","speed_kmh":19,"direction":"OSO"},{"time":"02:00","speed_kmh":19,"direction":"OSO"},{"time":"03:00","speed_kmh":19,"direction":"OSO"},{"time":"04:00","speed_kmh":18,"direction":"OSO"},{"time":"05:00","speed_kmh":17,"direction":"O"},{"time":"06:00","speed_kmh":17,"direction":"O"},{"time":"07:00","speed_kmh":16,"direction":"O"},{"time":"08:00","speed_kmh":16,"direction":"O"},{"time":"09:00","speed_kmh":15,"direction":"O"},{"time":"10:00","speed_kmh":15,"direction":"O"},{"time":"11:00","speed_kmh":16,"direction":"O"},{"time":"12:00","speed_kmh":17,"direction":"O"},{"time":"13:00","speed_kmh":17,"direction":"O"},{"time":"14:00","speed_kmh":17,"direction":"O"},{"time":"15:00","speed_kmh":18,"direction":"O"},{"time":"16:00","speed_kmh":20,"direction":"O"},{"time":"17:00","speed_kmh":23,"direction":"O"},{"time":"18:00","speed_kmh":22,"direction":"ONO"},{"time":"19:00","speed_kmh":24,"direction":"O"},{"time":"20:00","speed_kmh":23,"direction":"O"},{"time":"21:00","speed_kmh":23,"direction":"O"},{"time":"22:00","speed_kmh":23,"direction":"O"},{"time":"23:00","speed_kmh":23,"direction":"O"}]},"humidity":73,"pressure":{"value_hPa":1009,"trend":"in calo"},"uv_index":3,"sea":{"wave_height_m":1.04,"temperature_c":19.7,"condition":"poco mosso"},"sunrise":"07:23","sunset":"18:13","moon_phase":null,"summary":"19°-21°C. Possibili precipitazioni (0.3mm). Vento moderato.","advice":["🌡️ Temperature miti: abbigliamento leggero consigliato","🌦️ Possibili pioviggini: ombrello consigliato","🌊 Mare poco mosso (onde 1.04m): attenzione in barca"],"alerts":[]},{"date":"2025-10-27","temp":{"max":19.3,"min":18.19},"rain":{"probability":24,"total_mm":0,"periods":[]},"wind":{"periods":[{"time":"00:00","speed_kmh":23,"direction":"O"},{"time":"01:00","speed_kmh":23,"direction":"O"},{"time":"02:00","speed_kmh":23,"direction":"O"},{"time":"03:00","speed_kmh":20,"direction":"O"},{"time":"04:00","speed_kmh":19,"direction":"O"},{"time":"05:00","speed_kmh":18,"direction":"ONO"},{"time":"06:00","speed_kmh":18,"direction":"ONO"},{"time":"07:00","speed_kmh":16,"direction":"ONO"},{"time":"08:00","speed_kmh":15,"direction":"ONO"},{"time":"09:00","speed_kmh":16,"direction":"ONO"},{"time":"10:00","speed_kmh":17,"direction":"ONO"},{"time":"11:00","speed_kmh":16,"direction":"ONO"},{"time":"12:00","speed_kmh":16,"direction":"ONO"},{"time":"13:00","speed_kmh":15,"direction":"ONO"},{"time":"14:00","speed_kmh":14,"direction":"O"},{"time":"15:00","speed_kmh":14,"direction":"O"},{"time":"16:00","speed_kmh":16,"direction":"O"},{"time":"17:00","speed_kmh":16,"direction":"O"},{"time":"18:00","speed_kmh":17,"direction":"O"},{"time":"19:00","speed_kmh":18,"direction":"O"},{"time":"20:00","speed_kmh":18,"direction":"O"},{"time":"21:00","speed_kmh":20,"direction":"O"},{"time":"22:00","speed_kmh":19,"direction":"O"},{"time":"23:00","speed_kmh":19,"direction":"O"}]},"humidity":63,"pressure":{"value_hPa":1011,"trend":"stabile"},"uv_index":4,"sea":{"wave_height_m":1.52,"temperature_c":19.4,"condition":"mosso"},"sunrise":"07:23","sunset":"18:13","moon_phase":null,"summary":"18°-19°C. Tempo asciutto. Vento moderato.","advice":["🌡️ Temperature fresche: porta una giacca leggera","☀️ Tempo asciutto: ideale per attività all'aperto","🌊 Mare poco mosso (onde 1.52m): attenzione in barca"],"alerts":[]},{"date":"2025-10-28","temp":{"max":19.9,"min":18.7},"rain":{"probability":20,"total_mm":0,"periods":[]},"wind":{"periods":[{"time":"00:00","speed_kmh":19,"direction":"OSO"},{"time":"01:00","speed_kmh":18,"direction":"OSO"},{"time":"02:00","speed_kmh":17,"direction":"OSO"},{"time":"03:00","speed_kmh":17,"direction":"O"},{"time":"04:00","speed_kmh":17,"direction":"O"},{"time":"05:00","speed_kmh":17,"direction":"O"},{"time":"06:00","speed_kmh":17,"direction":"O"},{"time":"07:00","speed_kmh":15,"direction":"O"},{"time":"08:00","speed_kmh":14,"direction":"O"},{"time":"09:00","speed_kmh":13,"direction":"O"},{"time":"10:00","speed_kmh":12,"direction":"O"},{"time":"11:00","speed_kmh":11,"direction":"OSO"},{"time":"12:00","speed_kmh":11,"direction":"OSO"},{"time":"13:00","speed_kmh":11,"direction":"OSO"},{"time":"14:00","speed_kmh":12,"direction":"OSO"},{"time":"15:00","speed_kmh":12,"direction":"OSO"},{"time":"16:00","speed_kmh":12,"direction":"OSO"},{"time":"17:00","speed_kmh":12,"direction":"OSO"},{"time":"18:00","speed_kmh":10,"direction":"SO"},{"time":"19:00","speed_kmh":9,"direction":"SO"},{"time":"20:00","speed_kmh":7,"direction":"SO"},{"time":"21:00","speed_kmh":6,"direction":"SSO"},{"time":"22:00","speed_kmh":6,"direction":"SSO"},{"time":"23:00","speed_kmh":7,"direction":"S"}]},"humidity":73,"pressure":{"value_hPa":1015,"trend":"in aumento"},"uv_index":4,"sea":{"wave_height_m":1.68,"temperature_c":19.2,"condition":"mosso"},"sunrise":"07:23","sunset":"18:13","moon_phase":null,"summary":"19°-20°C. Tempo asciutto. Vento moderato.","advice":["🌡️ Temperature fresche: porta una giacca leggera","☀️ Tempo asciutto: ideale per attività all'aperto","🌊 Mare poco mosso (onde 1.68m): attenzione in barca"],"alerts":[]},{"date":"2025-10-29","temp":{"max":19.2,"min":17.6},"rain":{"probability":35,"total_mm":0.1,"periods":[{"start":"08:00","end":"08:59","intensity":"leggera"}]},"wind":{"periods":[{"time":"00:00","speed_kmh":7,"direction":"SSE"},{"time":"01:00","speed_kmh":7,"direction":"SSE"},{"time":"02:00","speed_kmh":8,"direction":"SSE"},{"time":"03:00","speed_kmh":8,"direction":"S"},{"time":"04:00","speed_kmh":8,"direction":"S"},{"time":"05:00","speed_kmh":9,"direction":"S"},{"time":"06:00","speed_kmh":9,"direction":"S"},{"time":"07:00","speed_kmh":8,"direction":"SSE"},{"time":"08:00","speed_kmh":8,"direction":"SSE"},{"time":"09:00","speed_kmh":9,"direction":"SSE"},{"time":"10:00","speed_kmh":10,"direction":"SSE"},{"time":"11:00","speed_kmh":11,"direction":"SSE"},{"time":"12:00","speed_kmh":11,"direction":"SSE"},{"time":"13:00","speed_kmh":11,"direction":"SSE"},{"time":"14:00","speed_kmh":11,"direction":"SSE"},{"time":"15:00","speed_kmh":11,"direction":"SSE"},{"time":"16:00","speed_kmh":11,"direction":"SSE"},{"time":"17:00","speed_kmh":10,"direction":"SSE"},{"time":"18:00","speed_kmh":10,"direction":"SSE"},{"time":"19:00","speed_kmh":10,"direction":"SE"},{"time":"20:00","speed_kmh":10,"direction":"SE"},{"time":"21:00","speed_kmh":10,"direction":"SE"},{"time":"22:00","speed_kmh":11,"direction":"SE"},{"time":"23:00","speed_kmh":11,"direction":"SE"}]},"humidity":82,"pressure":{"value_hPa":1018,"trend":"in aumento"},"uv_index":3,"sea":{"wave_height_m":0.62,"temperature_c":19.2,"condition":"poco mosso"},"sunrise":"07:23","sunset":"18:13","moon_phase":null,"summary":"18°-19°C. Possibili precipitazioni (0.1mm). Vento moderato.","advice":["🌡️ Temperature fresche: porta una giacca leggera","🌦️ Possibili pioviggini: ombrello consigliato","🌊 Mare calmo (onde 0.62m): condizioni favorevoli per navigare"],"alerts":[]},{"date":"2025-10-30","temp":{"max":19.6,"min":18.4},"rain":{"probability":59,"total_mm":9.1,"periods":[{"start":"09:00","end":"23:59","intensity":"leggera"}]},"wind":{"periods":[{"time":"00:00","speed_kmh":13,"direction":"SE"},{"time":"01:00","speed_kmh":14,"direction":"SE"},{"time":"02:00","speed_kmh":14,"direction":"SE"},{"time":"03:00","speed_kmh":13,"direction":"SE"},{"time":"04:00","speed_kmh":14,"direction":"SE"},{"time":"05:00","speed_kmh":16,"direction":"SE"},{"time":"06:00","speed_kmh":16,"direction":"SE"},{"time":"07:00","speed_kmh":17,"direction":"SE"},{"time":"08:00","speed_kmh":17,"direction":"SE"},{"time":"09:00","speed_kmh":16,"direction":"SE"},{"time":"10:00","speed_kmh":15,"direction":"SE"},{"time":"11:00","speed_kmh":15,"direction":"SE"},{"time":"12:00","speed_kmh":15,"direction":"SSE"},{"time":"13:00","speed_kmh":17,"direction":"SSE"},{"time":"14:00","speed_kmh":18,"direction":"SSE"},{"time":"15:00","speed_kmh":19,"direction":"SSE"},{"time":"16:00","speed_kmh":19,"direction":"S"},{"time":"17:00","speed_kmh":19,"direction":"S"},{"time":"18:00","speed_kmh":19,"direction":"SSE"},{"time":"19:00","speed_kmh":18,"direction":"SSE"},{"time":"20:00","speed_kmh":18,"direction":"SSE"},{"time":"21:00","speed_kmh":17,"direction":"SSE"},{"time":"22:00","speed_kmh":17,"direction":"SSE"},{"time":"23:00","speed_kmh":16,"direction":"SSE"}]},"humidity":83,"pressure":{"value_hPa":1016,"trend":"stabile"},"uv_index":4,"sea":{"wave_height_m":0.84,"temperature_c":19.3,"condition":"poco mosso"},"sunrise":"07:23","sunset":"18:13","moon_phase":null,"summary":"18°-20°C. Possibili precipitazioni (9.1mm). Vento moderato.","advice":["🌡️ Temperature fresche: porta una giacca leggera","☔ Possibili piogge: porta ombrello o impermeabile","🌊 Mare calmo (onde 0.84m): condizioni favorevoli per navigare"],"alerts":[]},{"date":"2025-10-31","temp":{"max":20.1,"min":18.41},"rain":{"probability":60,"total_mm":4.3,"periods":[{"start":"00:00","end":"04:59","intensity":"leggera"},{"start":"08:00","end":"20:59","intensity":"leggera"}]},"wind":{"periods":[{"time":"00:00","speed_kmh":16,"direction":"SSE"},{"time":"01:00","speed_kmh":16,"direction":"SSE"},{"time":"02:00","speed_kmh":17,"direction":"SSE"},{"time":"03:00","speed_kmh":16,"direction":"SSE"},{"time":"04:00","speed_kmh":15,"direction":"SE"},{"time":"05:00","speed_kmh":15,"direction":"SE"},{"time":"06:00","speed_kmh":15,"direction":"SE"},{"time":"07:00","speed_kmh":16,"direction":"SE"},{"time":"08:00","speed_kmh":16,"direction":"SE"},{"time":"09:00","speed_kmh":15,"direction":"SE"},{"time":"10:00","speed_kmh":14,"direction":"SE"},{"time":"11:00","speed_kmh":14,"direction":"SE"},{"time":"12:00","speed_kmh":15,"direction":"SE"},{"time":"13:00","speed_kmh":15,"direction":"SE"},{"time":"14:00","speed_kmh":15,"direction":"SE"},{"time":"15:00","speed_kmh":14,"direction":"SE"},{"time":"16:00","speed_kmh":13,"direction":"SE"},{"time":"17:00","speed_kmh":12,"direction":"SE"},{"time":"18:00","speed_kmh":10,"direction":"SE"},{"time":"19:00","speed_kmh":9,"direction":"SE"},{"time":"20:00","speed_kmh":8,"direction":"SE"},{"time":"21:00","speed_kmh":8,"direction":"ESE"},{"time":"22:00","speed_kmh":8,"direction":"ESE"},{"time":"23:00","speed_kmh":7,"direction":"ESE"}]},"humidity":83,"pressure":{"value_hPa":1017,"trend":"stabile"},"uv_index":3,"sea":{"wave_height_m":1.34,"temperature_c":19.5,"condition":"poco mosso"},"sunrise":"07:23","sunset":"18:13","moon_phase":null,"summary":"18°-20°C. Possibili precipitazioni (4.3mm). Vento moderato.","advice":["🌡️ Temperature miti: abbigliamento leggero consigliato","☔ Possibili piogge: porta ombrello o impermeabile","🌊 Mare poco mosso (onde 1.34m): attenzione in barca"],"alerts":[]}],"weekStats":{"maxTemp":20.7,"minTemp":17.6,"avgTemp":"19.9","rainyDays":4},"air_quality":{"aqi":2,"aqi_description":"Discreta","timestamp":"2025-10-25T06:32:05.000Z","components":{"co":93.78,"no":null,"no2":0.28,"o3":92.58,"so2":0.31,"pm2_5":1.96,"pm10":9.32,"nh3":0.29},"assessment":{"pm2_5_level":"Ottimo","pm10_level":"Ottimo","o3_level":"Buono","no2_level":"Ottimo"}},"rainviewer":{"nowcast_summary":{"has_rain_incoming":true,"rain_in_minutes":8,"frames_count":3},"nowcast_frames":[{"timestamp":"2025-10-25T06:40:00.000Z","time_offset_minutes":8,"unix_time":1761374400,"radar_path":"/v2/radar/nowcast_e27344762269","tile_url":"https://https://tilecache.rainviewer.com/v2/radar/nowcast_e27344762269/256/{z}/{x}/{y}/2/1_1.png"},{"timestamp":"2025-10-25T06:50:00.000Z","time_offset_minutes":18,"unix_time":1761375000,"radar_path":"/v2/radar/nowcast_e27319ab92d2","tile_url":"https://https://tilecache.rainviewer.com/v2/radar/nowcast_e27319ab92d2/256/{z}/{x}/{y}/2/1_1.png"},{"timestamp":"2025-10-25T07:00:00.000Z","time_offset_minutes":28,"unix_time":1761375600,"radar_path":"/v2/radar/nowcast_e273d0761b95","tile_url":"https://https://tilecache.rainviewer.com/v2/radar/nowcast_e273d0761b95/256/{z}/{x}/{y}/2/1_1.png"}],"source":"rainviewer","timestamp":"2025-10-25T06:32:28.123Z","location":{"name":"Procida","latitude":40.76,"longitude":14.02}},"generatedAt":"2025-10-25T09:27:41.662Z","processedAt":"2025-10-25T09:27:41.662Z","totalDays":7,"ai":{}};
+let weatherDataRaw = {"location":"Procida","generated_at":"2025-10-25T10:06:19.802Z","days":[{"date":"2025-10-25","temp":{"max":20.6,"min":18.8},"rain":{"probability":78,"total_mm":0,"periods":[]},"wind":{"periods":[{"time":"00:00","speed_kmh":18,"direction":"O"},{"time":"01:00","speed_kmh":17,"direction":"O"},{"time":"02:00","speed_kmh":17,"direction":"O"},{"time":"03:00","speed_kmh":15,"direction":"O"},{"time":"04:00","speed_kmh":15,"direction":"O"},{"time":"05:00","speed_kmh":14,"direction":"O"},{"time":"06:00","speed_kmh":14,"direction":"O"},{"time":"07:00","speed_kmh":14,"direction":"O"},{"time":"08:00","speed_kmh":14,"direction":"OSO"},{"time":"09:00","speed_kmh":13,"direction":"OSO"},{"time":"10:00","speed_kmh":13,"direction":"OSO"},{"time":"11:00","speed_kmh":12,"direction":"OSO"},{"time":"12:00","speed_kmh":13,"direction":"OSO"},{"time":"13:00","speed_kmh":14,"direction":"OSO"},{"time":"14:00","speed_kmh":14,"direction":"OSO"},{"time":"15:00","speed_kmh":14,"direction":"OSO"},{"time":"16:00","speed_kmh":12,"direction":"OSO"},{"time":"17:00","speed_kmh":11,"direction":"OSO"},{"time":"18:00","speed_kmh":11,"direction":"SO"},{"time":"19:00","speed_kmh":13,"direction":"SO"},{"time":"20:00","speed_kmh":14,"direction":"SSO"},{"time":"21:00","speed_kmh":15,"direction":"SSO"},{"time":"22:00","speed_kmh":16,"direction":"SSO"},{"time":"23:00","speed_kmh":18,"direction":"SO"}]},"humidity":68,"pressure":{"value_hPa":1014,"trend":"stabile"},"uv_index":4,"sea":{"wave_height_m":1.12,"temperature_c":19.5,"condition":"poco mosso"},"sunrise":"07:23","sunset":"18:13","moon_phase":null,"summary":"19°-21°C. Tempo asciutto. Vento moderato.","advice":["🌡️ Temperature miti: abbigliamento leggero consigliato","☀️ Tempo asciutto: ideale per attività all'aperto","🌊 Mare poco mosso (onde 1.12m): attenzione in barca"],"alerts":[]},{"date":"2025-10-26","temp":{"max":21.1,"min":18.2},"rain":{"probability":75,"total_mm":4.2,"periods":[{"start":"01:00","end":"02:59","intensity":"leggera"},{"start":"04:00","end":"04:59","intensity":"leggera"},{"start":"08:00","end":"20:59","intensity":"leggera"}]},"wind":{"periods":[{"time":"00:00","speed_kmh":19,"direction":"SO"},{"time":"01:00","speed_kmh":19,"direction":"SO"},{"time":"02:00","speed_kmh":21,"direction":"SO"},{"time":"03:00","speed_kmh":20,"direction":"OSO"},{"time":"04:00","speed_kmh":19,"direction":"OSO"},{"time":"05:00","speed_kmh":17,"direction":"OSO"},{"time":"06:00","speed_kmh":15,"direction":"OSO"},{"time":"07:00","speed_kmh":15,"direction":"OSO"},{"time":"08:00","speed_kmh":14,"direction":"O"},{"time":"09:00","speed_kmh":13,"direction":"O"},{"time":"10:00","speed_kmh":14,"direction":"O"},{"time":"11:00","speed_kmh":16,"direction":"O"},{"time":"12:00","speed_kmh":16,"direction":"O"},{"time":"13:00","speed_kmh":16,"direction":"O"},{"time":"14:00","speed_kmh":16,"direction":"O"},{"time":"15:00","speed_kmh":17,"direction":"O"},{"time":"16:00","speed_kmh":20,"direction":"O"},{"time":"17:00","speed_kmh":21,"direction":"O"},{"time":"18:00","speed_kmh":23,"direction":"O"},{"time":"19:00","speed_kmh":23,"direction":"O"},{"time":"20:00","speed_kmh":24,"direction":"O"},{"time":"21:00","speed_kmh":24,"direction":"O"},{"time":"22:00","speed_kmh":21,"direction":"O"},{"time":"23:00","speed_kmh":23,"direction":"O"}]},"humidity":76,"pressure":{"value_hPa":1009,"trend":"in calo"},"uv_index":4,"sea":{"wave_height_m":1.04,"temperature_c":19.7,"condition":"poco mosso"},"sunrise":"07:23","sunset":"18:13","moon_phase":null,"summary":"18°-21°C. Possibili precipitazioni (4.2mm). Vento moderato.","advice":["🌡️ Temperature miti: abbigliamento leggero consigliato","☔ Possibili piogge: porta ombrello o impermeabile","🌊 Mare poco mosso (onde 1.04m): attenzione in barca"],"alerts":[]},{"date":"2025-10-27","temp":{"max":19.5,"min":17.82},"rain":{"probability":20,"total_mm":0,"periods":[]},"wind":{"periods":[{"time":"00:00","speed_kmh":24,"direction":"O"},{"time":"01:00","speed_kmh":25,"direction":"O"},{"time":"02:00","speed_kmh":25,"direction":"O"},{"time":"03:00","speed_kmh":24,"direction":"O"},{"time":"04:00","speed_kmh":21,"direction":"O"},{"time":"05:00","speed_kmh":19,"direction":"ONO"},{"time":"06:00","speed_kmh":18,"direction":"ONO"},{"time":"07:00","speed_kmh":17,"direction":"ONO"},{"time":"08:00","speed_kmh":17,"direction":"ONO"},{"time":"09:00","speed_kmh":19,"direction":"ONO"},{"time":"10:00","speed_kmh":19,"direction":"ONO"},{"time":"11:00","speed_kmh":19,"direction":"ONO"},{"time":"12:00","speed_kmh":18,"direction":"ONO"},{"time":"13:00","speed_kmh":16,"direction":"O"},{"time":"14:00","speed_kmh":17,"direction":"O"},{"time":"15:00","speed_kmh":16,"direction":"O"},{"time":"16:00","speed_kmh":18,"direction":"O"},{"time":"17:00","speed_kmh":18,"direction":"O"},{"time":"18:00","speed_kmh":18,"direction":"O"},{"time":"19:00","speed_kmh":19,"direction":"O"},{"time":"20:00","speed_kmh":19,"direction":"O"},{"time":"21:00","speed_kmh":19,"direction":"O"},{"time":"22:00","speed_kmh":19,"direction":"O"},{"time":"23:00","speed_kmh":17,"direction":"O"}]},"humidity":64,"pressure":{"value_hPa":1010,"trend":"stabile"},"uv_index":4,"sea":{"wave_height_m":1.52,"temperature_c":19.4,"condition":"mosso"},"sunrise":"07:23","sunset":"18:13","moon_phase":null,"summary":"18°-20°C. Tempo asciutto. Vento moderato.","advice":["🌡️ Temperature fresche: porta una giacca leggera","☀️ Tempo asciutto: ideale per attività all'aperto","🌊 Mare poco mosso (onde 1.52m): attenzione in barca"],"alerts":[]},{"date":"2025-10-28","temp":{"max":20.5,"min":18.73},"rain":{"probability":20,"total_mm":0,"periods":[]},"wind":{"periods":[{"time":"00:00","speed_kmh":13,"direction":"OSO"},{"time":"01:00","speed_kmh":15,"direction":"OSO"},{"time":"02:00","speed_kmh":14,"direction":"OSO"},{"time":"03:00","speed_kmh":14,"direction":"OSO"},{"time":"04:00","speed_kmh":15,"direction":"OSO"},{"time":"05:00","speed_kmh":14,"direction":"OSO"},{"time":"06:00","speed_kmh":12,"direction":"OSO"},{"time":"07:00","speed_kmh":11,"direction":"OSO"},{"time":"08:00","speed_kmh":11,"direction":"O"},{"time":"09:00","speed_kmh":8,"direction":"O"},{"time":"10:00","speed_kmh":7,"direction":"S"},{"time":"11:00","speed_kmh":7,"direction":"S"},{"time":"12:00","speed_kmh":7,"direction":"SSO"},{"time":"13:00","speed_kmh":7,"direction":"SSO"},{"time":"14:00","speed_kmh":8,"direction":"SSO"},{"time":"15:00","speed_kmh":8,"direction":"SSO"},{"time":"16:00","speed_kmh":8,"direction":"SSO"},{"time":"17:00","speed_kmh":8,"direction":"SSO"},{"time":"18:00","speed_kmh":7,"direction":"SSO"},{"time":"19:00","speed_kmh":7,"direction":"S"},{"time":"20:00","speed_kmh":6,"direction":"S"},{"time":"21:00","speed_kmh":6,"direction":"S"},{"time":"22:00","speed_kmh":7,"direction":"S"},{"time":"23:00","speed_kmh":7,"direction":"S"}]},"humidity":74,"pressure":{"value_hPa":1015,"trend":"in aumento"},"uv_index":4,"sea":{"wave_height_m":1.68,"temperature_c":19.2,"condition":"mosso"},"sunrise":"07:23","sunset":"18:13","moon_phase":null,"summary":"19°-21°C. Tempo asciutto. Vento moderato.","advice":["🌡️ Temperature miti: abbigliamento leggero consigliato","☀️ Tempo asciutto: ideale per attività all'aperto","🌊 Mare poco mosso (onde 1.68m): attenzione in barca"],"alerts":[]},{"date":"2025-10-29","temp":{"max":19,"min":18.01},"rain":{"probability":35,"total_mm":0,"periods":[]},"wind":{"periods":[{"time":"00:00","speed_kmh":8,"direction":"S"},{"time":"01:00","speed_kmh":9,"direction":"S"},{"time":"02:00","speed_kmh":9,"direction":"S"},{"time":"03:00","speed_kmh":9,"direction":"SSO"},{"time":"04:00","speed_kmh":8,"direction":"SSO"},{"time":"05:00","speed_kmh":8,"direction":"SSO"},{"time":"06:00","speed_kmh":8,"direction":"SSO"},{"time":"07:00","speed_kmh":7,"direction":"SSO"},{"time":"08:00","speed_kmh":6,"direction":"SSE"},{"time":"09:00","speed_kmh":7,"direction":"SSE"},{"time":"10:00","speed_kmh":8,"direction":"SSE"},{"time":"11:00","speed_kmh":9,"direction":"SSE"},{"time":"12:00","speed_kmh":9,"direction":"SSE"},{"time":"13:00","speed_kmh":10,"direction":"SSE"},{"time":"14:00","speed_kmh":10,"direction":"SSE"},{"time":"15:00","speed_kmh":10,"direction":"SSE"},{"time":"16:00","speed_kmh":10,"direction":"SSE"},{"time":"17:00","speed_kmh":9,"direction":"SSE"},{"time":"18:00","speed_kmh":9,"direction":"SSE"},{"time":"19:00","speed_kmh":9,"direction":"SSE"},{"time":"20:00","speed_kmh":10,"direction":"SE"},{"time":"21:00","speed_kmh":10,"direction":"SE"},{"time":"22:00","speed_kmh":10,"direction":"SE"},{"time":"23:00","speed_kmh":10,"direction":"SE"}]},"humidity":80,"pressure":{"value_hPa":1019,"trend":"in aumento"},"uv_index":3,"sea":{"wave_height_m":0.62,"temperature_c":19.2,"condition":"poco mosso"},"sunrise":"07:23","sunset":"18:13","moon_phase":null,"summary":"18°-19°C. Tempo asciutto. Vento moderato.","advice":["🌡️ Temperature fresche: porta una giacca leggera","☀️ Tempo asciutto: ideale per attività all'aperto","🌊 Mare calmo (onde 0.62m): condizioni favorevoli per navigare"],"alerts":[]},{"date":"2025-10-30","temp":{"max":19.6,"min":18.1},"rain":{"probability":68,"total_mm":7.5,"periods":[{"start":"09:00","end":"23:59","intensity":"leggera"}]},"wind":{"periods":[{"time":"00:00","speed_kmh":12,"direction":"SE"},{"time":"01:00","speed_kmh":12,"direction":"SE"},{"time":"02:00","speed_kmh":12,"direction":"SE"},{"time":"03:00","speed_kmh":12,"direction":"SE"},{"time":"04:00","speed_kmh":12,"direction":"SE"},{"time":"05:00","speed_kmh":13,"direction":"SE"},{"time":"06:00","speed_kmh":13,"direction":"SE"},{"time":"07:00","speed_kmh":14,"direction":"SE"},{"time":"08:00","speed_kmh":14,"direction":"SE"},{"time":"09:00","speed_kmh":16,"direction":"SE"},{"time":"10:00","speed_kmh":15,"direction":"SE"},{"time":"11:00","speed_kmh":15,"direction":"SE"},{"time":"12:00","speed_kmh":16,"direction":"SSE"},{"time":"13:00","speed_kmh":17,"direction":"SSE"},{"time":"14:00","speed_kmh":18,"direction":"SSE"},{"time":"15:00","speed_kmh":19,"direction":"SSE"},{"time":"16:00","speed_kmh":19,"direction":"SSE"},{"time":"17:00","speed_kmh":19,"direction":"SSE"},{"time":"18:00","speed_kmh":19,"direction":"SSE"},{"time":"19:00","speed_kmh":18,"direction":"SSE"},{"time":"20:00","speed_kmh":18,"direction":"SSE"},{"time":"21:00","speed_kmh":19,"direction":"SSE"},{"time":"22:00","speed_kmh":19,"direction":"SSE"},{"time":"23:00","speed_kmh":19,"direction":"SSE"}]},"humidity":83,"pressure":{"value_hPa":1017,"trend":"stabile"},"uv_index":4,"sea":{"wave_height_m":0.84,"temperature_c":19.3,"condition":"poco mosso"},"sunrise":"07:23","sunset":"18:13","moon_phase":null,"summary":"18°-20°C. Possibili precipitazioni (7.5mm). Vento moderato.","advice":["🌡️ Temperature fresche: porta una giacca leggera","☔ Possibili piogge: porta ombrello o impermeabile","🌊 Mare calmo (onde 0.84m): condizioni favorevoli per navigare"],"alerts":[]},{"date":"2025-10-31","temp":{"max":19.99,"min":19.12},"rain":{"probability":60,"total_mm":5.9,"periods":[{"start":"00:00","end":"02:59","intensity":"leggera"},{"start":"05:00","end":"05:59","intensity":"leggera"},{"start":"08:00","end":"20:59","intensity":"leggera"}]},"wind":{"periods":[{"time":"00:00","speed_kmh":19,"direction":"SSE"},{"time":"01:00","speed_kmh":19,"direction":"SSE"},{"time":"02:00","speed_kmh":19,"direction":"SSE"},{"time":"03:00","speed_kmh":18,"direction":"SSE"},{"time":"04:00","speed_kmh":17,"direction":"SE"},{"time":"05:00","speed_kmh":15,"direction":"SE"},{"time":"06:00","speed_kmh":15,"direction":"SE"},{"time":"07:00","speed_kmh":15,"direction":"SE"},{"time":"08:00","speed_kmh":16,"direction":"SE"},{"time":"09:00","speed_kmh":15,"direction":"SE"},{"time":"10:00","speed_kmh":15,"direction":"SE"},{"time":"11:00","speed_kmh":14,"direction":"SE"},{"time":"12:00","speed_kmh":15,"direction":"SE"},{"time":"13:00","speed_kmh":15,"direction":"SE"},{"time":"14:00","speed_kmh":15,"direction":"SSE"},{"time":"15:00","speed_kmh":14,"direction":"SSE"},{"time":"16:00","speed_kmh":13,"direction":"SE"},{"time":"17:00","speed_kmh":11,"direction":"SE"},{"time":"18:00","speed_kmh":10,"direction":"SE"},{"time":"19:00","speed_kmh":9,"direction":"SE"},{"time":"20:00","speed_kmh":8,"direction":"SE"},{"time":"21:00","speed_kmh":8,"direction":"ESE"},{"time":"22:00","speed_kmh":8,"direction":"ESE"},{"time":"23:00","speed_kmh":7,"direction":"SE"}]},"humidity":82,"pressure":{"value_hPa":1017,"trend":"stabile"},"uv_index":3,"sea":{"wave_height_m":1.34,"temperature_c":19.5,"condition":"poco mosso"},"sunrise":"07:23","sunset":"18:13","moon_phase":null,"summary":"19°-20°C. Possibili precipitazioni (5.9mm). Vento moderato.","advice":["🌡️ Temperature fresche: porta una giacca leggera","☔ Possibili piogge: porta ombrello o impermeabile","🌊 Mare poco mosso (onde 1.34m): attenzione in barca"],"alerts":[]}],"weekStats":{"maxTemp":21.1,"minTemp":17.82,"avgTemp":"20.0","rainyDays":3},"air_quality":{"aqi":2,"aqi_description":"Discreta","timestamp":"2025-10-25T10:06:20.000Z","components":{"co":94.78,"no":0.02,"no2":0.27,"o3":92.82,"so2":0.35,"pm2_5":2.25,"pm10":9.83,"nh3":0.28},"assessment":{"pm2_5_level":"Ottimo","pm10_level":"Ottimo","o3_level":"Buono","no2_level":"Ottimo"}},"rainviewer":{"nowcast_summary":{"has_rain_incoming":true,"rain_in_minutes":4,"frames_count":3},"nowcast_frames":[{"timestamp":"2025-10-25T10:10:00.000Z","time_offset_minutes":4,"unix_time":1761387000,"radar_path":"/v2/radar/nowcast_9d894f7c6341","tile_url":"https://https://tilecache.rainviewer.com/v2/radar/nowcast_9d894f7c6341/256/{z}/{x}/{y}/2/1_1.png"},{"timestamp":"2025-10-25T10:20:00.000Z","time_offset_minutes":14,"unix_time":1761387600,"radar_path":"/v2/radar/nowcast_9d89e5bf2864","tile_url":"https://https://tilecache.rainviewer.com/v2/radar/nowcast_9d89e5bf2864/256/{z}/{x}/{y}/2/1_1.png"},{"timestamp":"2025-10-25T10:30:00.000Z","time_offset_minutes":24,"unix_time":1761388200,"radar_path":"/v2/radar/nowcast_9d895a47154b","tile_url":"https://https://tilecache.rainviewer.com/v2/radar/nowcast_9d895a47154b/256/{z}/{x}/{y}/2/1_1.png"}],"source":"rainviewer","timestamp":"2025-10-25T10:06:20.131Z","location":{"name":"Procida","latitude":40.76,"longitude":14.02}},"generatedAt":"2025-10-25T10:06:28.894Z","processedAt":"2025-10-25T10:06:28.894Z","totalDays":7,"ai":{}};
 window.weatherData = null;
 let weatherData;
     let currentDayIndex = 0; // Tiene traccia del giorno selezionato
@@ -1514,17 +1390,17 @@ function renderDaysTabs() {
   }).join('');
 }
 
-// Nella funzione renderWeatherContent() o simile, cerca:
-// updateHeroSection(); // ← COMMENTA questa riga
 
-// Oppure in switchDay():
-function switchDay(index) {
-  currentDayIndex = index;
-  renderWeatherContent();
-  renderDaysTabs();
-  // updateHeroSection(); // ← COMMENTA
-}
 
+
+
+
+// Cambia giorno visualizzato
+function switchDay(dayIndex) {
+  if (currentDayIndex === dayIndex) return;
+  
+  currentDayIndex = dayIndex;
+  
   // Aggiorna tab attivi
   document.querySelectorAll('.day-tab').forEach((tab, idx) => {
     tab.classList.toggle('active', idx === dayIndex);
@@ -2123,127 +1999,31 @@ function openRadarViewer() {
       const tempClass = getTempClass(today.temp?.max || 20);
       const weatherIcon = getWeatherIcon(today.summary);
       const moonEmoji = getMoonPhaseEmoji(today.moon_phase);
-
-// === HERO REDESIGN - POPOLAZIONE DATI ===
-// === FUNZIONI GLOBALI PER HERO ===
-function updateHeroSection() {
-  if (!weatherData || !weatherData.days || weatherData.days.length === 0) return;
-  
-  const selectedDay = weatherData.days[currentDayIndex];
-  
-  // Location
-  document.getElementById('heroLocation').textContent = 'Procida';
-  
-  // Data formattata
-  const date = new Date(selectedDay.date);
-  const months = ['Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno', 
-                  'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'];
-  
-  document.getElementById('heroDateDay').textContent = date.getDate();
-  document.getElementById('heroDateText').textContent = months[date.getMonth()];
-  
-  // Icona meteo (usa la funzione helper)
-  const iconCode = getWeatherIconForHero(selectedDay);
-  const iconUrl = `https://raw.githubusercontent.com/Micheledv74/previsioni/main/icons/meteocons/${iconCode}.svg`;
-  document.getElementById('heroIcon').src = iconUrl;
-  
-  // Temperatura
-  const tempAvg = Math.round((selectedDay.temp.max + selectedDay.temp.min) / 2);
-  document.getElementById('heroTemp').textContent = `${tempAvg}°`;
-  
-  // Condizione
-  const condition = selectedDay.summary ? selectedDay.summary.split('.')[0] : 'Condizioni variabili';
-  document.getElementById('heroCondition').textContent = condition;
-  
-  // Min/Max
-  document.getElementById('heroTempMax').textContent = Math.round(selectedDay.temp.max);
-  document.getElementById('heroTempMin').textContent = Math.round(selectedDay.temp.min);
-}
-
-function getWeatherIconForHero(day) {
-  const summary = (day.summary || '').toLowerCase();
-  const rainMm = day.rain?.total_mm || 0;
-  const rainProb = day.rain?.probability || 0;
-  
-  if (summary.includes('temporale')) return 'thunderstorms-day';
-  if (rainMm > 10) return 'extreme-day-rain';
-  if (rainMm > 2) return 'partly-cloudy-day-rain';
-  if (rainMm > 0 || rainProb > 60 || summary.includes('pioggia')) return 'partly-cloudy-day-drizzle';
-  if (summary.includes('neve')) return 'partly-cloudy-day-snow';
-  if (summary.includes('nebbia')) return 'fog-day';
-  if (summary.includes('nuvoloso')) return 'partly-cloudy-day';
-  if (summary.includes('coperto')) return 'overcast-day';
-  if (summary.includes('sereno') || summary.includes('asciutto')) return 'clear-day';
-  
-  return 'partly-cloudy-day';
-}
-
-// Funzione per cambiare giorno
-function switchDay(index) {
-  currentDayIndex = index;
-  renderDaysTabs();      // Aggiorna tab attivi
-  renderWeatherContent(); // Ricarica contenuto
-}
-
-// Funzione master di rendering
-function renderWeatherContent() {
-  renderHero();
-  updateHeroSection(); // ← UNA SOLA VOLTA
-  renderCharts();
-  renderStats();
-}
-
+      
       const html = `
-<!-- HERO SECTION REDESIGN FINALE -->
-<section class="hero-redesign">
-  <!-- Location + Date Header -->
-  <div class="hero-header">
-    <div class="hero-location">
-      <span class="location-icon">📍</span>
-      <span class="location-name" id="heroLocation">Procida</span>
-    </div>
-    <div class="hero-date" id="heroDateFull">
-      <span class="hero-date-day" id="heroDateDay">25</span>
-      <span id="heroDateText">Ottobre</span>
-    </div>
-  </div>
+        <div class="hero-card ${tempClass}">
+          <div class="hero-header">
+            <div class="hero-location">
+              📍 ${weatherData.location || 'Procida'}
+            </div>
+            <div class="hero-date">${formatDate(today.date)}</div>
+          </div>
 
-  <!-- Main Weather Display -->
-  <div class="hero-main">
-    <!-- Left: Icon -->
-    <div class="hero-icon-wrapper">
-      <img src="" id="heroIcon" class="hero-icon weather-icon-animated" alt="Weather">
-    </div>
-
-    <!-- Right: Temperature & Condition -->
-    <div class="hero-temp-wrapper">
-      <div class="hero-temp" id="heroTemp">21°</div>
-      <div class="hero-condition" id="heroCondition">Parzialmente Nuvoloso</div>
-      <div class="hero-minmax">
-        <!-- H con icona termometro caldo -->
-        <span class="temp-high">
-          <img src="https://raw.githubusercontent.com/Micheledv74/previsioni/main/icons/meteocons/thermometer-warmer.svg" 
-               class="temp-icon" 
-               alt="Max" 
-               style="width:20px; height:20px;">
-          <span id="heroTempMax">21</span>°
-        </span>
-        
-        <span class="temp-divider">·</span>
-        
-        <!-- L con icona termometro freddo -->
-        <span class="temp-low">
-          <img src="https://raw.githubusercontent.com/Micheledv74/previsioni/main/icons/meteocons/thermometer-colder.svg" 
-               class="temp-icon" 
-               alt="Min" 
-               style="width:20px; height:20px;">
-          <span id="heroTempMin">19</span>°
-        </span>
-      </div>
-    </div>
-  </div>
-</section>
-
+          <div class="hero-main">
+            <img src="${weatherIcon}" class="hero-weather-icon" alt="Condizioni meteo">
+            <div class="hero-temp">${Math.round(today.temp?.max || 20)}°</div>
+            <div class="hero-condition">${getConditionText(today)}</div>
+            <div class="hero-minmax">
+              <span>
+                <img src="${METEOCONS_CDN}/thermometer-colder.svg" alt="Min">
+                ${Math.round(today.temp?.min || 15)}°
+              </span>
+              <span>
+                <img src="${METEOCONS_CDN}/thermometer-warmer.svg" alt="Max">
+                ${Math.round(today.temp?.max || 20)}°
+              </span>
+            </div>
+          </div>
 
           <div class="details-pills">
             ${today.rain && today.rain.probability > 0 ? `
@@ -2842,13 +2622,67 @@ const seaTemps = weatherData.days.slice(0, 7).map(d => d.sea?.temperature_c || 1
 
       document.getElementById('forecast-container').innerHTML = `<div class="days-grid">${html}</div>`;
     }
+    // === HERO REDESIGN - POPOLAZIONE DATI ===
+function updateHeroSection() {
+  if (!weatherData || !weatherData.days || weatherData.days.length === 0) return;
+  
+  const selectedDay = weatherData.days[currentDayIndex];
+  
+  // Location
+  document.getElementById('heroLocation').textContent = 'Procida';
+  
+  // Data formattata con numero evidenziato
+  const date = new Date(selectedDay.date);
+  const months = ['Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno', 
+                  'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'];
+  
+  document.getElementById('heroDateDay').textContent = date.getDate();
+  document.getElementById('heroDateText').textContent = months[date.getMonth()];
+  
+  // Icona meteo
+  const iconCode = getWeatherIconForHero(selectedDay);
+  const iconUrl = `https://raw.githubusercontent.com/Micheledv74/previsioni/main/icons/meteocons/${iconCode}.svg`;
+  document.getElementById('heroIcon').src = iconUrl;
+  
+  // Temperatura
+  const tempAvg = Math.round((selectedDay.temp.max + selectedDay.temp.min) / 2);
+  document.getElementById('heroTemp').textContent = `${tempAvg}°`;
+  
+  // Condizione meteo
+  const condition = selectedDay.summary ? 
+    selectedDay.summary.split('.')[0] : 
+    'Condizioni variabili';
+  document.getElementById('heroCondition').textContent = condition;
+  
+  // Min/Max
+  document.getElementById('heroTempMax').textContent = Math.round(selectedDay.temp.max);
+  document.getElementById('heroTempMin').textContent = Math.round(selectedDay.temp.min);
+}
+
+function getWeatherIconForHero(day) {
+  const summary = (day.summary || '').toLowerCase();
+  const rainMm = day.rain?.total_mm || 0;
+  const rainProb = day.rain?.probability || 0;
+  
+  if (summary.includes('temporale')) return 'thunderstorms-day';
+  if (rainMm > 10) return 'extreme-day-rain';
+  if (rainMm > 2) return 'partly-cloudy-day-rain';
+  if (rainMm > 0 || rainProb > 60 || summary.includes('pioggia')) return 'partly-cloudy-day-drizzle';
+  if (summary.includes('neve')) return 'partly-cloudy-day-snow';
+  if (summary.includes('nebbia')) return 'fog-day';
+  if (summary.includes('nuvoloso')) return 'partly-cloudy-day';
+  if (summary.includes('coperto')) return 'overcast-day';
+  if (summary.includes('sereno') || summary.includes('asciutto')) return 'clear-day';
+  
+  return 'partly-cloudy-day';
+}
+
 // Funzione master che ricarica tutto il contenuto
 function renderWeatherContent() {
   renderHero();
+  updateHeroSection();
   renderCharts();
   renderStats();
-  updateHeroSection();
-  // updateHeroSection(); // ← Metti // davanti
 }
 
     function updateTimestamp() {
