@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validazione Meteo Procida</title>
+    <style>
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+            background: white;
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 32px;
+            text-align: center;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 25px;
+            font-size: 15px;
+            text-align: center;
+        }
+        
+        .datetime {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            font-weight: 600;
+            text-align: center;
+            font-size: 16px;
+        }
+        
+        .form-group {
+            margin-bottom: 30px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #333;
+            font-size: 17px;
+        }
+        
+        .radio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+        }
+        
+        .radio-option {
+            position: relative;
+        }
+        
+        .radio-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+        }
+        
+        .radio-option label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 18px 12px;
+            border: 3px solid #e0e0e0;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 15px;
+            min-height: 90px;
+            background: #fafafa;
+        }
+        
+        .radio-option label .emoji {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+        
+        .radio-option input[type="radio"]:checked + label {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .radio-option label:hover {
+            border-color: #667eea;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 100px;
+            font-size: 15px;
+            transition: border-color 0.3s;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        button {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 20px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+        }
+        
+        button:active {
+            transform: translateY(-1px);
+        }
+        
+        .success-message {
+            display: none;
+            padding: 20px;
+            background: #4caf50;
+            color: white;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 16px;
+            animation: slideIn 0.5s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .error-message {
+            display: none;
+            padding: 20px;
+            background: #f44336;
+            color: white;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .required {
+            color: #f44336;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌤️ Validazione Meteo Procida</h1>
+        <p class="subtitle">Inserisci le condizioni meteo REALI osservate oggi</p>
+        
+        <div class="datetime" id="currentDateTime"></div>
+        
+        <form id="validationForm">
+            <!-- Condizioni Cielo -->
+            <div class="form-group">
+                <label>☁️ Condizioni Cielo <span class="required">*</span></label>
+                <div class="radio-grid">
+                    <div class="radio-option">
+                        <input type="radio" id="sereno" name="condizioni" value="sereno" required>
+                        <label for="sereno">
+                            <span class="emoji">☀️</span>
+                            <span>Sereno</span>
+                        </label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="parz_nuvoloso" name="condizioni" value="parzialmente_nuvoloso">
+                        <label for="parz_nuvoloso">
+                            <span class="emoji">⛅</span>
+                            <span>Parz. Nuvoloso</span>
+                        </label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="nuvoloso" name="condizioni" value="nuvoloso">
+                        <label for="nuvoloso">
+                            <span class="emoji">☁️</span>
+                            <span>Nuvoloso</span>
+                        </label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="pioggia" name="condizioni" value="pioggia">
+                        <label for="pioggia">
+                            <span class="emoji">🌧️</span>
+                            <span>Pioggia</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Temperatura -->
+            <div class="form-group">
+                <label>🌡️ Temperatura Percepita <span class="required">*</span></label>
+                <div class="radio-grid">
+                    <div class="radio-option">
+                        <input type="radio" id="freddo" name="temperatura" value="freddo" required>
+                        <label for="freddo">
+                            <span class="emoji">❄️</span>
+                            <span>Freddo</span>
+                        </label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="fresco" name="temperatura" value="fresco">
+                        <label for="fresco">
+                            <span class="emoji">🍃</span>
+                            <span>Fresco</span>
+                        </label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="mite" name="temperatura" value="mite">
+                        <label for="mite">
+                            <span class="emoji">🌤️</span>
+                            <span>Mite</span>
+                        </label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="caldo" name="temperatura" value="caldo">
+                        <label for="caldo">
+                            <span class="emoji">🔥</span>
+                            <span>Caldo</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vento -->
+            <div class="form-group">
+                <label>💨 Intensità Vento <span class="required">*</span></label>
+                <div class="radio-grid">
+                    <div class="radio-option">
+                        <input type="radio" id="vento_assente" name="vento" value="assente" required>
+                        <label for="vento_assente">
+                            <span class="emoji">😴</span>
+                            <span>Assente</span>
+                        </label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="vento_leggero" name="vento" value="leggero">
+                        <label for="vento_leggero">
+                            <span class="emoji">🍃</span>
+                            <span>Leggero</span>
+                        </label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="vento_moderato" name="vento" value="moderato">
+                        <label for="vento_moderato">
+                            <span class="emoji">💨</span>
+                            <span>Moderato</span>
+                        </label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="vento_forte" name="vento" value="forte">
+                        <label for="vento_forte">
+                            <span class="emoji">🌪️</span>
+                            <span>Forte</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mare -->
+            <div class="form-group">
+                <label>🌊 Condizioni Mare <span class="required">*</span></label>
+                <div class="radio-grid">
+                    <div class="radio-option">
+                        <input type="radio" id="mare_calmo" name="mare" value="calmo" required>
+                        <label for="mare_calmo">
+                            <span class="emoji">😌</span>
+                            <span>Calmo</span>
+                        </label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="mare_poco_mosso" name="mare" value="poco_mosso">
+                        <label for="mare_poco_mosso">
+                            <span class="emoji">🌊</span>
+                            <span>Poco Mosso</span>
+                        </label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="mare_mosso" name="mare" value="mosso">
+                        <label for="mare_mosso">
+                            <span class="emoji">🌊🌊</span>
+                            <span>Mosso</span>
+                        </label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="mare_molto_mosso" name="mare" value="molto_mosso">
+                        <label for="mare_molto_mosso">
+                            <span class="emoji">🌊🌊🌊</span>
+                            <span>Molto Mosso</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Note -->
+            <div class="form-group">
+                <label>📝 Note Aggiuntive (opzionale)</label>
+                <textarea name="note" placeholder="Es: Temporale pomeriggio, nebbia mattutina, vento da nord..."></textarea>
+            </div>
+
+            <button type="submit">✅ Invia Validazione</button>
+        </form>
+
+        <div class="success-message" id="successMessage">
+            ✅ Validazione salvata con successo!
+        </div>
+        
+        <div class="error-message" id="errorMessage">
+            ❌ Errore nel salvataggio. Riprova.
+        </div>
+    </div>
+
+    <script>
+        // Mostra data e ora corrente
+        function updateDateTime() {
+            const now = new Date();
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            };
+            document.getElementById('currentDateTime').textContent = 
+                now.toLocaleDateString('it-IT', options);
+        }
+        updateDateTime();
+        setInterval(updateDateTime, 60000); // Aggiorna ogni minuto
+
+        // Gestione submit form
+        document.getElementById('validationForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const now = new Date();
+            const date = now.toISOString().split('T')[0];
+            const hour = now.getHours();
+            const minute = now.getMinutes();
+            
+            // Raccogli dati form
+            const formData = {
+                timestamp: now.toISOString(),
+                date: date,
+                hour: hour,
+                minute: minute,
+                condizioni: document.querySelector('input[name="condizioni"]:checked').value,
+                temperatura: document.querySelector('input[name="temperatura"]:checked').value,
+                vento: document.querySelector('input[name="vento"]:checked').value,
+                mare: document.querySelector('input[name="mare"]:checked').value,
+                note: document.querySelector('textarea[name="note"]').value.trim()
+            };
+
+            // Genera HTML con JSON embedded
+            const htmlContent = `<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Validation ${date}</title>
+</head>
+<body>
+    <h1>🌤️ Validazione Meteo Procida</h1>
+    <p>Data: ${date} | Ora: ${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}</p>
+    
+    <h2>Condizioni Osservate:</h2>
+    <ul>
+        <li><strong>Cielo:</strong> ${formData.condizioni}</li>
+        <li><strong>Temperatura:</strong> ${formData.temperatura}</li>
+        <li><strong>Vento:</strong> ${formData.vento}</li>
+        <li><strong>Mare:</strong> ${formData.mare}</li>
+        ${formData.note ? '<li><strong>Note:</strong> ' + formData.note + '</li>' : ''}
+    </ul>
+    
+    <script type="application/json" id="validationData">
+${JSON.stringify(formData, null, 2)}
+    <\/script>
+</body>
+</html>`;
+
+            // Invia a webhook n8n
+            try {
+                const webhookUrl = 'https://TUO_N8N_URL/webhook/validation-meteo';
+                
+                const response = await fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        htmlContent: htmlContent,
+                        formData: formData,
+                        fileName: `validations/${date}_${hour.toString().padStart(2, '0')}${minute.toString().padStart(2, '0')}.html`
+                    })
+                });
+
+                if (response.ok) {
+                    // Successo
+                    document.getElementById('successMessage').style.display = 'block';
+                    document.getElementById('errorMessage').style.display = 'none';
+                    this.reset();
+                    
+                    // Nascondi messaggio dopo 3 secondi
+                    setTimeout(() => {
+                        document.getElementById('successMessage').style.display = 'none';
+                    }, 3000);
+                } else {
+                    throw new Error('Response not OK');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('errorMessage').style.display = 'block';
+                document.getElementById('successMessage').style.display = 'none';
+                
+                setTimeout(() => {
+                    document.getElementById('errorMessage').style.display = 'none';
+                }, 3000);
+            }
+        });
+    </script>
+</body>
+</html>
