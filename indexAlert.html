@@ -7,10 +7,10 @@
 <body>
 <script>
 window.aiWeatherData = {
-  summary: "```json\n{\n  \"summary\": \"Mattinata parzialmente nuvolosa con piogge (3mm/h) in arrivo tra 15 minuti. Pomeriggio instabile con rovesci (2mm/h) dalle 12:00 alle 18:00. Venti tesi (38 km/h) da nw. Temperature gradevoli (15-22°C). Mare poco mosso (onde 1.2m).\",\n  \"advice\": [\n    \"Temperature tra 15°C e 22°C: abbigliamento leggero adeguato per il giorno. Consigliata una felpa per le ore serali. Non dimenticare un ombrello o un impermeabile data la possibilità di piogge.\",\n    \"Collegamenti marittimi: condizioni favorevoli per traghetti e aliscafi. Servizio regolare previsto.\",\n    \"Indice UV moderato (7): si consiglia una protezione solare adeguata durante l'esposizione prolungata. Temperatura del mare (20°C) adatta alla balneazione, ma l'acqua è ancora fresca. Condizioni marine favorevoli per attività nautiche leggere e pesca.\"\n  ],\n  \"alerts\": [\n    {\n      \"type\": \"Situazione Meteo Normale\",\n      \"description\": \"Giornata senza criticità meteo. Condizioni stabili e favorevoli per tutte le attività. Temperatures gradevoli (15-22°C) e mare poco mosso (1.2m). In accordo con l'allerta VERDE della Protezione Civile Campania (dalle 00:00 del 15/05/2024 alle 23:59 del 15/05/2024).\",\n      \"severity\": \"VERDE\"\n    }\n  ]\n}\n```",
+  summary: "```json\n{\n  \"summary\": \"Mattinata {rain_morning_desc}Temperature miti ({temp_morning}°C). Venti da {wind_morning_direction} ({wind_morning_beaufort}, {wind_morning_speed} km/h). Nel pomeriggio,{rain_afternoon_desc} Temperature intorno ai {temp_afternoon}°C. Venti da {wind_afternoon_direction} ({wind_afternoon_beaufort}, {wind_afternoon_speed} km/h). In serata,{rain_evening_desc} Temperature in calo ({temp_evening}°C). Venti più deboli da {wind_evening_direction} ({wind_evening_beaufort}, {wind_evening_speed} km/h). Mare {sea_condition} (onde {wave_height}m). Temperature giornaliere tra ({temp_min}-{temp_max}°C).\",\n  \"advice\": [\n    \"Temperature miti ({current_temp}°C): abbigliamento leggero è adeguato. {clothing_evening_tip}{clothing_rain_tip}\",\n    \"Collegamenti marittimi: {maritime_connection_status}\",\n    \"{uv_advice}{sea_activity_advice}{air_quality_advice}\"\n  ],\n  \"alerts\": [\n    {alert_items}\n  ]\n}\n```",
   advice: [],
   alerts: [],
-  timestamp: "2025-11-05T03:05:42.679Z"
+  timestamp: "2025-11-05T03:35:27.048Z"
 };
 </script>
 </body>
