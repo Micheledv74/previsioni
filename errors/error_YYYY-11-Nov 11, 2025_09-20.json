@@ -1,0 +1,7 @@
+{
+  "timestamp": "2025-11-11T08:17:20.290Z",
+  "api": "Meteoblue",
+  "error": "manca data_1h [line 11]",
+  "message": "API error",
+  "status": "⚠️ FAILED"
+}
