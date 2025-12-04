@@ -6,12 +6,33 @@
 </head>
 <body>
 <script>
+// Pulisci il JSON dalle backtick
+function cleanJSON(str) {
+  return str.replace(/``````\n?/g, '').trim();
+}
+
+// Estrai e parsa
+const rawSummary = "";
+let parsed = { summary: '', advice: [], alerts: [] };
+
+try {
+  const cleaned = cleanJSON(rawSummary);
+  if (cleaned) {
+    parsed = JSON.parse(cleaned);
+  }
+} catch(e) {
+  console.error('Parse error:', e);
+}
+
+// Rendi disponibile al frontend
 window.aiWeatherData = {
-  summary: "```json\n{\n  \"summary\": \"Attualmente, la mattinata si presenta parzialmente nuvolosa con venti tesi (Forza 5 Beaufort, 32 km/h) da nord-ovest. Nelle prossime ore, la ventilazione tenderà a rinforzare leggermente, raggiungendo raffiche fino a 38 km/h (Forza 5-6 Beaufort) nel primo pomeriggio. Verso sera, i venti diminuiranno gradualmente (fino a 25 km/h). Le temperature si manterranno gradevoli (16-22°C) e il mare poco mosso (onde 1.2m).\",\n  \"advice\": [\n    \"Temperature miti (percepita circa 21°C): abbigliamento leggero è sufficiente per il giorno, ma porta un giubbino o felpa per la sera se sei sensibile al fresco.\",\n    \"Collegamenti marittimi: condizioni favorevoli per traghetti e aliscafi. Servizio regolare previsto con venti moderati (fino a 38 km/h) e mare poco mosso (onde fino a 1.2m).\",\n    \"Indice UV moderato (5): proteggiti dal sole nelle ore centrali, specialmente se sensibile. La temperatura del mare (20°C) è gradevole e buona per la balneazione e le attività nautiche leggere.\"\n  ],\n  \"alerts\": [\n    {\n      \"type\": \"Situazione Meteo Normale\",\n      \"description\": \"Giornata senza criticità meteo. Condizioni stabili e favorevoli per tutte le attività. Temperature gradevoli (16-22°C) e mare poco mosso (onde 1.2m). In accordo con l'allerta VERDE della Protezione Civile Campania (dalle 00:00 del 27/10/2023 alle 23:59 del 27/10/2023).\",\n      \"severity\": \"VERDE\"\n    }\n  ]\n}\n```",
-  advice: [],
-  alerts: [],
-  timestamp: "2025-12-04T17:05:18.545Z"
+  summary: parsed.summary || '',
+  advice: Array.isArray(parsed.advice) ? parsed.advice : [],
+  alerts: Array.isArray(parsed.alerts) ? parsed.alerts : [],
+  timestamp: new Date().toLocaleString('it-IT')
 };
+
+console.log('✅ AI Data loaded:', window.aiWeatherData);
 </script>
 </body>
 </html>
