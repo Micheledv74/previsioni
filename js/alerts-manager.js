@@ -119,3 +119,4 @@ const alertsManager = new AlertsManager();
 document.addEventListener('DOMContentLoaded', async () => {
   await alertsManager.loadAlertData();
 });
+
