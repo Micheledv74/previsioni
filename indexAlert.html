@@ -6,33 +6,12 @@
 </head>
 <body>
 <script>
-// Pulisci il JSON dalle backtick
-function cleanJSON(str) {
-  return str.replace(/``````\n?/g, '').trim();
-}
-
-// Estrai e parsa
-const rawSummary = "";
-let parsed = { summary: '', advice: [], alerts: [] };
-
-try {
-  const cleaned = cleanJSON(rawSummary);
-  if (cleaned) {
-    parsed = JSON.parse(cleaned);
-  }
-} catch(e) {
-  console.error('Parse error:', e);
-}
-
-// Rendi disponibile al frontend
 window.aiWeatherData = {
-  summary: parsed.summary || '',
-  advice: Array.isArray(parsed.advice) ? parsed.advice : [],
-  alerts: Array.isArray(parsed.alerts) ? parsed.alerts : [],
-  timestamp: new Date().toLocaleString('it-IT')
+  summary: "```json\n{\n  \"summary\": \"Mattinata con cielo poco nuvoloso e venti Forza 3-4 (Leggero/Moderato, 25 km/h). Nel pomeriggio, nuvoloso con rovesci moderati (4mm) tra le 12:00 e le 18:00 e venti Forza 5-6 (Teso/Fresco, 28 km/h). In serata, stabile con venti Forza 3-4 (Leggero/Moderato, 18 km/h). Temperature gradevoli (16-22°C). Mare calmo (onde 0.8m).\",\n  \"advice\": [\n    \"Con temperature previste tra (16-22°C), è consigliabile un abbigliamento leggero per il giorno. Una felpa leggera potrebbe essere utile per la sera. Non dimenticare un ombrello o un impermeabile, specie nel pomeriggio.\",\n    \"Collegamenti marittimi: condizioni favorevoli per traghetti e aliscafi. Servizio regolare previsto con mare calmo (onde 0.8m) e vento moderato (25 km/h).\",\n    \"L'indice UV è moderato (5): proteggersi con creme solari. La temperatura del mare è piacevole (21°C) e il mare calmo, ideale per balneazione e attività nautiche leggere (vela, diving). Qualità dell'aria ottima.\"\n  ],\n  \"alerts\": [\n    {\n      \"type\": \"Situazione Meteo Normale\",\n      \"description\": \"Nessuna criticità meteo prevista. Condizioni favorevoli per tutte le attività. Temperature gradevoli (16-22°C) e mare calmo (0.8m). In accordo con l'allerta VERDE della Protezione Civile Campania (dalle 00:00 del 27/10 alle 00:00 del 28/10).\",\n      \"severity\": \"VERDE\"\n    }\n  ]\n}\n```",
+  advice: [],
+  alerts: [],
+  timestamp: "2025-12-05T09:34:51.983Z"
 };
-
-console.log('✅ AI Data loaded:', window.aiWeatherData);
 </script>
 </body>
 </html>
