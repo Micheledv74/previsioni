@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "result": {
+    "message_id": 589,
+    "from": {
+      "id": 8505174770,
+      "is_bot": true,
+      "first_name": "GitHub Avvisi",
+      "username": "AvvisiGitHubMeteoBot"
+    },
+    "chat": {
+      "id": 121923258,
+      "first_name": "Michele",
+      "last_name": "Del Vecchio",
+      "type": "private"
+    },
+    "date": 1766523610,
+    "text": "🚨 ERRORE API METEO  API: Meteoblue Errore: manca data1h [line 11] Messaggio: API error Timestamp: 2025-12-23T21:00:04.726Z  Controlla: https://github.com/micheledv74/previsioni/tree/main/errors\n\nThis message was sent automatically with [n8n](https://n8n.io/?utmsource=n8n-internal&utmmedium=poweredby&utmcampaign=n8n-nodes-base.telegram9691d287d966ccd958dbd6c761d0507cfdfc5841c423b4f7895d7c95b6ede313)",
+    "entities": [
+      {
+        "offset": 3,
+        "length": 16,
+        "type": "bold"
+      },
+      {
+        "offset": 54,
+        "length": 82,
+        "type": "italic"
+      },
+      {
+        "offset": 136,
+        "length": 58,
+        "type": "url"
+      },
+      {
+        "offset": 136,
+        "length": 58,
+        "type": "italic"
+      },
+      {
+        "offset": 194,
+        "length": 2,
+        "type": "italic"
+      },
+      {
+        "offset": 237,
+        "length": 6,
+        "type": "italic"
+      },
+      {
+        "offset": 243,
+        "length": 158,
+        "type": "url"
+      },
+      {
+        "offset": 243,
+        "length": 19,
+        "type": "italic"
+      },
+      {
+        "offset": 285,
+        "length": 14,
+        "type": "italic"
+      },
+      {
+        "offset": 305,
+        "length": 32,
+        "type": "italic"
+      }
+    ],
+    "link_preview_options": {
+      "is_disabled": true
+    }
+  }
+}
